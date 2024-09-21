@@ -9,6 +9,11 @@ import (
 )
 
 func main() {
+
+	fmt.Println("Welcome to Tidalflow Framework")
+    fmt.Println("Version 1.0.0")
+
+
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("TidalFlow ~ ")
@@ -28,8 +33,9 @@ func main() {
 			//cmd.ExecuteTidalFlow(args[1:])
 		case "swim":
 			//cmd.SearchCommand(args[1:])
+		case "cat":
 		case "exit":
-			fmt.Println("Exiting...")
+			fmt.Println("Exiting TidalFlow...")
 			return
 		default:
 			fmt.Println("Unknown command:", args[0])
