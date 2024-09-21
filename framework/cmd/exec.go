@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-// ExecuteYAMLCommand reads and executes commands from a YAML file in any directory
-func ExecuteYAMLCommand(args []string) {
+// ExecuteCommand reads and executes commands 
+func ExecuteCommand(args []string) {
 	if len(args) == 0 {
-		fmt.Println("Usage: execute <path-to-yaml-file>")
+		fmt.Println("Usage: execute <path-to--file>")
 		return
 	}
 
@@ -24,10 +24,10 @@ func ExecuteYAMLCommand(args []string) {
 		return
 	}
 
-	// Parse the YAML file
-	commands, err := parseYAML(filePath)
+	// Parse the  file
+	commands, err := parseFile(filePath)
 	if err != nil {
-		fmt.Println("Error parsing YAML file:", err)
+		fmt.Println("Error parsing file:", err)
 		return
 	}
 
@@ -38,8 +38,8 @@ func ExecuteYAMLCommand(args []string) {
 	}
 }
 
-// parseYAML is a simple YAML parser to extract commands from a YAML file
-func parseYAML(filePath string) ([]string, error) {
+// is a simple parser to extract commands from a  file
+func parseFile(filePath string) ([]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err

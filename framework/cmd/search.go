@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-// LocateYAMLFiles searches for all YAML files starting from a specified directory
-func LocateYAMLFiles(args []string) {
+// LocateFiles searches for all files starting from a specified directory
+func LocateFiles(args []string) {
 	// If no starting directory is provided, use the current directory
 	startDir := "."
 	if len(args) > 0 {
@@ -21,22 +21,22 @@ func LocateYAMLFiles(args []string) {
 		return
 	}
 
-	fmt.Printf("Searching for YAML files in: %s\n", startDir)
+	fmt.Printf("Searching for files in: %s\n", startDir)
 
-	// Find and display all YAML files in the directory
-	err := filepath.Walk(startDir, visitYAMLFiles)
+	// Find and display all files in the directory
+	err := filepath.Walk(startDir, visitFiles)
 	if err != nil {
 		fmt.Printf("Error while searching for files: %s\n", err)
 	}
 }
 
-// visitYAMLFiles is a helper function that filters and prints YAML files during directory traversal
-func visitYAMLFiles(path string, info os.FileInfo, err error) error {
+// visitFiles is a helper function that filters and prints files during directory traversal
+func visitFiles(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return err
 	}
 
-	// Only process regular files
+	// Only process regular yml files
 	if !info.IsDir() && strings.HasSuffix(info.Name(), ".yml") {
 		fmt.Println(path)
 	}
