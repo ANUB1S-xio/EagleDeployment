@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"framework/cmd"
+	"github.com/ANUB1s-xio/TidalFlow/framework/cmd"
 )
 
 func main() {
@@ -21,10 +21,13 @@ func main() {
 		}
 
 		switch args[0] {
-		case "TidalFlow":
-			cmd.ExecuteTidalFlow(args[1:])
-		case "searchflow":
-			cmd.SearchCommand(args[1:])
+		case "help":
+			cmd.HelpCommand()
+			return
+		case "Tide":
+			//cmd.ExecuteTidalFlow(args[1:])
+		case "swim":
+			//cmd.SearchCommand(args[1:])
 		case "exit":
 			fmt.Println("Exiting...")
 			return
