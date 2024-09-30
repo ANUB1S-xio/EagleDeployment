@@ -8,7 +8,7 @@ func executeCommand(input string) {
 }
 
 func searchCommand(input string) {
-    // Example: handle file search logic
+    
     fmt.Println("Searching file:", input)
 }
 

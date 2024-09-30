@@ -2,7 +2,7 @@ package internal
 
 import (
     "gopkg.in/yaml.v2"
-    "io/ioutil"
+    "os"
     "log"
 )
 
@@ -10,15 +10,18 @@ type Config struct {
     Applications []Application `yaml:"applications"`
 }
 
-// Fetch applications from a YAML file (mock for fetching from the web)
+// Fetch applications from a YAML file
 func LoadApplicationsFromYAML(path string) ([]Application, error) {
     var config Config
-    data, err := ioutil.ReadFile(path)
+
+    // Use os.ReadFile instead of ioutil.ReadFile
+    data, err := os.ReadFile(path)
     if err != nil {
         log.Printf("Error reading YAML file: %v", err)
         return nil, err
     }
 
+    // Unmarshal the YAML data
     err = yaml.Unmarshal(data, &config)
     if err != nil {
         log.Printf("Error unmarshalling YAML: %v", err)
@@ -27,3 +30,4 @@ func LoadApplicationsFromYAML(path string) ([]Application, error) {
 
     return config.Applications, nil
 }
+
