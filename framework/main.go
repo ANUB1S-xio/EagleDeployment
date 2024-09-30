@@ -29,11 +29,11 @@ func main() {
 		case "help":
 			cmd.HelpCommand()
 			return
-		case "Tide":
+		case "eagle":
 			//cmd.ExecuteTidalFlow(args[1:])
-		case "swim":
+		case "fly":
 			//cmd.SearchCommand(args[1:])
-		case "cat":
+		case "eagle find":
 		case "exit":
 			fmt.Println("Exiting TidalFlow...")
 			return
