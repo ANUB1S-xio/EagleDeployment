@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"github.com/ANUB1s-xio/EagleDeployment/compiled framework/cmd"
+	"github.com/ANUB1s-xio/EagleDeployment/compiled-framework/cmd"
 )
 
 func main() {
