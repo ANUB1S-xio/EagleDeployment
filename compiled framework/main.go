@@ -29,11 +29,11 @@ func main() {
 		case "help":
 			cmd.HelpCommand()
 			return
-		case "fly":
+		case "Tide":
 			//cmd.ExecuteTidalFlow(args[1:])
-		case "scout":
+		case "swim":
 			//cmd.SearchCommand(args[1:])
-		case "list":
+		case "cat":
 		case "exit":
 			fmt.Println("Exiting EagleDeployment...")
 			return
