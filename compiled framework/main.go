@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"github.com/ANUB1s-xio/TidalFlow/framework/cmd"
+	"github.com/ANUB1s-xio/EagleDeployment/compiled framework/cmd"
 )
 
 func main() {
 
-	fmt.Println("Welcome to Tidalflow Framework")
+	fmt.Println("Welcome to EagleDeployment")
     fmt.Println("Version 1.0.0")
 
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print("TidalFlow ~ ")
+		fmt.Print("EagleDeployment ~ ")
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 		args := strings.Split(input, " ")
@@ -29,13 +29,13 @@ func main() {
 		case "help":
 			cmd.HelpCommand()
 			return
-		case "Tide":
+		case "fly":
 			//cmd.ExecuteTidalFlow(args[1:])
-		case "swim":
+		case "scout":
 			//cmd.SearchCommand(args[1:])
-		case "cat":
+		case "list":
 		case "exit":
-			fmt.Println("Exiting TidalFlow...")
+			fmt.Println("Exiting EagleDeployment...")
 			return
 		default:
 			fmt.Println("Unknown command:", args[0])
