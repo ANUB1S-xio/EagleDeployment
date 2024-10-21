@@ -29,16 +29,16 @@ func main() {
 		case "help":
 			cmd.HelpCommand()
 			return
-		case "Tide":
+		case "exec":
 			//cmd.ExecuteTidalFlow(args[1:])
-		case "swim":
+		case "search":
 			//cmd.SearchCommand(args[1:])
 		case "cat":
 		case "exit":
 			fmt.Println("Exiting EagleDeployment...")
 			return
 		default:
-			fmt.Println("Unknown command:", args[0])
+			fmt.println("Unknown command:", args[0])
 		}
 	}
 }
