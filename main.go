@@ -1,4 +1,4 @@
-package EagleDeployment
+package main
 
 import (
 	"fmt"
