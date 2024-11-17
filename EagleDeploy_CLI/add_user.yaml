@@ -1,0 +1,13 @@
+name: Add User Task
+version: 1.0
+hosts:
+  - 192.168.1.100  # Replace with your target host IP
+settings:
+  port: 22
+tasks:
+  - name: Add a new user to the remote server
+    command: add_user
+    username: newuser
+    password: newpassword
+    ssh_user: root
+    ssh_password: rootpassword
