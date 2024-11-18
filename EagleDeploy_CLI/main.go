@@ -36,13 +36,45 @@ type Playbook struct {
 
 // Function to add a user via SSH
 func addUserTask(client *ssh.Client, username, password string) error {
-	// Leave this section unchanged
-	command := fmt.Sprintf("useradd -m %s && echo '%s:%s' | chpasswd", username, username, password)
-	output, err := sshutils.RunSSHCommand(client, command)
+	// Step 1: Detect the remote operating system
+	osCheckCmd := "uname"
+	output, err := sshutils.RunSSHCommand(client, osCheckCmd)
+	if err != nil || strings.Contains(strings.ToLower(output), "windows") {
+		// If the `uname` command fails, assume it's a Windows system
+		fmt.Println("Detected Windows system")
+
+		// Step 2a: Windows - Use PowerShell to create a user
+		createUserCmd := fmt.Sprintf(`powershell -Command "New-LocalUser -Name '%s' -Password (ConvertTo-SecureString '%s' -AsPlainText -Force) -AccountNeverExpires -PasswordNeverExpires -FullName '%s'"`, username, password, username)
+		addUserToGroupCmd := fmt.Sprintf(`powershell -Command "Add-LocalGroupMember -Group 'Administrators' -Member '%s'"`, username)
+
+		// Execute the command to create the user
+		output, err = sshutils.RunSSHCommand(client, createUserCmd)
+		if err != nil {
+			fmt.Printf("Failed to create user on Windows: %s\n", output)
+			return fmt.Errorf("failed to add user: %w", err)
+		}
+
+		// Execute the command to add the user to the Administrators group
+		output, err = sshutils.RunSSHCommand(client, addUserToGroupCmd)
+		if err != nil {
+			fmt.Printf("Failed to add user to Administrators group: %s\n", output)
+			return fmt.Errorf("failed to add user to group: %w", err)
+		}
+
+		fmt.Println("User added successfully on Windows:", output)
+		return nil
+	}
+
+	// Step 2b: Linux - Use useradd and chpasswd
+	fmt.Println("Detected Linux system")
+	command := fmt.Sprintf("sudo useradd -m %s && echo '%s:%s' | sudo chpasswd", username, username, password)
+	output, err = sshutils.RunSSHCommand(client, command)
 	if err != nil {
+		fmt.Printf("Failed to create user on Linux: %s\n", output)
 		return fmt.Errorf("failed to add user: %w", err)
 	}
-	fmt.Println("User added successfully:", output)
+
+	fmt.Println("User added successfully on Linux:", output)
 	return nil
 }
 
