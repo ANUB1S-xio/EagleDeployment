@@ -7,14 +7,16 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
+
+	"EagleDeploy_CLI/sshutils"
 
 	"golang.org/x/crypto/ssh"
 	"gopkg.in/yaml.v2"
 )
 
 // Structs for the YAML structure
+// Leave "Task struct" unchanged
 type Task struct {
 	Name        string `yaml:"name"`
 	Command     string `yaml:"command"`
@@ -34,8 +36,9 @@ type Playbook struct {
 
 // Function to add a user via SSH
 func addUserTask(client *ssh.Client, username, password string) error {
+	// Leave this section unchanged
 	command := fmt.Sprintf("useradd -m %s && echo '%s:%s' | chpasswd", username, username, password)
-	output, err := runSSHCommand(client, command)
+	output, err := sshutils.RunSSHCommand(client, command)
 	if err != nil {
 		return fmt.Errorf("failed to add user: %w", err)
 	}
@@ -67,66 +70,56 @@ func executeYAML(ymlFilePath string, targetHosts []string) {
 
 	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
 	for _, task := range playbook.Tasks {
-		if task.Command == "add_user" {
-			for _, host := range hosts {
-				client, err := connectSSH(host, task.SSHUser, task.SSHPassword, playbook.Settings["port"])
+		for _, host := range hosts {
+			// Check if SSH credentials are provided
+			if task.SSHUser != "" && task.SSHPassword != "" {
+				// Remote SSH execution
+				client, err := sshutils.ConnectSSH(host, task.SSHUser, task.SSHPassword, playbook.Settings["port"])
 				if err != nil {
 					fmt.Printf("Error connecting to host %s: %v\n", host, err)
 					continue
 				}
 				defer client.Close()
 
-				err = addUserTask(client, task.Username, task.Password)
+				if task.Command == "add_user" {
+					err = addUserTask(client, task.Username, task.Password)
+					if err != nil {
+						fmt.Printf("Error adding user on host %s: %v\n", host, err)
+					}
+				} else {
+					output, err := sshutils.RunSSHCommand(client, task.Command)
+					if err != nil {
+						fmt.Printf("Error executing task '%s' on host %s: %v\n", task.Name, host, err)
+					} else {
+						fmt.Printf("Output of '%s' on host %s:\n%s\n", task.Name, host, output)
+					}
+				}
+			} else {
+				// Local execution
+				fmt.Printf("Executing Task: %s\n", task.Name)
+				cmd := exec.Command("bash", "-c", task.Command)
+				output, err := cmd.CombinedOutput()
 				if err != nil {
-					fmt.Printf("Error adding user on host %s: %v\n", host, err)
+					fmt.Printf("Error executing task '%s': %v\n", task.Name, err)
+				} else {
+					fmt.Printf("Output of '%s':\n%s\n", task.Name, string(output))
 				}
 			}
-		} else {
-			fmt.Printf("Executing Task: %s\n", task.Name)
-			cmd := exec.Command("bash", "-c", task.Command)
-			output, err := cmd.CombinedOutput()
-			if err != nil {
-				fmt.Printf("Error executing task '%s': %v\n", task.Name, err)
-			} else {
-				fmt.Printf("Output of '%s':\n%s\n", task.Name, string(output))
-			}
 		}
-	}
-}
-
-// Helper function to check if a slice contains a specific element
-func contains(slice []string, item string) bool {
-	for _, v := range slice {
-		if v == item {
-			return true
-		}
-	}
-	return false
-}
-
-// Function to list YAML files based on a keyword in the current directory
-func listYAMLFiles(keyword string) {
-	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if filepath.Ext(path) == ".yaml" || filepath.Ext(path) == ".yml" {
-			if strings.Contains(path, keyword) {
-				fmt.Println("Found YAML file:", path)
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		log.Fatalf("Error listing YAML files: %v", err)
 	}
 }
 
 // Display menu and get user choice
+// Leave "DisplayMenu" unchanged
 func displayMenu() int {
-	fmt.Println("\nEagleDeploy Menu:")
+	fmt.Println() // Adds a blank line for spacing
+	fmt.Println("EagleDeploy Menu:")
 	fmt.Println("1. Execute a Playbook")
 	fmt.Println("2. List YAML Files")
+	fmt.Println("3. Manage Inventory")
+	fmt.Println("4. Enable/Disable Detailed Logging")
+	fmt.Println("5. Rollback Changes")
+	fmt.Println("6. Show Help")
 	fmt.Println("0. Exit")
 	fmt.Print("Select an option: ")
 
@@ -135,6 +128,7 @@ func displayMenu() int {
 	return choice
 }
 
+// Leave main() unaltered
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	var targetHosts []string
@@ -169,8 +163,43 @@ func main() {
 				if keyword == "back" {
 					break
 				}
-				listYAMLFiles(keyword)
+				sshutils.ListYAMLFiles(keyword)
+
 			}
+
+		case 3: // Manage Inventory
+			fmt.Println("Managing inventory (not yet implemented).")
+			// Add implementation for inventory management here
+
+		case 4: // Enable/Disable Detailed Logging
+			for {
+				fmt.Print("Enable detailed logging? (y/n, or type 'back' to return to the menu): ")
+				answer, _ := reader.ReadString('\n')
+				answer = strings.TrimSpace(answer)
+				if answer == "back" {
+					break
+				}
+				if answer == "y" {
+					fmt.Println("Detailed logging enabled.")
+					break
+				} else if answer == "n" {
+					fmt.Println("Detailed logging disabled.")
+					break
+				} else {
+					fmt.Println("Invalid option. Please enter 'y' or 'n'.")
+				}
+			}
+
+		case 5: // Rollback Changes
+			fmt.Println("Rolling back recent changes (not yet implemented).")
+			// Add rollback implementation here
+
+		case 6: // Help
+			fmt.Println("Help Page:")
+			fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
+			fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
+			fmt.Println("-hosts <comma-separated-hosts>: Specify hosts to target (only with -e).")
+			fmt.Println("-h: Display this help page.")
 
 		case 0: // Exit
 			fmt.Println("Exiting EagleDeploy.")
