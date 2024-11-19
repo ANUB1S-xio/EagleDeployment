@@ -3,13 +3,14 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
 // Structs for the YAML structure
@@ -18,10 +19,10 @@ type Task struct {
 	Command string `yaml:"command"`
 }
 type Playbook struct {
-	Name     string   `yaml:"name"`
-	Version  string   `yaml:"version"`
-	Tasks    []Task   `yaml:"tasks"`
-	Hosts    []string `yaml:"hosts"`
+	Name     string         `yaml:"name"`
+	Version  string         `yaml:"version"`
+	Tasks    []Task         `yaml:"tasks"`
+	Hosts    []string       `yaml:"hosts"`
 	Settings map[string]int `yaml:"settings"`
 }
 
@@ -134,14 +135,14 @@ func main() {
 				if ymlFilePath == "back" {
 					break
 				}
-				
+
 				fmt.Print("Enter comma-separated list of target hosts (leave empty for all in playbook): ")
 				hosts, _ := reader.ReadString('\n')
 				hosts = strings.TrimSpace(hosts)
 				if hosts != "" {
 					targetHosts = strings.Split(hosts, ",")
 				}
-				
+
 				executeYAML(ymlFilePath, targetHosts)
 			}
 
