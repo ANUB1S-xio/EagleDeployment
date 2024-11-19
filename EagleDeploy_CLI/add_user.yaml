@@ -8,7 +8,7 @@ tasks:
     command: "sudo adduser newuser"
     username: "newuser"
     password: "securepassword"
-    ssh_user: "Hunter"
+    ssh_user: "hunter"
     ssh_password: "What a nice day"
 settings:
   port: 22
