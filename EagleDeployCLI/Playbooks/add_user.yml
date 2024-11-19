@@ -1,0 +1,30 @@
+---
+- name: Add a new user to the system
+  hosts: all
+  become: true  # Run tasks as a privileged user (e.g., sudo)
+  vars:
+    user_name: johndoe   # Name of the user to create
+    user_shell: /bin/bash # Shell for the new user
+    user_password: "{{ 'mypassword' | password_hash('sha512') }}" # Securely hashed password
+
+  tasks:
+    - name: Ensure the user exists
+      user:
+        name: "{{ user_name }}"
+        shell: "{{ user_shell }}"
+        state: present
+        password: "{{ user_password }}"
+
+    - name: Create a home directory for the user (if not already created)
+      file:
+        path: "/home/{{ user_name }}"
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0755'
+
+    - name: Add user to the sudo group
+      user:
+        name: "{{ user_name }}"
+        groups: sudo
+        append: true

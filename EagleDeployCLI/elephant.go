@@ -13,6 +13,9 @@ func main() {
 	fmt.Println("I am going to create a yaml file parser")
 	fmt.Println("Welcome to the Eagle Deployment shell! Type 'exit' to quit")
 
+	//hard coding the directory for the playbooks
+	playbookDir := "./Playbooks/"
+
 	scanner := bufio.NewScanner(os.Stdin) //Reads input from the user
 
 	for {
@@ -39,12 +42,25 @@ func main() {
 			fmt.Println("Goodbye!")
 			return
 
+		case "eagle":
+			if len(args) == 0 {
+				fmt.Println("Error: No playbook specified. Usage: eagle <playbook>")
+				continue
+			}
+
+			playbook := args[0]
+			err := printPlaybookContents(playbookDir, playbook)
+			if err != nil {
+				fmt.Printf("Error reading playbook: %v\n", err)
+
+			}
 		case "echo":
 			fmt.Println(strings.Join(args, " "))
 
 		case "help":
 			fmt.Println("Available commands:")
 			fmt.Println("- exit: Quit the shell")
+			fmt.Println("- eagle <playbook>: Runs playbook")
 			fmt.Println("-  echo [text]: Print text to the terminal")
 			fmt.Println("- help: Show this help message")
 
@@ -58,4 +74,28 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("Error reading input: %v\n", err)
 	}
+}
+
+func printPlaybookContents(playbookDir, playbook string) error {
+
+	filePath := playbookDir + playbook
+	fmt.Printf("Attempting to open file: %s\n", filePath)
+
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return fmt.Errorf("file %s does not exist", filePath)
+	}
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	fmt.Printf("Contents of %s: \n", playbook)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	return scanner.Err()
 }

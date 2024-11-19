@@ -1,0 +1,30 @@
+---
+# Playbook: Remove a user
+# This playbook contains the steps to remove a user from the system
+
+# Task: Delete user
+delete_user:
+  username: johndoe
+  remove_home_directory: true # Option to remove the user's home directory
+
+# Task: Remove user from groups
+remove_from_groups:
+  username: johndoe
+  groups:
+    - developers
+    - sudo
+
+# Task: Remove user from sudoers file
+remove_sudo_privileges:
+  username: johndoe
+
+# Task: Ensure no remaining processes for the user
+kill_user_processes:
+  username: johndoe
+
+# Task: Remove user-related files from the system
+clean_up_files:
+  username: johndoe
+  directories:
+    - /var/log/johndoe
+    - /home/johndoe
