@@ -1,7 +1,9 @@
 name: "Add User Task"
 version: "1.0"
 hosts:
-  - "192.168.70.42"   # Linux machine
+  #- "192.168.70.42"   # Linux machine
+  - "192.168.70.43"
+  - "192.168.70.44"
 tasks:
   - name: "Add a new user"
     ssh_user: "hunter"
