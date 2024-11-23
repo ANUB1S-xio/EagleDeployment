@@ -1,0 +1,14 @@
+name: "Add User Task"
+version: "1.0"
+hosts:
+  - "192.168.70.43"   # Windows machine
+  - "192.168.70.42"   # Linux machine
+tasks:
+  - name: "Add a new user"
+    command: "sudo adduser newuser"
+    username: "newuser"
+    password: "securepassword"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+settings:
+  port: 22
