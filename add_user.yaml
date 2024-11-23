@@ -1,14 +1,17 @@
 name: "Add User Task"
 version: "1.0"
 hosts:
-  - "192.168.70.43"   # Windows machine
   - "192.168.70.42"   # Linux machine
 tasks:
   - name: "Add a new user"
-    command: "sudo adduser newuser"
-    username: "newuser"
-    password: "securepassword"
     ssh_user: "hunter"
     ssh_password: "What a nice day"
+    command: "echo 'What a nice day' | sudo -S useradd -m steve"
+
+  - name: "Set password for the new user"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    command: "echo 'What a nice day' | sudo -S bash -c \"echo 'steve:securepassword' | chpasswd\""
+
 settings:
   port: 22

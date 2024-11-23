@@ -40,21 +40,20 @@ func addUserTask(client *ssh.Client, username, password string) error {
 	osCheckCmd := "uname"
 	output, err := sshutils.RunSSHCommand(client, osCheckCmd)
 	if err != nil || strings.Contains(strings.ToLower(output), "windows") {
-		// If the `uname` command fails, assume it's a Windows system
 		fmt.Println("Detected Windows system")
 
 		// Step 2a: Windows - Use PowerShell to create a user
 		createUserCmd := fmt.Sprintf(`powershell -Command "New-LocalUser -Name '%s' -Password (ConvertTo-SecureString '%s' -AsPlainText -Force) -AccountNeverExpires -PasswordNeverExpires -FullName '%s'"`, username, password, username)
 		addUserToGroupCmd := fmt.Sprintf(`powershell -Command "Add-LocalGroupMember -Group 'Administrators' -Member '%s'"`, username)
 
-		// Execute the command to create the user
+		fmt.Printf("Executing command on Windows: %s\n", createUserCmd)
 		output, err = sshutils.RunSSHCommand(client, createUserCmd)
 		if err != nil {
 			fmt.Printf("Failed to create user on Windows: %s\n", output)
 			return fmt.Errorf("failed to add user: %w", err)
 		}
 
-		// Execute the command to add the user to the Administrators group
+		fmt.Printf("Executing command on Windows: %s\n", addUserToGroupCmd)
 		output, err = sshutils.RunSSHCommand(client, addUserToGroupCmd)
 		if err != nil {
 			fmt.Printf("Failed to add user to Administrators group: %s\n", output)
@@ -67,11 +66,22 @@ func addUserTask(client *ssh.Client, username, password string) error {
 
 	// Step 2b: Linux - Use useradd and chpasswd
 	fmt.Println("Detected Linux system")
-	command := fmt.Sprintf("echo '%s' | sudo -S useradd -m %s && echo '%s:%s' | sudo -S chpasswd", password, username, username, password)
+
+	// Log the credentials being sent to the Linux machine
+	fmt.Printf("Sending to Linux machine - Username: '%s', Password: '%s'\n", username, password)
+
+	// Escape special characters in the password
+	escapedPassword := strings.ReplaceAll(password, "'", "\\'")
+	command := fmt.Sprintf("echo '%s' | sudo -S useradd -m '%s' && echo '%s:%s' | sudo -S chpasswd", escapedPassword, username, username, escapedPassword)
+
+	// Log the command being sent for debugging
+	fmt.Printf("Executing command on Linux: %s\n", command)
+
+	// Run the command on the remote machine
 	output, err = sshutils.RunSSHCommand(client, command)
 	if err != nil {
 		fmt.Printf("Failed to create user on Linux: %s\n", output)
-		return fmt.Errorf("failed to add user: %w", err)
+		return fmt.Errorf("failed to execute command: %w", err)
 	}
 
 	fmt.Println("User added successfully on Linux:", output)
