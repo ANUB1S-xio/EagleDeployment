@@ -3,26 +3,89 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
+
+	"EagleDeploy_CLI/sshutils"
+
+	"golang.org/x/crypto/ssh"
+	"gopkg.in/yaml.v2"
 )
 
 // Structs for the YAML structure
+// Leave "Task struct" unchanged
 type Task struct {
-	Name    string `yaml:"name"`
-	Command string `yaml:"command"`
+	Name        string `yaml:"name"`
+	Command     string `yaml:"command"`
+	Username    string `yaml:"username"`
+	Password    string `yaml:"password"`
+	SSHUser     string `yaml:"ssh_user"`
+	SSHPassword string `yaml:"ssh_password"`
 }
+
 type Playbook struct {
-	Name     string   `yaml:"name"`
-	Version  string   `yaml:"version"`
-	Tasks    []Task   `yaml:"tasks"`
-	Hosts    []string `yaml:"hosts"`
+	Name     string         `yaml:"name"`
+	Version  string         `yaml:"version"`
+	Tasks    []Task         `yaml:"tasks"`
+	Hosts    []string       `yaml:"hosts"`
 	Settings map[string]int `yaml:"settings"`
+}
+
+// Function to add a user via SSH
+func addUserTask(client *ssh.Client, username, password string) error {
+	// Step 1: Detect the remote operating system
+	osCheckCmd := "uname"
+	output, err := sshutils.RunSSHCommand(client, osCheckCmd)
+	if err != nil || strings.Contains(strings.ToLower(output), "windows") {
+		fmt.Println("Detected Windows system")
+
+		// Step 2a: Windows - Use PowerShell to create a user
+		createUserCmd := fmt.Sprintf(`powershell -Command "New-LocalUser -Name '%s' -Password (ConvertTo-SecureString '%s' -AsPlainText -Force) -AccountNeverExpires -PasswordNeverExpires -FullName '%s'"`, username, password, username)
+		addUserToGroupCmd := fmt.Sprintf(`powershell -Command "Add-LocalGroupMember -Group 'Administrators' -Member '%s'"`, username)
+
+		fmt.Printf("Executing command on Windows: %s\n", createUserCmd)
+		output, err = sshutils.RunSSHCommand(client, createUserCmd)
+		if err != nil {
+			fmt.Printf("Failed to create user on Windows: %s\n", output)
+			return fmt.Errorf("failed to add user: %w", err)
+		}
+
+		fmt.Printf("Executing command on Windows: %s\n", addUserToGroupCmd)
+		output, err = sshutils.RunSSHCommand(client, addUserToGroupCmd)
+		if err != nil {
+			fmt.Printf("Failed to add user to Administrators group: %s\n", output)
+			return fmt.Errorf("failed to add user to group: %w", err)
+		}
+
+		fmt.Println("User added successfully on Windows:", output)
+		return nil
+	}
+
+	// Step 2b: Linux - Use useradd and chpasswd
+	fmt.Println("Detected Linux system")
+
+	// Log the credentials being sent to the Linux machine
+	fmt.Printf("Sending to Linux machine - Username: '%s', Password: '%s'\n", username, password)
+
+	// Escape special characters in the password
+	escapedPassword := strings.ReplaceAll(password, "'", "\\'")
+	command := fmt.Sprintf("echo '%s' | sudo -S useradd -m '%s' && echo '%s:%s' | sudo -S chpasswd", escapedPassword, username, username, escapedPassword)
+
+	// Log the command being sent for debugging
+	fmt.Printf("Executing command on Linux: %s\n", command)
+
+	// Run the command on the remote machine
+	output, err = sshutils.RunSSHCommand(client, command)
+	if err != nil {
+		fmt.Printf("Failed to create user on Linux: %s\n", output)
+		return fmt.Errorf("failed to execute command: %w", err)
+	}
+
+	fmt.Println("User added successfully on Linux:", output)
+	return nil
 }
 
 // Function to execute the YAML file by parsing its content
@@ -42,66 +105,54 @@ func executeYAML(ymlFilePath string, targetHosts []string) {
 		log.Fatalf("Error: No tasks found in the playbook.")
 	}
 
-	var hosts []string
+	hosts := playbook.Hosts
 	if len(targetHosts) > 0 {
-		for _, host := range playbook.Hosts {
-			if contains(targetHosts, host) {
-				hosts = append(hosts, host)
-			}
-		}
-		if len(hosts) == 0 {
-			log.Fatalf("Error: No matching hosts found in the playbook for the provided targets.")
-		}
-	} else {
-		hosts = playbook.Hosts
+		hosts = targetHosts
 	}
 
 	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
 	for _, task := range playbook.Tasks {
-		if task.Command == "" {
-			log.Fatalf("Error: Task '%s' has no command to execute.", task.Name)
-		}
+		for _, host := range hosts {
+			// Check if SSH credentials are provided
+			if task.SSHUser != "" && task.SSHPassword != "" {
+				// Remote SSH execution
+				client, err := sshutils.ConnectSSH(host, task.SSHUser, task.SSHPassword, playbook.Settings["port"])
+				if err != nil {
+					fmt.Printf("Error connecting to host %s: %v\n", host, err)
+					continue
+				}
+				defer client.Close()
 
-		fmt.Printf("Executing Task: %s\n", task.Name)
-		cmd := exec.Command("bash", "-c", task.Command)
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			fmt.Printf("Error executing task '%s': %v\n", task.Name, err)
-		} else {
-			fmt.Printf("Output of '%s':\n%s\n", task.Name, string(output))
-		}
-	}
-}
-
-// Helper function to check if a slice contains a specific element
-func contains(slice []string, item string) bool {
-	for _, v := range slice {
-		if v == item {
-			return true
-		}
-	}
-	return false
-}
-
-// Function to list YAML files based on a keyword in the current directory
-func listYAMLFiles(keyword string) {
-	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if filepath.Ext(path) == ".yaml" || filepath.Ext(path) == ".yml" {
-			if strings.Contains(path, keyword) {
-				fmt.Println("Found YAML file:", path)
+				if task.Command == "add_user" {
+					err = addUserTask(client, task.Username, task.Password)
+					if err != nil {
+						fmt.Printf("Error adding user on host %s: %v\n", host, err)
+					}
+				} else {
+					output, err := sshutils.RunSSHCommand(client, task.Command)
+					if err != nil {
+						fmt.Printf("Error executing task '%s' on host %s: %v\n", task.Name, host, err)
+					} else {
+						fmt.Printf("Output of '%s' on host %s:\n%s\n", task.Name, host, output)
+					}
+				}
+			} else {
+				// Local execution
+				fmt.Printf("Executing Task: %s\n", task.Name)
+				cmd := exec.Command("bash", "-c", task.Command)
+				output, err := cmd.CombinedOutput()
+				if err != nil {
+					fmt.Printf("Error executing task '%s': %v\n", task.Name, err)
+				} else {
+					fmt.Printf("Output of '%s':\n%s\n", task.Name, string(output))
+				}
 			}
 		}
-		return nil
-	})
-	if err != nil {
-		log.Fatalf("Error listing YAML files: %v", err)
 	}
 }
 
 // Display menu and get user choice
+// Leave "DisplayMenu" unchanged
 func displayMenu() int {
 	fmt.Println() // Adds a blank line for spacing
 	fmt.Println("EagleDeploy Menu:")
@@ -119,6 +170,7 @@ func displayMenu() int {
 	return choice
 }
 
+// Leave main() unaltered
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	var targetHosts []string
@@ -134,14 +186,14 @@ func main() {
 				if ymlFilePath == "back" {
 					break
 				}
-				
+
 				fmt.Print("Enter comma-separated list of target hosts (leave empty for all in playbook): ")
 				hosts, _ := reader.ReadString('\n')
 				hosts = strings.TrimSpace(hosts)
 				if hosts != "" {
 					targetHosts = strings.Split(hosts, ",")
 				}
-				
+
 				executeYAML(ymlFilePath, targetHosts)
 			}
 
@@ -153,7 +205,8 @@ func main() {
 				if keyword == "back" {
 					break
 				}
-				listYAMLFiles(keyword)
+				sshutils.ListYAMLFiles(keyword)
+
 			}
 
 		case 3: // Manage Inventory
