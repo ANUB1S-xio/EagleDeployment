@@ -1,9 +1,11 @@
 package sshutils
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -67,4 +69,19 @@ func ListYAMLFiles(keyword string) {
 		}
 		return nil
 	})
+}
+
+// RunLocalCommand executes a shell command locally and returns the output or an error.
+func RunLocalCommand(command string) (string, error) {
+	cmd := exec.Command("bash", "-c", command)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return "", fmt.Errorf("failed to execute local command: %w\nstderr: %s", err, stderr.String())
+	}
+
+	return stdout.String(), nil
 }

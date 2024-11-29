@@ -1,108 +1,51 @@
 package main
 
 import (
+	"EagleDeploy_CLI/config"
+	"EagleDeploy_CLI/executor"
+	"EagleDeploy_CLI/tasks"
 	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
-
-	"EagleDeploy_CLI/sshutils"
-
-	"golang.org/x/crypto/ssh"
-	"gopkg.in/yaml.v2"
 )
 
-// Structs for the YAML structure
-// Leave "Task struct" unchanged
-type Task struct {
-	Name        string `yaml:"name"`
-	Command     string `yaml:"command"`
-	Username    string `yaml:"username"`
-	Password    string `yaml:"password"`
-	SSHUser     string `yaml:"ssh_user"`
-	SSHPassword string `yaml:"ssh_password"`
-}
-
-type Playbook struct {
-	Name     string         `yaml:"name"`
-	Version  string         `yaml:"version"`
-	Tasks    []Task         `yaml:"tasks"`
-	Hosts    []string       `yaml:"hosts"`
-	Settings map[string]int `yaml:"settings"`
-}
-
-// Function to add a user via SSH
-func addUserTask(client *ssh.Client, username, password string) error {
-	// Step 1: Detect the remote operating system
-	osCheckCmd := "uname"
-	output, err := sshutils.RunSSHCommand(client, osCheckCmd)
-	if err != nil || strings.Contains(strings.ToLower(output), "windows") {
-		fmt.Println("Detected Windows system")
-
-		// Step 2a: Windows - Use PowerShell to create a user
-		createUserCmd := fmt.Sprintf(`powershell -Command "New-LocalUser -Name '%s' -Password (ConvertTo-SecureString '%s' -AsPlainText -Force) -AccountNeverExpires -PasswordNeverExpires -FullName '%s'"`, username, password, username)
-		addUserToGroupCmd := fmt.Sprintf(`powershell -Command "Add-LocalGroupMember -Group 'Administrators' -Member '%s'"`, username)
-
-		fmt.Printf("Executing command on Windows: %s\n", createUserCmd)
-		output, err = sshutils.RunSSHCommand(client, createUserCmd)
-		if err != nil {
-			fmt.Printf("Failed to create user on Windows: %s\n", output)
-			return fmt.Errorf("failed to add user: %w", err)
-		}
-
-		fmt.Printf("Executing command on Windows: %s\n", addUserToGroupCmd)
-		output, err = sshutils.RunSSHCommand(client, addUserToGroupCmd)
-		if err != nil {
-			fmt.Printf("Failed to add user to Administrators group: %s\n", output)
-			return fmt.Errorf("failed to add user to group: %w", err)
-		}
-
-		fmt.Println("User added successfully on Windows:", output)
+// Function to list playbooks in the playbooks directory
+func listPlaybooks() []string {
+	playbooksDir := "./playbooks"
+	// Ensure the playbooks directory exists
+	if _, err := os.Stat(playbooksDir); os.IsNotExist(err) {
+		log.Printf("Playbooks directory not found: %s", playbooksDir)
 		return nil
 	}
 
-	// Step 2b: Linux - Use useradd and chpasswd
-	fmt.Println("Detected Linux system")
-
-	// Log the credentials being sent to the Linux machine
-	fmt.Printf("Sending to Linux machine - Username: '%s', Password: '%s'\n", username, password)
-
-	// Escape special characters in the password
-	escapedPassword := strings.ReplaceAll(password, "'", "\\'")
-	command := fmt.Sprintf("echo '%s' | sudo -S useradd -m '%s' && echo '%s:%s' | sudo -S chpasswd", escapedPassword, username, username, escapedPassword)
-
-	// Log the command being sent for debugging
-	fmt.Printf("Executing command on Linux: %s\n", command)
-
-	// Run the command on the remote machine
-	output, err = sshutils.RunSSHCommand(client, command)
+	files, err := ioutil.ReadDir(playbooksDir)
 	if err != nil {
-		fmt.Printf("Failed to create user on Linux: %s\n", output)
-		return fmt.Errorf("failed to execute command: %w", err)
+		log.Printf("Failed to read playbooks directory: %v", err)
+		return nil
 	}
 
-	fmt.Println("User added successfully on Linux:", output)
-	return nil
+	var playbooks []string
+	for _, file := range files {
+		if !file.IsDir() && (strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml")) {
+			playbooks = append(playbooks, file.Name())
+		}
+	}
+	return playbooks
 }
 
-// Function to execute the YAML file by parsing its content
-func executeYAML(ymlFilePath string, targetHosts []string) {
-	data, err := ioutil.ReadFile(ymlFilePath)
+// Function to execute a YAML playbook
+func executeYAML(playbookPath string, targetHosts []string) {
+	playbook := &tasks.Playbook{}
+	err := config.LoadConfig(playbookPath, playbook)
 	if err != nil {
-		log.Fatalf("Error reading YAML file: %v", err)
-	}
-
-	var playbook Playbook
-	err = yaml.Unmarshal(data, &playbook)
-	if err != nil {
-		log.Fatalf("Error parsing YAML file: %v", err)
+		log.Fatalf("Failed to load playbook: %v", err)
 	}
 
 	if len(playbook.Tasks) == 0 {
-		log.Fatalf("Error: No tasks found in the playbook.")
+		log.Fatalf("No tasks found in the playbook.")
 	}
 
 	hosts := playbook.Hosts
@@ -110,54 +53,35 @@ func executeYAML(ymlFilePath string, targetHosts []string) {
 		hosts = targetHosts
 	}
 
+	port := playbook.Settings["port"]
+	if port == 0 {
+		log.Fatalf("Port is not specified in the playbook settings.")
+	}
+
 	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
 	for _, task := range playbook.Tasks {
 		for _, host := range hosts {
-			// Check if SSH credentials are provided
-			if task.SSHUser != "" && task.SSHPassword != "" {
-				// Remote SSH execution
-				client, err := sshutils.ConnectSSH(host, task.SSHUser, task.SSHPassword, playbook.Settings["port"])
-				if err != nil {
-					fmt.Printf("Error connecting to host %s: %v\n", host, err)
-					continue
-				}
-				defer client.Close()
-
-				if task.Command == "add_user" {
-					err = addUserTask(client, task.Username, task.Password)
-					if err != nil {
-						fmt.Printf("Error adding user on host %s: %v\n", host, err)
-					}
-				} else {
-					output, err := sshutils.RunSSHCommand(client, task.Command)
-					if err != nil {
-						fmt.Printf("Error executing task '%s' on host %s: %v\n", task.Name, host, err)
-					} else {
-						fmt.Printf("Output of '%s' on host %s:\n%s\n", task.Name, host, output)
-					}
-				}
+			task.Host = host // Assign the current host to the task
+			if task.SSHUser != "" {
+				log.Printf("Executing remote task: %s on host %s", task.Name, host)
+				err = executor.ExecuteRemote(task, port)
 			} else {
-				// Local execution
-				fmt.Printf("Executing Task: %s\n", task.Name)
-				cmd := exec.Command("bash", "-c", task.Command)
-				output, err := cmd.CombinedOutput()
-				if err != nil {
-					fmt.Printf("Error executing task '%s': %v\n", task.Name, err)
-				} else {
-					fmt.Printf("Output of '%s':\n%s\n", task.Name, string(output))
-				}
+				log.Printf("Executing local task: %s", task.Name)
+				err = executor.ExecuteLocal(task.Command)
+			}
+			if err != nil {
+				log.Printf("Task '%s' failed on host %s: %v", task.Name, host, err)
 			}
 		}
 	}
 }
 
-// Display menu and get user choice
-// Leave "DisplayMenu" unchanged
+// Display the interactive menu
 func displayMenu() int {
-	fmt.Println() // Adds a blank line for spacing
+	fmt.Println()
 	fmt.Println("EagleDeploy Menu:")
 	fmt.Println("1. Execute a Playbook")
-	fmt.Println("2. List YAML Files")
+	fmt.Println("2. List YAML Playbooks")
 	fmt.Println("3. Manage Inventory")
 	fmt.Println("4. Enable/Disable Detailed Logging")
 	fmt.Println("5. Rollback Changes")
@@ -170,7 +94,6 @@ func displayMenu() int {
 	return choice
 }
 
-// Leave main() unaltered
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	var targetHosts []string
@@ -179,64 +102,60 @@ func main() {
 		choice := displayMenu()
 		switch choice {
 		case 1: // Execute a Playbook
-			for {
-				fmt.Print("Enter the path to the YAML playbook file (or type 'back' to return to the menu): ")
-				ymlFilePath, _ := reader.ReadString('\n')
-				ymlFilePath = strings.TrimSpace(ymlFilePath)
-				if ymlFilePath == "back" {
-					break
-				}
-
-				fmt.Print("Enter comma-separated list of target hosts (leave empty for all in playbook): ")
-				hosts, _ := reader.ReadString('\n')
-				hosts = strings.TrimSpace(hosts)
-				if hosts != "" {
-					targetHosts = strings.Split(hosts, ",")
-				}
-
-				executeYAML(ymlFilePath, targetHosts)
+			playbooks := listPlaybooks()
+			if len(playbooks) == 0 {
+				fmt.Println("No playbooks found in the 'playbooks' directory.")
+				break
 			}
 
-		case 2: // List YAML Files
-			for {
-				fmt.Print("Enter keyword to filter YAML files (or type 'back' to return to the menu): ")
-				keyword, _ := reader.ReadString('\n')
-				keyword = strings.TrimSpace(keyword)
-				if keyword == "back" {
-					break
-				}
-				sshutils.ListYAMLFiles(keyword)
+			fmt.Println("Available Playbooks:")
+			for i, playbook := range playbooks {
+				fmt.Printf("%d. %s\n", i+1, playbook)
+			}
 
+			fmt.Print("Select a playbook to execute by number: ")
+			var choice int
+			fmt.Scanln(&choice)
+
+			if choice < 1 || choice > len(playbooks) {
+				fmt.Println("Invalid choice. Returning to the menu.")
+				break
+			}
+
+			selectedPlaybook := "./playbooks/" + playbooks[choice-1]
+			fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
+			executeYAML(selectedPlaybook, targetHosts)
+
+		case 2: // List YAML Playbooks
+			playbooks := listPlaybooks()
+			if len(playbooks) == 0 {
+				fmt.Println("No playbooks found in the 'playbooks' directory.")
+			} else {
+				fmt.Println("Available Playbooks:")
+				for _, playbook := range playbooks {
+					fmt.Printf("- %s\n", playbook)
+				}
 			}
 
 		case 3: // Manage Inventory
 			fmt.Println("Managing inventory (not yet implemented).")
-			// Add implementation for inventory management here
 
 		case 4: // Enable/Disable Detailed Logging
-			for {
-				fmt.Print("Enable detailed logging? (y/n, or type 'back' to return to the menu): ")
-				answer, _ := reader.ReadString('\n')
-				answer = strings.TrimSpace(answer)
-				if answer == "back" {
-					break
-				}
-				if answer == "y" {
-					fmt.Println("Detailed logging enabled.")
-					break
-				} else if answer == "n" {
-					fmt.Println("Detailed logging disabled.")
-					break
-				} else {
-					fmt.Println("Invalid option. Please enter 'y' or 'n'.")
-				}
+			fmt.Print("Enable detailed logging? (y/n): ")
+			answer, _ := reader.ReadString('\n')
+			answer = strings.TrimSpace(answer)
+			if strings.ToLower(answer) == "y" {
+				fmt.Println("Detailed logging enabled.")
+			} else if strings.ToLower(answer) == "n" {
+				fmt.Println("Detailed logging disabled.")
+			} else {
+				fmt.Println("Invalid input. Logging state unchanged.")
 			}
 
 		case 5: // Rollback Changes
-			fmt.Println("Rolling back recent changes (not yet implemented).")
-			// Add rollback implementation here
+			fmt.Println("Rolling back changes (not yet implemented).")
 
-		case 6: // Help
+		case 6: // Show Help
 			fmt.Println("Help Page:")
 			fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
 			fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
