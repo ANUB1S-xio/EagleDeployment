@@ -1,0 +1,45 @@
+name: "Delete_Users_Except_Specific_Ones"
+version: "1.3"
+hosts:
+  - "192.168.70.43"
+  - "192.168.70.44"
+  - "192.168.70.46"
+tasks:
+  - name: "Detect all non-system users on the system"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    command: |
+      awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd
+    register: all_users
+
+  - name: "Log detected users"
+    debug:
+      msg: "Detected users: {{ all_users.stdout_lines }}"
+
+  - name: "Filter users to delete (excluding hunter and sudo)"
+    set_fact:
+      users_to_delete: "{{ all_users.stdout_lines | difference(['hunter', 'sudo']) }}"
+
+  - name: "Log users to delete"
+    debug:
+      msg: "Users to delete: {{ users_to_delete }}"
+
+  - name: "Check if there are users to delete"
+    when: users_to_delete | length == 0
+    debug:
+      msg: "No users to delete. Skipping deletion."
+
+  - name: "Delete users safely"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    when: users_to_delete | length > 0
+    with_items: "{{ users_to_delete }}"
+    command: |
+      if ! who | grep -qw "{{ item }}"; then
+        echo 'What a nice day' | sudo -S userdel -r "{{ item }}"
+      else
+        echo "User {{ item }} is logged in. Skipping deletion."
+      fi
+
+settings:
+  port: 22

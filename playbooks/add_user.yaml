@@ -1,46 +1,23 @@
-name: "Add_User"
+name: "Basic_Add_User"
 version: "1.0"
 hosts:
   - "192.168.70.43" #ubuntu1
   - "192.168.70.44" #ubuntu2
   - "192.168.70.46" #fedora
 tasks:
-  - name: "Detect operating system"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
-    command: |
-      if [[ -f /etc/os-release ]]; then
-        . /etc/os-release
-        echo $ID
-      else
-        echo "windows"
-    register: os_type
-
-  - name: "Create user on Linux systems"
+  - name: "Add user on Linux systems"
     ssh_user: "hunter"
     ssh_password: "What a nice day"
     when: os_type.stdout in ["ubuntu", "fedora"]
-    command: "echo 'What a nice day' | sudo -S useradd -m stephanie"
+    command: |
+      echo 'What a nice day' | sudo -S useradd -m -s /bin/bash billy
 
   - name: "Set password for user on Linux systems"
     ssh_user: "hunter"
     ssh_password: "What a nice day"
     when: os_type.stdout in ["ubuntu", "fedora"]
-    command: "echo 'What a nice day' | sudo -S bash -c \"echo 'stephanie:securepassword' | chpasswd\""
-
-  - name: "Create user on Windows"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
-    when: os_type.stdout == "windows"
     command: |
-      net user stephanie securepassword /add
-
-  - name: "Add user to administrators group on Windows"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
-    when: os_type.stdout == "windows"
-    command: |
-      net localgroup administrators stephanie /add
+      echo 'What a nice day' | sudo -S bash -c "echo 'billy:securepassword' | chpasswd"
 
 settings:
   port: 22
