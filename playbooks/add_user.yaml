@@ -10,14 +10,14 @@ tasks:
     ssh_password: "What a nice day"
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo 'What a nice day' | sudo -S useradd -m -s /bin/bash billy
+      echo 'What a nice day' | sudo -S useradd -m -s /bin/bash demo
 
   - name: "Set password for user on Linux systems"
     ssh_user: "hunter"
     ssh_password: "What a nice day"
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo 'What a nice day' | sudo -S bash -c "echo 'billy:securepassword' | chpasswd"
+      echo 'What a nice day' | sudo -S bash -c "echo 'demo:securepassword' | chpasswd"
 
 settings:
   port: 22
