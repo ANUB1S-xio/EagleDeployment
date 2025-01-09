@@ -1,3 +1,6 @@
+// File: main.go
+// Directory Path: /EagleDeploy_CLI/
+
 package main
 
 import (
@@ -12,9 +15,12 @@ import (
 	"strings"
 )
 
-// Function to list playbooks in the playbooks directory
+// Function: listPlaybooks
+// Purpose: Lists all YAML playbooks in the 'playbooks' directory.
+// Returns: A slice of strings containing the names of the playbooks.
 func listPlaybooks() []string {
 	playbooksDir := "./playbooks"
+
 	// Ensure the playbooks directory exists
 	if _, err := os.Stat(playbooksDir); os.IsNotExist(err) {
 		log.Printf("Playbooks directory not found: %s", playbooksDir)
@@ -36,7 +42,11 @@ func listPlaybooks() []string {
 	return playbooks
 }
 
-// Function to execute a YAML playbook
+// Function: executeYAML
+// Purpose: Executes the tasks defined in a YAML playbook on specified target hosts.
+// Parameters:
+// - playbookPath: The file path to the playbook.
+// - targetHosts: A slice of strings containing target hostnames or IPs.
 func executeYAML(playbookPath string, targetHosts []string) {
 	playbook := &tasks.Playbook{}
 	err := config.LoadConfig(playbookPath, playbook)
@@ -76,7 +86,9 @@ func executeYAML(playbookPath string, targetHosts []string) {
 	}
 }
 
-// Display the interactive menu
+// Function: displayMenu
+// Purpose: Displays the interactive menu for the EagleDeploy CLI.
+// Returns: The user's menu choice as an integer.
 func displayMenu() int {
 	fmt.Println()
 	fmt.Println("EagleDeploy Menu:")
@@ -94,6 +106,8 @@ func displayMenu() int {
 	return choice
 }
 
+// Function: main
+// Purpose: The main entry point of the application, handling the interactive menu and user actions.
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	var targetHosts []string

@@ -6,18 +6,18 @@ hosts:
   - "192.168.70.46" #fedora
 tasks:
   - name: "Add user on Linux systems"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "${USER_1_USERNAME}"
+    ssh_password: "${USER_1_PASSWORD}"
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo 'What a nice day' | sudo -S useradd -m -s /bin/bash demo
+      echo '${USER_1_PASSWORD}' | sudo -S useradd -m -s /bin/bash demo
 
   - name: "Set password for user on Linux systems"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "${USER_1_USERNAME}"
+    ssh_password: "${USER_1_PASSWORD}"
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo 'What a nice day' | sudo -S bash -c "echo 'demo:securepassword' | chpasswd"
+      echo '${USER_1_PASSWORD}' | sudo -S bash -c "echo 'demo:securepassword' | chpasswd"
 
 settings:
   port: 22

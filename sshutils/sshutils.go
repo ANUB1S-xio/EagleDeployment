@@ -1,3 +1,6 @@
+// File: sshutils.go
+// Directory Path: /EagleDeploy_CLI/sshutils
+
 package sshutils
 
 import (
@@ -12,10 +15,24 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-// Function to establish an SSH connection
+// Function: ConnectSSH
+// Purpose: Establishes an SSH connection to a remote host.
+// Parameters:
+// - host: The hostname or IP of the remote machine.
+// - user: The SSH username.
+// - password: The SSH password.
+// - port: The SSH port number.
+// Returns: An SSH client connection or an error.
 func ConnectSSH(host, user, password string, port int) (*ssh.Client, error) {
-	// Logging input parameters for verbose mode
 	log.Printf("Connecting to SSH server: %s on port: %d as user: %s", host, port, user)
+
+	// Fetch password from environment if not provided
+	if password == "" {
+		password = os.Getenv("SSH_PASSWORD")
+		if password == "" {
+			return nil, fmt.Errorf("SSH password not set in environment variables")
+		}
+	}
 
 	config := &ssh.ClientConfig{
 		User: user,
@@ -30,18 +47,21 @@ func ConnectSSH(host, user, password string, port int) (*ssh.Client, error) {
 
 	client, err := ssh.Dial("tcp", address, config)
 	if err != nil {
-		// Logging detailed error information
 		log.Printf("Failed to connect to SSH server: %s. Error: %v", address, err)
 		return nil, fmt.Errorf("failed to connect to %s: %w", address, err)
 	}
 
-	// Logging successful connection
 	log.Printf("Successfully connected to SSH server: %s", address)
 
 	return client, nil
 }
 
-// Function to run an SSH command
+// Function: RunSSHCommand
+// Purpose: Executes a command on a remote host via SSH.
+// Parameters:
+// - client: The SSH client connection.
+// - command: The command to execute.
+// Returns: The output of the command or an error.
 func RunSSHCommand(client *ssh.Client, command string) (string, error) {
 	session, err := client.NewSession()
 	if err != nil {
@@ -56,22 +76,11 @@ func RunSSHCommand(client *ssh.Client, command string) (string, error) {
 	return string(output), nil
 }
 
-// Function to list YAML files based on a keyword
-func ListYAMLFiles(keyword string) {
-	filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if filepath.Ext(path) == ".yaml" || filepath.Ext(path) == ".yml" {
-			if strings.Contains(path, keyword) {
-				fmt.Println("Found YAML file:", path)
-			}
-		}
-		return nil
-	})
-}
-
-// RunLocalCommand executes a shell command locally and returns the output or an error.
+// Function: RunLocalCommand
+// Purpose: Executes a shell command locally on the machine.
+// Parameters:
+// - command: The shell command to execute.
+// Returns: The output of the command or an error.
 func RunLocalCommand(command string) (string, error) {
 	cmd := exec.Command("bash", "-c", command)
 	var stdout, stderr bytes.Buffer
