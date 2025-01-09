@@ -9,8 +9,9 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
-	"strings"
+
+	//"path/filepath"
+	//"strings"
 
 	"golang.org/x/crypto/ssh"
 )

@@ -13,7 +13,27 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
+
+// Function: init
+// Purpose: Initializes the environment by loading .env file and setting up debugging for environment variables.
+func init() {
+	// Load .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	// Print the environment variables
+	fmt.Printf("USER_1_USERNAME: %s\n", os.Getenv("USER_1_USERNAME"))
+	fmt.Printf("USER_1_PASSWORD: %s\n", os.Getenv("USER_1_PASSWORD"))
+
+	// Debugging environment variables
+	log.Printf("USER_1_USERNAME: %s", os.Getenv("USER_1_USERNAME"))
+	log.Printf("USER_1_PASSWORD: %s", os.Getenv("USER_1_PASSWORD"))
+}
 
 // Function: listPlaybooks
 // Purpose: Lists all YAML playbooks in the 'playbooks' directory.
