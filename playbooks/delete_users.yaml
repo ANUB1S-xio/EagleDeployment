@@ -6,8 +6,8 @@ hosts:
   - "192.168.70.46"
 tasks:
   - name: "Detect all non-system users on the system"
-    ssh_user: "${USER_1_USERNAME}"
-    ssh_password: "${USER_1_PASSWORD}"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
     command: |
       awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd
     register: all_users
@@ -30,13 +30,13 @@ tasks:
       msg: "No users to delete. Skipping deletion."
 
   - name: "Delete users safely"
-    ssh_user: "${USER_1_USERNAME}"
-    ssh_password: "${USER_1_PASSWORD}"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
     when: users_to_delete | length > 0
     with_items: "{{ users_to_delete }}"
     command: |
       if ! who | grep -qw "{{ item }}"; then
-        echo '${USER_1_PASSWORD}' | sudo -S userdel -r "{{ item }}"
+        echo '${SSH_PASSWORD}' | sudo -S userdel -r "{{ item }}"
       else
         echo "User {{ item }} is logged in. Skipping deletion."
       fi

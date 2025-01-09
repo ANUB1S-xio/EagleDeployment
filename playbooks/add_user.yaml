@@ -1,23 +1,79 @@
-name: "Basic_Add_User"
+name: "Basic_Add_Users"
 version: "1.0"
 hosts:
   - "192.168.70.43" #ubuntu1
   - "192.168.70.44" #ubuntu2
   - "192.168.70.46" #fedora
 tasks:
-  - name: "Add user on Linux systems"
-    ssh_user: "${USER_1_USERNAME}"
-    ssh_password: "${USER_1_PASSWORD}"
+  - name: "Add user john on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo '${USER_1_PASSWORD}' | sudo -S useradd -m -s /bin/bash demo
+      echo '${SSH_PASSWORD}' | sudo -S useradd -m -s /bin/bash john
 
-  - name: "Set password for user on Linux systems"
-    ssh_user: "${USER_1_USERNAME}"
-    ssh_password: "${USER_1_PASSWORD}"
+  - name: "Set password for user john on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo '${USER_1_PASSWORD}' | sudo -S bash -c "echo 'demo:securepassword' | chpasswd"
+      echo '${SSH_PASSWORD}' | sudo -S bash -c "echo 'john:John123!' | chpasswd"
+
+  - name: "Add user jane on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S useradd -m -s /bin/bash jane
+
+  - name: "Set password for user jane on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S bash -c "echo 'jane:Jane123!' | chpasswd"
+
+  - name: "Add user mark on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S useradd -m -s /bin/bash mark
+
+  - name: "Set password for user mark on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S bash -c "echo 'mark:Mark123!' | chpasswd"
+
+  - name: "Add user emma on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S useradd -m -s /bin/bash emma
+
+  - name: "Set password for user emma on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S bash -c "echo 'emma:Emma123!' | chpasswd"
+
+  - name: "Add user lucas on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S useradd -m -s /bin/bash lucas
+
+  - name: "Set password for user lucas on Linux systems"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo '${SSH_PASSWORD}' | sudo -S bash -c "echo 'lucas:Lucas123!' | chpasswd"
 
 settings:
   port: 22

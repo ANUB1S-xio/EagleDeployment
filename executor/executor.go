@@ -19,8 +19,8 @@ import (
 // Returns: An error if the task execution fails.
 func ExecuteRemote(task tasks.Task, port int) error {
 	// Fetching SSH credentials securely from the environment
-	username := os.Getenv("USER_1_USERNAME")
-	password := os.Getenv("USER_1_PASSWORD")
+	username := os.Getenv("SSH_USERNAME")
+	password := os.Getenv("SSH_PASSWORD")
 
 	if username == "" || password == "" {
 		return fmt.Errorf("SSH username or password not set in environment variables")

@@ -1,5 +1,5 @@
 // File: tasks.go
-// Directory Path: /EagleDeploy_CLI/
+// Directory Path: /EagleDeploy_CLI/tasks
 
 package tasks
 

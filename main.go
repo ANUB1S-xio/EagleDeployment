@@ -27,12 +27,12 @@ func init() {
 	}
 
 	// Print the environment variables
-	fmt.Printf("USER_1_USERNAME: %s\n", os.Getenv("USER_1_USERNAME"))
-	fmt.Printf("USER_1_PASSWORD: %s\n", os.Getenv("USER_1_PASSWORD"))
+	fmt.Printf("SSH_USERNAME: %s\n", os.Getenv("SSH_USERNAME"))
+	fmt.Printf("SSH_PASSWORD: %s\n", os.Getenv("What a nice day"))
 
 	// Debugging environment variables
-	log.Printf("USER_1_USERNAME: %s", os.Getenv("USER_1_USERNAME"))
-	log.Printf("USER_1_PASSWORD: %s", os.Getenv("USER_1_PASSWORD"))
+	log.Printf("SSH_USERNAME: %s", os.Getenv("SSH_USERNAME"))
+	log.Printf("SSH_PASSWORD: %s", os.Getenv("What a nice day"))
 }
 
 // Function: listPlaybooks
