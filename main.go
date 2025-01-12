@@ -63,7 +63,7 @@ func listPlaybooks() []string {
 }
 
 // Function: executeYAML
-// Purpose: Executes the tasks defined in a YAML playbook on specified target hosts.
+// Purpose: Executes the tasks defined in a YAML playbook on specified target hosts using concurrency.
 // Parameters:
 // - playbookPath: The file path to the playbook.
 // - targetHosts: A slice of strings containing target hostnames or IPs.
@@ -89,21 +89,9 @@ func executeYAML(playbookPath string, targetHosts []string) {
 	}
 
 	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
-	for _, task := range playbook.Tasks {
-		for _, host := range hosts {
-			task.Host = host // Assign the current host to the task
-			if task.SSHUser != "" {
-				log.Printf("Executing remote task: %s on host %s", task.Name, host)
-				err = executor.ExecuteRemote(task, port)
-			} else {
-				log.Printf("Executing local task: %s", task.Name)
-				err = executor.ExecuteLocal(task.Command)
-			}
-			if err != nil {
-				log.Printf("Task '%s' failed on host %s: %v", task.Name, host, err)
-			}
-		}
-	}
+
+	// Use the ExecuteConcurrently function from executor
+	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
 }
 
 // Function: displayMenu

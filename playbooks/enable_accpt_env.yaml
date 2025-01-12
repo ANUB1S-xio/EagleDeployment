@@ -1,36 +1,41 @@
+name: "Enable AcceptEnv SSH_PASSWORD"
+version: "1.0"
+hosts:
+  - "192.168.70.43"
+  - "192.168.70.44"
+  - "192.168.70.46"
 tasks:
   - name: "Backup SSH configuration file"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: "hunter"
+    ssh_password: What a nice day
     command: |
       sudo -S cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 
   - name: "Check if AcceptEnv SSH_PASSWORD is enabled"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: hunter
+    ssh_password: What a nice day
     command: |
       grep -q "^AcceptEnv SSH_PASSWORD" /etc/ssh/sshd_config && echo "AcceptEnv SSH_PASSWORD is already enabled" || echo "AcceptEnv SSH_PASSWORD is missing"
     register: acceptenv_status
 
   - name: "Enable AcceptEnv SSH_PASSWORD if missing"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: hunter
+    ssh_password: What a nice day
     when: acceptenv_status.stdout.find("missing") != -1
     command: |
       echo "AcceptEnv SSH_PASSWORD" | sudo -S tee -a /etc/ssh/sshd_config
 
   - name: "Restart SSH daemon to apply changes"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: hunter
+    ssh_password: What a nice day
     when: acceptenv_status.stdout.find("missing") != -1
     command: |
       sudo -S systemctl restart sshd
 
   - name: "Validate AcceptEnv SSH_PASSWORD configuration"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: hunter
+    ssh_password: What a nice day
     command: |
       grep "^AcceptEnv SSH_PASSWORD" /etc/ssh/sshd_config
-
-settings: 
+settings:
   port: 22
