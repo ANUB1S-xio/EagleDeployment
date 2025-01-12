@@ -13,27 +13,29 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	"github.com/joho/godotenv"
+	//"github.com/joho/godotenv"
 )
+
+// WILL UTILIZE LATER WHEN WE MOVE TO DEDICATED
+// CONTROLLER HOST/ NODE
 
 // Function: init
 // Purpose: Initializes the environment by loading .env file and setting up debugging for environment variables.
-func init() {
-	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
-
-	// Print the environment variables
-	fmt.Printf("SSH_USERNAME: %s\n", os.Getenv("SSH_USERNAME"))
-	fmt.Printf("SSH_PASSWORD: %s\n", os.Getenv("SSH_PASSWORD"))
-
-	// Debugging environment variables
-	log.Printf("SSH_USERNAME: %s", os.Getenv("SSH_USERNAME"))
-	log.Printf("SSH_PASSWORD: %s", os.Getenv("SSH_PASSWORD"))
-}
+//func init() {
+//	// Load .env file
+//	err := godotenv.Load()
+//	if err != nil {
+//		log.Fatalf("Error loading .env file: %v", err)
+//	}
+//
+//	// Print the environment variables
+//	fmt.Printf("SSH_USERNAME: %s\n", os.Getenv("SSH_USERNAME"))
+//	fmt.Printf("SSH_PASSWORD: %s\n", os.Getenv("SSH_PASSWORD"))
+//
+//	// Debugging environment variables
+//	log.Printf("SSH_USERNAME: %s", os.Getenv("SSH_USERNAME"))
+//	log.Printf("SSH_PASSWORD: %s", os.Getenv("SSH_PASSWORD"))
+//}
 
 // Function: listPlaybooks
 // Purpose: Lists all YAML playbooks in the 'playbooks' directory.

@@ -1,36 +1,48 @@
+# File: add_users.yaml
+# Directory Path: /EagleDeploy_CLI/
+
+name: "Basic_Add_Users"
+version: "2.1"
+hosts:
+  - "192.168.70.43" # ubuntu1
+  - "192.168.70.44" # ubuntu2
+  - "192.168.70.46" # fedora
 tasks:
-  - name: "Backup SSH configuration file"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+  - name: "Debug SSH Credentials"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    port: 22
     command: |
-      sudo -S cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+      echo "Current SSH Username: hunter"
+      echo "Current SSH Password: What a nice day"
 
-  - name: "Check if AcceptEnv SSH_PASSWORD is enabled"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+  - name: "Add user john on Linux systems"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    port: 22
+    when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      grep -q "^AcceptEnv SSH_PASSWORD" /etc/ssh/sshd_config && echo "AcceptEnv SSH_PASSWORD is already enabled" || echo "AcceptEnv SSH_PASSWORD is missing"
-    register: acceptenv_status
+      echo "What a nice day" | sudo -S useradd -m -s /bin/bash john
 
-  - name: "Enable AcceptEnv SSH_PASSWORD if missing"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
-    when: acceptenv_status.stdout.find("missing") != -1
+  - name: "Pause to ensure user creation"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    port: 22
+    command: sleep 2
+
+  - name: "Verify user john exists"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    port: 22
     command: |
-      echo "AcceptEnv SSH_PASSWORD" | sudo -S tee -a /etc/ssh/sshd_config
+      echo "What a nice day" | sudo -S id john
 
-  - name: "Restart SSH daemon to apply changes"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
-    when: acceptenv_status.stdout.find("missing") != -1
+  - name: "Set password for user john on Linux systems"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
+    port: 22
+    when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      sudo -S systemctl restart sshd
-
-  - name: "Validate AcceptEnv SSH_PASSWORD configuration"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
-    command: |
-      grep "^AcceptEnv SSH_PASSWORD" /etc/ssh/sshd_config
-
-settings: 
-  port: 22
+      echo "What a nice day" | sudo -S bash -c "echo 'john:ComplexP@ssw0rd!' | chpasswd"
+  settings:
+    port: 22
