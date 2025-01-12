@@ -28,11 +28,11 @@ func init() {
 
 	// Print the environment variables
 	fmt.Printf("SSH_USERNAME: %s\n", os.Getenv("SSH_USERNAME"))
-	fmt.Printf("SSH_PASSWORD: %s\n", os.Getenv("What a nice day"))
+	fmt.Printf("SSH_PASSWORD: %s\n", os.Getenv("SSH_PASSWORD"))
 
 	// Debugging environment variables
 	log.Printf("SSH_USERNAME: %s", os.Getenv("SSH_USERNAME"))
-	log.Printf("SSH_PASSWORD: %s", os.Getenv("What a nice day"))
+	log.Printf("SSH_PASSWORD: %s", os.Getenv("SSH_PASSWORD"))
 }
 
 // Function: listPlaybooks
