@@ -8,7 +8,6 @@ import (
 	"EagleDeploy_CLI/tasks"
 	"fmt"
 	"log"
-	"os"
 	"sync"
 )
 
@@ -19,13 +18,9 @@ import (
 // - port: The port number for the SSH connection.
 // Returns: An error if the task execution fails.
 func ExecuteRemote(task tasks.Task, port int) error {
-	// Fetching SSH credentials securely from the environment
-	username := os.Getenv("SSH_USERNAME")
-	password := os.Getenv("SSH_PASSWORD")
-
-	if username == "" || password == "" {
-		return fmt.Errorf("SSH username or password not set in environment variables")
-	}
+	// Hardcoded SSH credentials for now
+	username := "hunter"
+	password := "What a nice day"
 
 	// Connecting to the remote host
 	client, err := sshutils.ConnectSSH(task.Host, username, password, port)

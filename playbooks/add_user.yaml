@@ -8,13 +8,6 @@ hosts:
   - "192.168.70.44" # ubuntu2
   - "192.168.70.46" # fedora
 tasks:
-  - name: "Debug SSH Credentials"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
-    port: 22
-    command: |
-      echo "Current SSH Username: hunter"
-      echo "Current SSH Password: What a nice day"
 
   - name: "Add user john on Linux systems"
     ssh_user: "hunter"
@@ -44,5 +37,5 @@ tasks:
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
       echo "What a nice day" | sudo -S bash -c "echo 'john:ComplexP@ssw0rd!' | chpasswd"
-  settings:
-    port: 22
+settings:
+   port: 22
