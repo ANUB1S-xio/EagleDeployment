@@ -1,44 +1,46 @@
 name: "Delete_Users_Except_Specific_Ones"
-version: "1.3"
+version: "1.4"
 hosts:
   - "192.168.70.43"
   - "192.168.70.44"
   - "192.168.70.46"
 tasks:
   - name: "Detect all non-system users on the system"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
     command: |
       awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd
     register: all_users
+    failed_when: all_users is not defined or all_users.stdout_lines is not defined
 
   - name: "Log detected users"
     debug:
-      msg: "Detected users: {{ all_users.stdout_lines }}"
+      msg: "Host {{ inventory_hostname }} detected users: {{ all_users.stdout_lines }}"
 
   - name: "Filter users to delete (excluding hunter and sudo)"
     set_fact:
       users_to_delete: "{{ all_users.stdout_lines | difference(['hunter', 'sudo']) }}"
+    when: all_users.stdout_lines is defined
 
   - name: "Log users to delete"
     debug:
-      msg: "Users to delete: {{ users_to_delete }}"
+      msg: "Host {{ inventory_hostname }} users to delete: {{ users_to_delete }}"
 
   - name: "Check if there are users to delete"
     when: users_to_delete | length == 0
     debug:
-      msg: "No users to delete. Skipping deletion."
+      msg: "No users to delete on {{ inventory_hostname }}. Skipping deletion."
 
   - name: "Delete users safely"
-    ssh_user: "${SSH_USERNAME}"
-    ssh_password: "${SSH_PASSWORD}"
+    ssh_user: "hunter"
+    ssh_password: "What a nice day"
     when: users_to_delete | length > 0
     with_items: "{{ users_to_delete }}"
     command: |
-      if ! who | grep -qw "{{ item }}"; then
-        echo '${SSH_PASSWORD}' | sudo -S userdel -r "{{ item }}"
+      if ! who | grep -qw "john"; then
+        echo 'What a nice day' | sudo -S userdel -r "john" || echo "Failed to delete john"
       else
-        echo "User {{ item }} is logged in. Skipping deletion."
+        echo "User john is logged in. Skipping deletion."
       fi
 
 settings:
