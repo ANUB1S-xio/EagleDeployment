@@ -1,6 +1,7 @@
 // File: tasks.go
 // Directory: EagleDeployment\tasks
 // Purpose: Defines the structure and loading functionality for playbooks and tasks.
+
 package tasks
 
 import (
@@ -10,12 +11,12 @@ import (
 )
 
 type Task struct {
-	Name         string `yaml:"name"`         // The name of the task
-	Command      string `yaml:"command"`      // The command to execute
-	SSH_User     string `yaml:"ssh_user"`     // The SSH user for the task
-	SSH_Password string `yaml:"ssh_password"` // The SSH password for the task
-	Host         string `yaml:"host"`         // The host for the task
-	Port         int    `yaml:"port"`         // The port for the task
+	Name        string `yaml:"name"`         // The name of the task
+	Command     string `yaml:"command"`      // The command to execute
+	SSHUser     string `yaml:"ssh_user"`     // The SSH user for the task
+	SSHPassword string `yaml:"ssh_password"` // The SSH password for the task
+	Host        string `yaml:"host"`         // The host for the task
+	Port        int    `yaml:"port"`         // The port for the task
 }
 
 type Playbook struct {

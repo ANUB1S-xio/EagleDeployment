@@ -15,7 +15,7 @@ tasks:
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "What a nice day" | sudo -S useradd -m -s /bin/bash john
+      echo "What a nice day" | sudo -S useradd -m -s /bin/bash smith
 
   - name: "Pause to ensure user creation"
     ssh_user: "hunter"
@@ -28,7 +28,7 @@ tasks:
     ssh_password: "What a nice day"
     port: 22
     command: |
-      echo "What a nice day" | sudo -S id john
+      echo "What a nice day" | sudo -S id smith
 
   - name: "Set password for user john on Linux systems"
     ssh_user: "hunter"
@@ -36,6 +36,6 @@ tasks:
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "What a nice day" | sudo -S bash -c "echo 'john:ComplexP@ssw0rd!' | chpasswd"
+      echo "What a nice day" | sudo -S bash -c "echo 'smith:ComplexP@ssw0rd!' | chpasswd"
 settings:
    port: 22

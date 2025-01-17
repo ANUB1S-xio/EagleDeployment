@@ -1,0 +1,19 @@
+name: "List_Users_Playbook"
+version: "1.0"
+hosts:
+  - "192.168.70.43" # ubuntu1
+  - "192.168.70.44" # ubuntu2
+  - "192.168.70.46" # fedora
+tasks:
+  - name: "List all users on the system"
+    ssh_user: "${SSH_USERNAME}"
+    ssh_password: "${SSH_PASSWORD}"
+    command: |
+      awk -F: '$3 >= 1000 {print $1}' /etc/passwd
+    register: users_output
+
+  - name: "Log users output"
+    debug:
+      msg: "Users on {{ inventory_hostname }}: {{ users_output.stdout_lines }}"
+settings:
+  port: 22
