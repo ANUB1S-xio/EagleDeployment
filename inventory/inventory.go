@@ -5,8 +5,8 @@ package inventory
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -29,7 +29,7 @@ type Inventory struct {
 // LoadInventory loads inventory data from a YAML file.
 func LoadInventory(filePath string) (*Inventory, error) {
 	log.Printf("Loading inventory from file: %s", filePath)
-	data, err := ioutil.ReadFile(filePath)
+	data, err := os.ReadFile(filePath)
 	if err != nil {
 		log.Printf("Failed to read inventory file: %v", err)
 		return nil, err
@@ -91,7 +91,7 @@ func (inv *Inventory) SaveInventory(filePath string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(filePath, data, 0644)
+	err = os.WriteFile(filePath, data, 0644)
 	if err != nil {
 		log.Printf("Failed to write inventory to file: %v", err)
 		return err
