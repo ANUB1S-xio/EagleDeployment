@@ -18,9 +18,14 @@ import (
 // - port: The port number for the SSH connection.
 // Returns: An error if the task execution fails.
 func ExecuteRemote(task tasks.Task, port int) error {
-	// Hardcoded SSH credentials for now
-	username := "hunter"
-	password := "What a nice day"
+	// Using credentials from the playbook (Task struct)
+	username := task.SSHUser
+	password := task.SSHPassword
+
+	// Validating the presence of SSH credentials
+	if username == "" || password == "" {
+		return fmt.Errorf("SSH username or password is missing in the playbook for task '%s'", task.Name)
+	}
 
 	// Connecting to the remote host
 	client, err := sshutils.ConnectSSH(task.Host, username, password, port)
@@ -28,7 +33,11 @@ func ExecuteRemote(task tasks.Task, port int) error {
 		log.Printf("Failed to connect to host %s on port %d: %v", task.Host, port, err)
 		return err
 	}
-	defer client.Close()
+	defer func() {
+		if cerr := sshutils.CloseSSHConnection(client); cerr != nil {
+			log.Printf("Error closing SSH connection: %v", cerr)
+		}
+	}()
 
 	// Executing the task command
 	output, err := sshutils.RunSSHCommand(client, task.Command)
