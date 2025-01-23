@@ -201,6 +201,7 @@ func main() {
 
 	select {
 	case <-serverShutdown:
+		fmt.Println("")
 		fmt.Println("Server stopped...shutting down...")
 	case <-signalChan:
 		fmt.Println("Termination signal received...")
