@@ -19,8 +19,8 @@ func StartWebServer() {
 	fmt.Printf("EagleDeployment GUI running at https://localhost:%d\n", port)
 
 	// Use a self-signed certificate (replace with paths to your cert and key files)
-	certFile := "cert.pem" // Path to the certificate file
-	keyFile := "key.pem"   // Path to the private key file
+	certFile := "web/cert.pem" // Path to the certificate file
+	keyFile := "web/key.pem"   // Path to the private key file
 
 	err := http.ListenAndServeTLS(fmt.Sprintf(":%d", port), certFile, keyFile, nil)
 	if err != nil {
