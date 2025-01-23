@@ -15,7 +15,7 @@ func StartWebServer() {
 
 	})
 
-	port := 8080
+	port := 8742
 	fmt.Printf("EagleDeployment GUI running at https://localhost:%d\n", port)
 
 	// Use a self-signed certificate (replace with paths to your cert and key files)
