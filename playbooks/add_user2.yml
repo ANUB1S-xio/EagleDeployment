@@ -1,0 +1,43 @@
+# File: add_user2.yaml
+
+name: "add_user2"
+version: "2.1"
+inventory: "inventory.yml"
+#hosts: all
+
+vars:
+  new_user: "Samwise"
+  new_password: "Pot@toes123"
+
+tasks:
+
+  - name: "Add user {{new_user}} on Linux systems"
+    #ssh_user: "eagleadmin"
+    #ssh_password: "@dminPass123"
+    port: 22
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo "{{password}}" | sudo -S useradd -m -s /bin/bash {{new_user}}
+
+  - name: "Pause to ensure user creation"
+    #ssh_user: "eagleadmin"
+    #ssh_password: "@dminPass123"
+    port: 22
+    command: sleep 2
+
+  - name: "Verify user john exists"
+    #ssh_user: "eagleadmin"
+    #ssh_password: "@dminPass123"
+    port: 22
+    command: |
+      echo "{{password}}" | sudo -S id {{new_user}}
+
+  - name: "Set password for user {{new_user}} on Linux systems"
+    #ssh_user: "eagleadmin"
+    #ssh_password: "@dminPass123"
+    port: 22
+    when: os_type.stdout in ["ubuntu", "fedora"]
+    command: |
+      echo "{{ssh_password}}" | sudo -S bash -c "echo '{{new_user}}:{{new_password}}' | chpasswd"
+settings:
+   port: 22
