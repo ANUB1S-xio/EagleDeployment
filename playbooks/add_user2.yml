@@ -5,39 +5,39 @@ version: "2.1"
 inventory: "inventory.yml"
 #hosts: all
 
-vars:
-  new_user: "Samwise"
-  new_password: "Pot@toes123"
+#vars:
+  #new_user: "Samwise"
+  #new_password: "Pot@toes123"
 
 tasks:
 
-  - name: "Add user {{new_user}} on Linux systems"
-    #ssh_user: "eagleadmin"
-    #ssh_password: "@dminPass123"
+  - name: "Add user Samwise on Linux systems"
+    ssh_user: "jakobd"
+    ssh_password: "Interconnect#07"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "{{password}}" | sudo -S useradd -m -s /bin/bash {{new_user}}
+      echo "Interconnect#07" | sudo -S useradd -m -s /bin/bash Samwise
 
   - name: "Pause to ensure user creation"
-    #ssh_user: "eagleadmin"
-    #ssh_password: "@dminPass123"
+    ssh_user: "jakobd"
+    ssh_password: "Interconnect#07"
     port: 22
     command: sleep 2
 
-  - name: "Verify user john exists"
-    #ssh_user: "eagleadmin"
-    #ssh_password: "@dminPass123"
+  - name: "Verify user Samwise exists"
+    ssh_user: "jakobd"
+    ssh_password: "Interconnect#07"
     port: 22
     command: |
-      echo "{{password}}" | sudo -S id {{new_user}}
+      echo "Interconnect#07" | sudo -S id Samwise
 
-  - name: "Set password for user {{new_user}} on Linux systems"
-    #ssh_user: "eagleadmin"
-    #ssh_password: "@dminPass123"
+  - name: "Set password for user Samwise on Linux systems"
+    ssh_user: "jakobd"
+    ssh_password: "Interconnect#07"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "{{ssh_password}}" | sudo -S bash -c "echo '{{new_user}}:{{new_password}}' | chpasswd"
+      echo "Interconnect#07" | sudo -S bash -c "echo 'Samwise:Pot@toes123' | chpasswd"
 settings:
    port: 22

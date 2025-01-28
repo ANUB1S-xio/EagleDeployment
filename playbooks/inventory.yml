@@ -2,7 +2,7 @@ all:
   hosts:
     ubuntu1:
       host: 192.168.56.101
-      ssh_user: jakobd
-      ssh_password: "Interconnect#07"
+      #ssh_user: jakobd
+      #ssh_password: "Interconnect#07"
   vars:
     port: 22
