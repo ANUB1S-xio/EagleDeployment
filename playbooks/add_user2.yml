@@ -2,8 +2,9 @@
 
 name: "add_user2"
 version: "2.1"
-inventory: "inventory.yml"
-#hosts: all
+#inventory: "inventory.yml"
+hosts:
+  - "192.168.56.101" #ubuntu machine
 
 #vars:
   #new_user: "Samwise"
@@ -30,7 +31,7 @@ tasks:
     ssh_password: "Interconnect#07"
     port: 22
     command: |
-      echo "Interconnect#07" | sudo -S id Samwise
+      echo "Interconnect#07" | sudo -S id samwise
 
   - name: "Set password for user Samwise on Linux systems"
     ssh_user: "jakobd"

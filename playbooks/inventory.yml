@@ -1,3 +1,5 @@
+#File: inventory.yml
+
 all:
   hosts:
     ubuntu1:
