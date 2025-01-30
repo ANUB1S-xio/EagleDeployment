@@ -3,8 +3,8 @@
 name: "add_user2"
 version: "2.1"
 #inventory: "inventory.yml"
-hosts:
-  - "192.168.56.101" #ubuntu machine
+hosts: []
+  #- "192.168.56.101" #ubuntu machine
 
 #vars:
   #new_user: "Samwise"

@@ -12,7 +12,40 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
+
+// struct for inventory.yml
+type Inventory struct {
+	All struct {
+		Hosts map[string]struct {
+			Host string `yaml:"host"`
+		} `yaml:"hosts"`
+	} `yaml:"all"`
+}
+
+// Function: parseInventory
+// Purpose: Reads and parses the inventory.yml file
+func parseInventory(filePath string) (*Inventory, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read inventory file: %v", err)
+	}
+
+	var inventory Inventory
+	err = yaml.Unmarshal(data, &inventory)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse inventory file: %v", err)
+	}
+
+	hosts := make(map[string]string)
+	for name, hostData := range inventory.All.Hosts {
+		hosts[name] = hostData.Host
+	}
+
+	return &inventory, nil
+}
 
 // Function: listPlaybooks
 // Purpose: Lists all YAML playbooks in the 'playbooks' directory.
@@ -51,9 +84,35 @@ func listPlaybooks() []string {
 // - targetHosts: List of target hostnames or IPs to override default playbook hosts.
 // Called By: main (when a user selects a playbook to execute).
 // Succeeds: Executor functions for task execution.
-func executeYAML(playbookPath string, targetHosts []string) {
-	playbook := &tasks.Playbook{} // Load playbook into a structured format
-	err := config.LoadConfig(playbookPath, playbook)
+func executeYAML(playbookPath string, inventoryPath string) {
+
+	//Load inventory
+	inventory, err := parseInventory(inventoryPath)
+	if err != nil {
+		log.Fatalf("Error loading inventory: %v", err)
+	}
+	//?
+	var hosts []string
+	for _, hostEntry := range inventory.All.Hosts {
+		hosts = append(hosts, hostEntry.Host)
+	}
+
+	//Ensure at least one host exists
+	if len(hosts) == 0 {
+		log.Fatalf("No hosts found in inventory.")
+	}
+	//Convert map values to a slice of host IPs
+	/*var targetHosts []string
+	for _, ip := range hosts {
+		targetHosts = append(targetHosts, ip)
+	}
+	if len(targetHosts) == 0 {
+		log.Fatalf("No target hosts found in inventory file.")
+	}*/
+
+	// Load playbook into a structured format
+	playbook := &tasks.Playbook{}
+	err = config.LoadConfig(playbookPath, playbook)
 	if err != nil {
 		log.Fatalf("Failed to load playbook: %v", err)
 	}
@@ -64,10 +123,10 @@ func executeYAML(playbookPath string, targetHosts []string) {
 	}
 
 	// Use targetHosts if provided; otherwise, use playbook hosts
-	hosts := playbook.Hosts
+	/*hosts := playbook.Hosts
 	if len(targetHosts) > 0 {
 		hosts = targetHosts
-	}
+	}*/
 
 	// Get port setting from the playbook
 	port := playbook.Settings["port"]
@@ -106,7 +165,7 @@ func displayMenu() int {
 // Purpose: The main entry point for the EagleDeploy CLI, handling menu navigation and user actions.
 // References: listPlaybooks, executeYAML, and displayMenu.
 func main() {
-	var targetHosts []string
+	//var targetHosts []string
 
 	for {
 		choice := displayMenu()
@@ -134,7 +193,8 @@ func main() {
 
 			selectedPlaybook := "./playbooks/" + playbooks[choice-1]
 			fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
-			executeYAML(selectedPlaybook, targetHosts)
+			//executeYAML(selectedPlaybook, targetHosts)
+			executeYAML(selectedPlaybook, "./inventory.yml")
 
 		case 2: // List YAML Playbooks
 			playbooks := listPlaybooks()
