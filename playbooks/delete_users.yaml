@@ -37,10 +37,10 @@ tasks:
     when: users_to_delete | length > 0
     with_items: "{{ users_to_delete }}"
     command: |
-      if ! who | grep -qw "john"; then
-        echo 'What a nice day' | sudo -S userdel -r "john" || echo "Failed to delete john"
+      if ! who | grep -qw "admin"; then
+        echo 'What a nice day' | sudo -S userdel -r "admin" || echo "Failed to delete admin"
       else
-        echo "User john is logged in. Skipping deletion."
+        echo "User admin is logged in. Skipping deletion."
       fi
 
 settings:

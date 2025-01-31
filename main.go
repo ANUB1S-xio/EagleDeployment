@@ -1,5 +1,6 @@
 // File: main.go
 // Directory Path: /EagleDeploy_CLI/
+// Purpose: Main entry point for the EagleDeploy CLI, handling menu navigation and execution of YAML playbooks.
 
 package main
 
@@ -7,41 +8,18 @@ import (
 	"EagleDeploy_CLI/config"
 	"EagleDeploy_CLI/executor"
 	"EagleDeploy_CLI/tasks"
-	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
-	//"github.com/joho/godotenv"
 )
-
-// WILL UTILIZE LATER WHEN WE MOVE TO DEDICATED
-// CONTROLLER HOST/ NODE
-
-// Function: init
-// Purpose: Initializes the environment by loading .env file and setting up debugging for environment variables.
-//func init() {
-//	// Load .env file
-//	err := godotenv.Load()
-//	if err != nil {
-//		log.Fatalf("Error loading .env file: %v", err)
-//	}
-//
-//	// Print the environment variables
-//	fmt.Printf("SSH_USERNAME: %s\n", os.Getenv("SSH_USERNAME"))
-//	fmt.Printf("SSH_PASSWORD: %s\n", os.Getenv("SSH_PASSWORD"))
-//
-//	// Debugging environment variables
-//	log.Printf("SSH_USERNAME: %s", os.Getenv("SSH_USERNAME"))
-//	log.Printf("SSH_PASSWORD: %s", os.Getenv("SSH_PASSWORD"))
-//}
 
 // Function: listPlaybooks
 // Purpose: Lists all YAML playbooks in the 'playbooks' directory.
 // Returns: A slice of strings containing the names of the playbooks.
+// Precedes: executeYAML (called when a user selects a playbook to execute).
 func listPlaybooks() []string {
-	playbooksDir := "./playbooks"
+	playbooksDir := "./playbooks" // Default directory for playbooks
 
 	// Ensure the playbooks directory exists
 	if _, err := os.Stat(playbooksDir); os.IsNotExist(err) {
@@ -49,12 +27,14 @@ func listPlaybooks() []string {
 		return nil
 	}
 
-	files, err := ioutil.ReadDir(playbooksDir)
+	// Read the playbooks directory
+	files, err := os.ReadDir(playbooksDir)
 	if err != nil {
 		log.Printf("Failed to read playbooks directory: %v", err)
 		return nil
 	}
 
+	// Filter files to include only YAML playbooks
 	var playbooks []string
 	for _, file := range files {
 		if !file.IsDir() && (strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml")) {
@@ -65,26 +45,31 @@ func listPlaybooks() []string {
 }
 
 // Function: executeYAML
-// Purpose: Executes the tasks defined in a YAML playbook on specified target hosts using concurrency.
+// Purpose: Executes tasks defined in a YAML playbook on specified target hosts using concurrency.
 // Parameters:
-// - playbookPath: The file path to the playbook.
-// - targetHosts: A slice of strings containing target hostnames or IPs.
+// - playbookPath: Path to the playbook file.
+// - targetHosts: List of target hostnames or IPs to override default playbook hosts.
+// Called By: main (when a user selects a playbook to execute).
+// Succeeds: Executor functions for task execution.
 func executeYAML(playbookPath string, targetHosts []string) {
-	playbook := &tasks.Playbook{}
+	playbook := &tasks.Playbook{} // Load playbook into a structured format
 	err := config.LoadConfig(playbookPath, playbook)
 	if err != nil {
 		log.Fatalf("Failed to load playbook: %v", err)
 	}
 
+	// Validate that the playbook contains tasks
 	if len(playbook.Tasks) == 0 {
 		log.Fatalf("No tasks found in the playbook.")
 	}
 
+	// Use targetHosts if provided; otherwise, use playbook hosts
 	hosts := playbook.Hosts
 	if len(targetHosts) > 0 {
 		hosts = targetHosts
 	}
 
+	// Get port setting from the playbook
 	port := playbook.Settings["port"]
 	if port == 0 {
 		log.Fatalf("Port is not specified in the playbook settings.")
@@ -92,13 +77,14 @@ func executeYAML(playbookPath string, targetHosts []string) {
 
 	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
 
-	// Use the ExecuteConcurrently function from executor
+	// Execute tasks concurrently using the executor package
 	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
 }
 
 // Function: displayMenu
-// Purpose: Displays the interactive menu for the EagleDeploy CLI.
+// Purpose: Displays an interactive menu for the EagleDeploy CLI.
 // Returns: The user's menu choice as an integer.
+// Precedes: main (used for interactive user input).
 func displayMenu() int {
 	fmt.Println()
 	fmt.Println("EagleDeploy Menu:")
@@ -117,9 +103,9 @@ func displayMenu() int {
 }
 
 // Function: main
-// Purpose: The main entry point of the application, handling the interactive menu and user actions.
+// Purpose: The main entry point for the EagleDeploy CLI, handling menu navigation and user actions.
+// References: listPlaybooks, executeYAML, and displayMenu.
 func main() {
-	reader := bufio.NewReader(os.Stdin)
 	var targetHosts []string
 
 	for {
@@ -166,11 +152,11 @@ func main() {
 
 		case 4: // Enable/Disable Detailed Logging
 			fmt.Print("Enable detailed logging? (y/n): ")
-			answer, _ := reader.ReadString('\n')
-			answer = strings.TrimSpace(answer)
-			if strings.ToLower(answer) == "y" {
+			var response string
+			fmt.Scanln(&response)
+			if strings.ToLower(response) == "y" {
 				fmt.Println("Detailed logging enabled.")
-			} else if strings.ToLower(answer) == "n" {
+			} else if strings.ToLower(response) == "n" {
 				fmt.Println("Detailed logging disabled.")
 			} else {
 				fmt.Println("Invalid input. Logging state unchanged.")

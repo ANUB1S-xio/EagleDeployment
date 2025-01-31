@@ -4,38 +4,38 @@
 name: "Basic_Add_Users"
 version: "2.1"
 hosts:
-  - "192.168.70.43" # ubuntu1
-  - "192.168.70.44" # ubuntu2
-  - "192.168.70.46" # fedora
+  - "192.168.70.30" # ubuntu1
+  - "192.168.70.32" # ubuntu2
+  - "192.168.70.33" # fedora
 tasks:
 
   - name: "Add user john on Linux systems"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "What a nice day" | sudo -S useradd -m -s /bin/bash smith
+      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash smith
 
   - name: "Pause to ensure user creation"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     command: sleep 2
 
   - name: "Verify user john exists"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     command: |
-      echo "What a nice day" | sudo -S id smith
+      echo "@dminPass123" | sudo -S id smith
 
   - name: "Set password for user john on Linux systems"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "What a nice day" | sudo -S bash -c "echo 'smith:ComplexP@ssw0rd!' | chpasswd"
+      echo "@dminPass123" | sudo -S bash -c "echo 'smith:ComplexP@ssw0rd!' | chpasswd"
 settings:
    port: 22
