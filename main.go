@@ -44,6 +44,68 @@ func listPlaybooks() []string {
 	return playbooks
 }
 
+// Function: listYAMLFiles
+// Purpose: Lists all YAML playbooks in the 'playbooks' directory.
+func listYAMLFiles() {
+	playbooksDir := "./playbooks"
+
+	// Ensure the directory exists
+	if _, err := os.Stat(playbooksDir); os.IsNotExist(err) {
+		log.Printf("Playbooks directory not found: %s", playbooksDir)
+		return
+	}
+
+	// Read directory contents
+	files, err := os.ReadDir(playbooksDir)
+	if err != nil {
+		log.Printf("Failed to read playbooks directory: %v", err)
+		return
+	}
+
+	// Print playbooks in YAML format
+	fmt.Println("\nAvailable YAML Playbooks:")
+	for _, file := range files {
+		if !file.IsDir() && (strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml")) {
+			fmt.Printf("- %s\n", file.Name())
+		}
+	}
+}
+
+// Function: executeYAML
+// Purpose: Executes tasks in a playbook and lists available YAML files afterward.
+func executeYAML(playbookPath string, targetHosts []string) {
+	playbook := &tasks.Playbook{}
+	err := config.LoadConfig(playbookPath, playbook)
+	if err != nil {
+		log.Fatalf("Failed to load playbook: %v", err)
+	}
+
+	// Validate playbook tasks
+	if len(playbook.Tasks) == 0 {
+		log.Fatalf("No tasks found in the playbook.")
+	}
+
+	// Use target hosts if provided
+	hosts := playbook.Hosts
+	if len(targetHosts) > 0 {
+		hosts = targetHosts
+	}
+
+	// Get port setting
+	port := playbook.Settings["port"]
+	if port == 0 {
+		log.Fatalf("Port is not specified in the playbook settings.")
+	}
+
+	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
+
+	// Execute tasks concurrently
+	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
+
+	// List YAML playbooks after execution
+	listYAMLFiles()
+}
+
 // Function: executeYAML
 // Purpose: Executes tasks defined in a YAML playbook on specified target hosts using concurrency.
 // Parameters:
