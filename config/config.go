@@ -34,3 +34,4 @@ func LoadConfig(filePath string, target interface{}) error {
 	log.Printf("Configuration loaded successfully from file: %s", filePath)
 	return nil
 }
+
