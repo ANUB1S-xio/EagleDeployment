@@ -1,47 +1,50 @@
 // File: tasks.go
-// Directory: EagleDeployment\tasks
-// Purpose: Defines the structure and loading functionality for playbooks and tasks.
+// Directory: EagleDeployment/tasks
+// Purpose: Adds YAML file detection and proper struct handling.
 
 package tasks
 
 import (
 	"io/ioutil"
+	"log"
 
 	"gopkg.in/yaml.v2"
 )
 
+// Task struct defining a single playbook task
 type Task struct {
-	Name        string `yaml:"name"`         // The name of the task
-	Command     string `yaml:"command"`      // The command to execute
-	SSHUser     string `yaml:"ssh_user"`     // The SSH user for the task
-	SSHPassword string `yaml:"ssh_password"` // The SSH password for the task
-	Host        string `yaml:"host"`         // The host for the task
-	Port        int    `yaml:"port"`         // The port for the task
+	Name        string `yaml:"name"`
+	Command     string `yaml:"command"`
+	SSHUser     string `yaml:"ssh_user"`
+	SSHPassword string `yaml:"ssh_password"`
+	Host        string `yaml:"host"`
+	Port        int    `yaml:"port"`
 }
 
+// Playbook struct defining the overall playbook structure
 type Playbook struct {
-	Name     string         `yaml:"name"`     // The name of the playbook
-	Version  string         `yaml:"version"`  // The version of the playbook
-	Hosts    []string       `yaml:"hosts"`    // List of hosts targeted by the playbook
-	Tasks    []Task         `yaml:"tasks"`    // List of tasks in the playbook
-	Settings map[string]int `yaml:"settings"` // Additional settings like retries, timeouts
+	Name     string         `yaml:"name"`
+	Version  string         `yaml:"version"`
+	Hosts    []string       `yaml:"hosts"`
+	Tasks    []Task         `yaml:"tasks"`
+	Settings map[string]int `yaml:"settings"`
 }
 
-// LoadPlaybook loads a playbook from a YAML file.
-// Parameters:
-// - filePath: The path to the playbook file.
-// Returns:
-// - A Playbook instance or an error if loading fails.
+// Function: LoadPlaybook
+// Purpose: Loads a YAML playbook from a file.
 func LoadPlaybook(filePath string) (*Playbook, error) {
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
+		log.Printf("Failed to read YAML file: %v", err)
 		return nil, err
 	}
+
 	var playbook Playbook
 	err = yaml.Unmarshal(data, &playbook)
 	if err != nil {
+		log.Printf("Failed to parse YAML file: %v", err)
 		return nil, err
 	}
+
 	return &playbook, nil
 }
-
