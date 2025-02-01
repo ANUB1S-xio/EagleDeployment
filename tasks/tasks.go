@@ -44,3 +44,4 @@ func LoadPlaybook(filePath string) (*Playbook, error) {
 	}
 	return &playbook, nil
 }
+
