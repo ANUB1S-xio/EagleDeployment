@@ -1,108 +1,72 @@
-# File: create_eagle1_with_delay.yaml
-name: "Create_eagle1_User_With_Delay"
-version: "1.4"
-hosts:
-  - "192.168.70.30"  # Ubuntu Host
-  - "192.168.70.31"  # Ubuntu Host
-  - "192.168.70.33"  # Fedora Host
-tasks:
-  - name: "Detect Operating System"
-    ssh_user: "hunter"
-    ssh_password: "@dminPass123"
 
-    command: |
-      if [ -f /etc/os-release ]; then
-        . /etc/os-release && echo "$ID"
-      else
-        echo "unknown"
-      fi
-    register: os_type
-    failed_when: os_type.stdout == "unknown"
-
-  - name: "Pause after OS detection"
+  - name: "Create admin user"
     ssh_user: "eagleadmin"
-    ssh_password: ""
-    command: sleep 0.01
-    silent: true  # Make this task silent
-
-
-  - name: "Create eagle1 user"
-    ssh_user: "hunter"
     ssh_password: "@dminPass123"
-
     command: |
-      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash eagle1 || echo "User already exists"
+      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash admin || echo "User already exists"
     register: user_creation
 
   - name: "Pause after user creation"
-    ssh_user: "hunter"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: sleep 0.01
 
-  - name: "Validate eagle1 user creation"
-    ssh_user: "hunter"
+  - name: "Validate admin user creation"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: |
-      echo "@dminPass123" | sudo -S id eagle1
+      echo "@dminPass123" | sudo -S id admin
     failed_when: "'uid=' not in command_output"
 
   - name: "Pause after validation"
-    ssh_user: "hunter"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: sleep 0.01
 
-  - name: "Set password for eagle1 user"
-    ssh_user: "hunter"
+  - name: "Set password for admin user"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: |
-      echo "@dminPass123" | sudo -S bash -c "echo 'eagle1:@Dm1n#2025' | chpasswd"
+      echo "@dminPass123" | sudo -S bash -c "echo 'admin:ComplexP@ssw0rd!' | chpasswd"
 
   - name: "Pause after setting password"
-    ssh_user: "hunter"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: sleep 0.01
 
-  - name: "Add eagle1 to the appropriate eagle1 group"
-    ssh_user: "hunter"
+  - name: "Add admin to the appropriate group"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: |
       if [[ "{{ os_type.stdout }}" == "ubuntu" ]]; then
-        echo "@dminPass123" | sudo -S usermod -aG sudo eagle1
+        echo "@dminPass123" | sudo -S usermod -aG sudo admin
       elif [[ "{{ os_type.stdout }}" == "fedora" ]]; then
-        echo "@dminPass123" | sudo -S usermod -aG wheel eagle1
+        echo "@dminPass123" | sudo -S usermod -aG wheel admin
       fi
 
   - name: "Pause after adding to group"
-    ssh_user: "hunter"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: sleep 0.01
 
   - name: "Ensure SSH directory exists and permissions are set"
-    ssh_user: "hunter"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: |
-      echo "@dminPass123" | sudo -S mkdir -p /home/eagle1/.ssh && \
-      sudo -S chown eagle1:eagle1 /home/eagle1/.ssh && \
-      sudo -S chmod 700 /home/eagle1/.ssh
+      echo "@dminPass123" | sudo -S mkdir -p /home/admin/.ssh && \
+      sudo -S chown admin:admin /home/admin/.ssh && \
+      sudo -S chmod 700 /home/admin/.ssh
 
   - name: "Pause after setting SSH permissions"
-    ssh_user: "hunter"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
-
     command: sleep 0.01
 
-  - name: "Verify eagle1 user setup"
-    ssh_user: "hunter"
+  - name: "Verify admin user setup"
+    ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     command: |
-      echo "@dminPass123" | sudo -S id eagle1
+      echo "@dminPass123" | sudo -S id admin
+
 settings:
   port: 22

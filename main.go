@@ -8,9 +8,11 @@ import (
 	"EagleDeploy_CLI/config"
 	"EagleDeploy_CLI/executor"
 	"EagleDeploy_CLI/tasks"
+	"EagleDeploy_CLI/utils"
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -70,12 +72,26 @@ func executeYAML(playbookPath string, targetHosts []string) {
 	}
 
 	// Get port setting from the playbook
-	port := playbook.Settings["port"]
-	if port == 0 {
+	portStr := playbook.Settings["port"]
+	if portStr == "" {
 		log.Fatalf("Port is not specified in the playbook settings.")
 	}
 
+	// Convert port from string to int
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		log.Fatalf("Invalid port value: %v", err)
+	}
+
+	// Detect OS and set command syntax
+	osCommands := utils.DetectOS()
+
+	// Pass detected variables to the playbook
+	playbook.Settings["package_update_command"] = osCommands.PackageUpdate
+	playbook.Settings["user_add_command"] = osCommands.UserAdd
+
 	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
+	fmt.Printf("Detected OS Commands: %+v\n", osCommands)
 
 	// Execute tasks concurrently using the executor package
 	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
