@@ -14,7 +14,7 @@ import (
 
 // Function: ListAllYAMLFiles
 // Purpose: Lists all YAML playbooks in the 'playbooks' directory.
-func ListAllYAMLFiles() {
+func listYAMLFiles() {
 	playbooksDir := "./playbooks"
 
 	// Ensure the directory exists
