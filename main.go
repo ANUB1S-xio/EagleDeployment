@@ -61,12 +61,11 @@ func listYAMLFiles() {
 		log.Printf("Failed to read playbooks directory: %v", err)
 		return
 	}
-
-	// Print playbooks in YAML format
-	fmt.Println("\nAvailable YAML Playbooks:")
+        // Print all YAML files (not just playbooks)
+	fmt.Println("\n🔍 Checking for available YAML files...")
 	for _, file := range files {
 		if !file.IsDir() && (strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml")) {
-			fmt.Printf("- %s\n", file.Name())
+  			fmt.Printf("- %s\n", file.Name())
 		}
 	}
 }
@@ -175,7 +174,7 @@ func main() {
 			}
 		
                 case 3: // List YAML Files
-			fmt.Println("\n🔍 Checking for available YAML playbooks...")
+			fmt.Println("\n🔍 Checking for available YAML files...")
                          listYAMLFiles()
 
 
