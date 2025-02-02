@@ -172,11 +172,16 @@ func main() {
 					fmt.Printf("- %s\n", playbook)
 				}
 			}
+		
+                case 3: // List YAML Files
+			fmt.Println("\n🔍 Checking for available YAML playbooks...")
+                         listYAMLFiles()
 
-		case 3: // Manage Inventory
+
+		case 4: // Manage Inventory
 			fmt.Println("Managing inventory (not yet implemented).")
 
-		case 4: // Enable/Disable Detailed Logging
+		case 5: // Enable/Disable Detailed Logging
 			fmt.Print("Enable detailed logging? (y/n): ")
 			var response string
 			fmt.Scanln(&response)
@@ -188,10 +193,10 @@ func main() {
 				fmt.Println("Invalid input. Logging state unchanged.")
 			}
 
-		case 5: // Rollback Changes
+		case 6: // Rollback Changes
 			fmt.Println("Rolling back changes (not yet implemented).")
 
-		case 6: // Show Help
+		case 7: // Show Help
 			fmt.Println("Help Page:")
 			fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
 			fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
