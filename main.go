@@ -102,7 +102,8 @@ func executeYAML(playbookPath string, targetHosts []string) {
 	// Execute tasks concurrently
 	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
 
-	// List YAML playbooks after execution
+	// **NEW: Automatically List YAML Playbooks After Execution**
+	fmt.Println("\n✅ Playbook Execution Completed! Listing Available Playbooks:")
 	listYAMLFiles()
 }
 
