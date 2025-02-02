@@ -106,43 +106,6 @@ func executeYAML(playbookPath string, targetHosts []string) {
 	listYAMLFiles()
 }
 
-// Function: executeYAML
-// Purpose: Executes tasks defined in a YAML playbook on specified target hosts using concurrency.
-// Parameters:
-// - playbookPath: Path to the playbook file.
-// - targetHosts: List of target hostnames or IPs to override default playbook hosts.
-// Called By: main (when a user selects a playbook to execute).
-// Succeeds: Executor functions for task execution.
-func executeYAML(playbookPath string, targetHosts []string) {
-	playbook := &tasks.Playbook{} // Load playbook into a structured format
-	err := config.LoadConfig(playbookPath, playbook)
-	if err != nil {
-		log.Fatalf("Failed to load playbook: %v", err)
-	}
-
-	// Validate that the playbook contains tasks
-	if len(playbook.Tasks) == 0 {
-		log.Fatalf("No tasks found in the playbook.")
-	}
-
-	// Use targetHosts if provided; otherwise, use playbook hosts
-	hosts := playbook.Hosts
-	if len(targetHosts) > 0 {
-		hosts = targetHosts
-	}
-
-	// Get port setting from the playbook
-	port := playbook.Settings["port"]
-	if port == 0 {
-		log.Fatalf("Port is not specified in the playbook settings.")
-	}
-
-	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
-
-	// Execute tasks concurrently using the executor package
-	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
-}
-
 // Function: displayMenu
 // Purpose: Displays an interactive menu for the EagleDeploy CLI.
 // Returns: The user's menu choice as an integer.
