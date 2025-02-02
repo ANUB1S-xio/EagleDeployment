@@ -41,29 +41,83 @@ specifications:
           and output for each task.
 
         - To better match this structure, we could refactor the code into distinct classes or modules: 
-          CommandParser, ExecuteCommand, ErrorHandling, etc. This would enhance modularity and follow the 
+          CommandParser, ExecuteCommand, and ErrorHandling. This would enhance modularity and follow the 
           diagram’s structure more closely.
 
 Next Steps to Improve Alignment:
 
-    Concurrency:
+Concurrency:
 
-        - Implement concurrent task execution across hosts. Go’s goroutines would allow us to deploy 
-          tasks in parallel, improving scalability.
+- Implement concurrent task execution across hosts. Go’s goroutines would allow us to deploy 
+  tasks in parallel, improving scalability. This can be seen in the [`executor.ExecuteConcurrently`](executor/executor.go) function.
 
-    State Management:
+State Management:
 
-        - Introduce a stateful tracking system (e.g., SQLite) to record task status and allow for rollback 
-          or retry in future executions.
+- Introduce a stateful tracking system (e.g., SQLite) to record task status and allow for rollback 
+  or retry in future executions.
 
-    Class-based Refactoring:
+Class-based Refactoring:
 
-        - Refactor the tool into components resembling CommandParser, ExecuteCommand, and ErrorHandling. 
-          This would give the structure more modularity, allowing future expansion for additional commands 
-          and error-handling strategies.
+- Refactor the tool into components resembling CommandParser, ExecuteCommand, and ErrorHandling. 
+  This would give the structure more modularity, allowing future expansion for additional commands 
+  and error-handling strategies.
 
-    Plugins and Modules:
+Plugins and Modules:
 
-        - Implement a plugin system that lets users extend functionality by adding custom modules. This 
-          could allow for tailored tasks like package installation, service management, or monitoring as 
-          outlined in the use case diagram.
+- Implement a plugin system that lets users extend functionality by adding custom modules. This 
+  could allow for tailored tasks like package installation, service management, or monitoring as 
+  outlined in the use case diagram.
+
+# Instructions on How to Use the Program
+
+## Project Structure
+
+### Main Components
+
+- [`main.go`](main.go): The main entry point for the EagleDeploy CLI, handling menu navigation and execution of YAML playbooks.
+- [`config/config.go`](config/config.go): Contains the `LoadConfig` function to load YAML configuration files.
+- [`executor/executor.go`](executor/executor.go): Contains functions to execute tasks locally and remotely, including concurrent execution.
+- [`sshutils/sshutils.go`](sshutils/sshutils.go): Provides utility functions for SSH connections and command execution.
+- [`tasks/tasks.go`](tasks/tasks.go): Defines the structure and loading functionality for playbooks and tasks.
+
+### Key Functions
+
+- `main()`: The main entry point for the EagleDeploy CLI, handling menu navigation and user actions.
+- `executeYAML(playbookPath string, targetHosts []string)`: Executes tasks defined in a YAML playbook on specified target hosts using concurrency.
+- `listPlaybooks()`: Lists all YAML playbooks in the 'playbooks' directory.
+- `ConnectSSH(host, user, password string, port int)`: Establishes an SSH connection to a remote server.
+- `RunSSHCommand(client *ssh.Client, command string)`: Executes a command on a remote host via SSH.
+- `RunLocalCommand(command string)`: Executes a shell command locally.
+- `LoadConfig(filePath string, target interface{})`: Loads a YAML configuration file and unmarshals it into a given Go structure.
+- `ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int)`: Executes tasks concurrently across multiple hosts.
+
+## Running the Program
+
+### Building the Application
+
+1. Ensure you have Go installed. Verify the installation by running:
+    ```sh
+    go version
+    ```
+
+2. Navigate to the project directory:
+    ```sh
+    cd /path/to/your/EagleDeploy
+    ```
+
+3. Build the application:
+    ```sh
+    go build main.go
+    ```
+
+### Running the Application
+
+1. Run the executable:
+    ```sh
+    ./main    # On Linux/macOS
+    main.exe  # On Windows
+    ```
+
+2. Follow the interactive menu to execute playbooks, list YAML files, manage inventory, enable/disable logging, rollback changes, or show help.
+
+This structure ensures that the EagleDeploy CLI is modular, scalable, and easy to extend with additional functionality.
