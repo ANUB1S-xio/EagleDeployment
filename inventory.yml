@@ -2,9 +2,9 @@
 Hosts:
 - 192.168.56.101: Ubuntu
 
-ssh_creds:
-  username: eagleadmin
-  password: @dminPass123
+#ssh_creds:
+#  username: eagleadmin
+#  password: @dminPass123
 
 
 #all:

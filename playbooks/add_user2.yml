@@ -13,32 +13,32 @@ hosts: []
 tasks:
 
   - name: "Add user Samwise on Linux systems"
-    ssh_user: "jakobd"
-    ssh_password: "Interconnect#07"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "Interconnect#07" | sudo -S useradd -m -s /bin/bash Samwise
+      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash Samwise
 
   - name: "Pause to ensure user creation"
-    ssh_user: "jakobd"
-    ssh_password: "Interconnect#07"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     command: sleep 2
 
   - name: "Verify user Samwise exists"
-    ssh_user: "jakobd"
-    ssh_password: "Interconnect#07"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     command: |
-      echo "Interconnect#07" | sudo -S id samwise
+      echo "@dminPass123" | sudo -S id samwise
 
   - name: "Set password for user Samwise on Linux systems"
-    ssh_user: "jakobd"
-    ssh_password: "Interconnect#07"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "Interconnect#07" | sudo -S bash -c "echo 'Samwise:Pot@toes123' | chpasswd"
+      echo "@dminPass123" | sudo -S bash -c "echo 'Samwise:Pot@toes123' | chpasswd"
 settings:
    port: 22
