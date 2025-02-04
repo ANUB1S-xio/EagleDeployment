@@ -18,33 +18,47 @@ import (
 
 // struct for inventory.yml
 type Inventory struct {
-	All struct {
+	Hosts []map[string]string `yaml:"Hosts"`
+}
+
+/*All struct {
 		Hosts map[string]struct {
 			Host string `yaml:"host"`
 		} `yaml:"hosts"`
 	} `yaml:"all"`
-}
+}*/
 
 // Function: parseInventory
 // Purpose: Reads and parses the inventory.yml file
-func parseInventory(filePath string) (*Inventory, error) {
+func parseInventory(filePath string) (*Inventory, []string, error) {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read inventory file: %v", err)
+		return nil, nil, fmt.Errorf("failed to read inventory file: %v", err)
 	}
 
 	var inventory Inventory
 	err = yaml.Unmarshal(data, &inventory)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse inventory file: %v", err)
+		return nil, nil, fmt.Errorf("failed to parse inventory file: %v", err)
 	}
 
-	hosts := make(map[string]string)
-	for name, hostData := range inventory.All.Hosts {
-		hosts[name] = hostData.Host
+	//Extract host IPs from the list
+	var hosts []string
+	for _, entry := range inventory.Hosts {
+		for ip := range entry {
+			hosts = append(hosts, ip)
+		}
+	}
+	/*
+		hosts := make(map[string]string)
+		for name, hostData := range inventory.All.Hosts {
+			hosts[name] = hostData.Host
+		}*/
+	if len(hosts) == 0 {
+		return nil, nil, fmt.Errorf("no hosts found in inventory")
 	}
 
-	return &inventory, nil
+	return &inventory, hosts, nil
 }
 
 // Function: listPlaybooks
@@ -87,15 +101,17 @@ func listPlaybooks() []string {
 func executeYAML(playbookPath string, inventoryPath string) {
 
 	//Load inventory
-	inventory, err := parseInventory(inventoryPath)
+	//inventory, err := parseInventory(inventoryPath)
+	_, hosts, err := parseInventory(inventoryPath)
 	if err != nil {
 		log.Fatalf("Error loading inventory: %v", err)
 	}
+
 	//?
-	var hosts []string
+	/*var hosts []string
 	for _, hostEntry := range inventory.All.Hosts {
 		hosts = append(hosts, hostEntry.Host)
-	}
+	}*/
 
 	//Ensure at least one host exists
 	if len(hosts) == 0 {
