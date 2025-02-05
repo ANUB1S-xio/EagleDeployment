@@ -13,6 +13,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
 )
 
@@ -182,6 +183,19 @@ func displayMenu() int {
 // References: listPlaybooks, executeYAML, and displayMenu.
 func main() {
 	//var targetHosts []string
+
+	//Load the environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	//Retrieve variables
+	ssh_user := os.Getenv("SSH_USER")
+	ssh_pass := os.Getenv("SSH_PASS")
+
+	fmt.Println("SSH user:", ssh_user)
+	fmt.Println("SSH password: ", ssh_pass)
 
 	for {
 		choice := displayMenu()

@@ -1,0 +1,16 @@
+#debug_creds
+version: "2.1"
+
+#hosts: []
+
+vars:
+  ssh_user: "{{ lookup('env', 'SSH_USER') }}"
+  ssh_pass: "{{ lookup('env', 'SSH_PASS') }}"
+
+tasks:
+  - name: debug_creds
+    debug:
+      msg: "SSH User: {{ ssh_user }}, SSH Password: {{ ssh_pass }}"
+
+settings:
+  port: 22
