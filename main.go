@@ -191,11 +191,8 @@ func main() {
 	}
 
 	//Retrieve variables
-	ssh_user := os.Getenv("SSH_USER")
-	ssh_pass := os.Getenv("SSH_PASS")
-
-	fmt.Println("SSH user:", ssh_user)
-	fmt.Println("SSH password: ", ssh_pass)
+	//ssh_user := os.Getenv("SSH_USER")
+	//ssh_pass := os.Getenv("SSH_PASS")
 
 	for {
 		choice := displayMenu()
@@ -224,6 +221,7 @@ func main() {
 			selectedPlaybook := "./playbooks/" + playbooks[choice-1]
 			fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
 			//executeYAML(selectedPlaybook, targetHosts)
+
 			executeYAML(selectedPlaybook, "./inventory.yml")
 
 		case 2: // List YAML Playbooks

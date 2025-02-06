@@ -6,41 +6,41 @@ version: "2.1"
 hosts: []
   #- "192.168.56.101" #ubuntu machine
 
-vars:
-  new_user: "Samwise"
-  new_password: "Pot@toes123"
-  ssh_user: "{{ lookup('env','SSH_USER') }}"
-  ssh_pass: "{{ lookup('env','SSH_PASS') }}"
+#vars:
+  #new_user: "samwise"
+  #new_password: "Pot@toes123"
+  #SSH_USER: "{{ lookup('env','SSH_USER') }}"
+  #SSH_PASS: "{{ lookup('env','SSH_PASS') }}"
 
 tasks:
 
-  - name: "Add user Samwise on Linux systems"
-    ssh_user: "{{ ssh_user }}"
-    ssh_password: "{{ ssh_pass }}"
+  - name: "Add user samwise on Linux systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "{{ ssh_pass }}" | sudo -S useradd -m -s /bin/bash Samwise
+      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash "samwise"
 
   - name: "Pause to ensure user creation"
-    ssh_user: "{{ ssh_user }}"
-    ssh_password: "{{ ssh_pass }}"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     command: sleep 2
 
-  - name: "Verify user Samwise exists"
-    ssh_user: "{{ ssh_user }}"
-    ssh_password: "{{ ssh_pass }}"
+  - name: "Verify new user exists"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     command: |
-      echo "{{ ssh_pass }}" | sudo -S id samwise
+      echo "@dminPass123" | sudo -S id "samwise"
 
-  - name: "Set password for user Samwise on Linux systems"
-    ssh_user: "{{ ssh_user }}"
-    ssh_password: "{{ ssh_pass }}"
+  - name: "Set password for user samwise on Linux systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
     port: 22
     when: os_type.stdout in ["ubuntu", "fedora"]
     command: |
-      echo "{{ ssh_pass }}" | sudo -S bash -c "echo 'Samwise:Pot@toes123' | chpasswd"
+      echo "@dminPass123" | sudo -S bash -c "echo 'samwise:Pot@toes123' | chpasswd"
 settings:
    port: 22
