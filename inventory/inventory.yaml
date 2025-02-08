@@ -1,16 +1,18 @@
 Hosts:
-- IP: 10.42.56.91
-  Hostname: htl-docker.htl.local
-  OS: ""
 - IP: 10.42.56.102
   Hostname: ""
-  OS: ""
+  OS: Windows
+- IP: 10.42.56.91
+  Hostname: htl-docker.htl.local
+  OS: Unknown
 - IP: 10.42.56.100
   Hostname: ""
-  OS: ""
+  OS: |
+    Linux
 - IP: 10.42.56.101
   Hostname: ""
-  OS: ""
+  OS: |
+    Linux
 SSH_CRED:
   ssh_user: eagleadmin
   ssh_pass: '@dminPass123'

@@ -6,10 +6,11 @@ package inventory
 
 import (
 	"EagleDeploy_CLI/config"
+	"EagleDeploy_CLI/osdetect"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"os/exec"
 	"strings"
 	"sync"
@@ -60,7 +61,7 @@ func SaveInventory(inv *Inventory) {
 		log.Printf("Failed to marshal inventory: %v", err)
 		return
 	}
-	err = ioutil.WriteFile("./inventory/inventory.yaml", data, 0644)
+	err = os.WriteFile("./inventory/inventory.yaml", data, 0644)
 	if err != nil {
 		log.Printf("Failed to write inventory.yaml: %v", err)
 	}
@@ -114,7 +115,7 @@ func checkHostAlive(ip string) bool {
 	cmd := exec.Command("ping", "-n", "3", "-w", "5000", ip)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Printf("Failed to ping host: %v\n", err)
+		fmt.Printf("Failed to ping host %s: %v\n", ip, err)
 		return false
 	}
 	return strings.Contains(string(output), "TTL=")
@@ -171,7 +172,8 @@ func nextIP(ip net.IP) net.IP {
 	return ip
 }
 
-// AddHost prompts for IP input, detects hostname, and appends to inventory.yaml if the host is alive
+// AddHost prompts for IP input, detects hostname and OS,
+// and appends to inventory.yaml if the host is alive.
 func AddHost(ipRange string) {
 	ips, err := parseIPRange(ipRange)
 	if err != nil {
@@ -193,16 +195,24 @@ func AddHost(ipRange string) {
 	var g errgroup.Group
 	var aliveHosts []Host
 
+	sshUser, sshPass := GetSSHCreds()
+
 	for _, ip := range ips {
 		ip := ip // capture range variable
 		g.Go(func() error {
 			if checkHostAlive(ip) {
 				hostname := detectHostname(ip)
-				newHost := Host{IP: ip, Hostname: hostname, OS: ""}
+				// Call osdetect.DetectOS to get the OS type
+				osType, err := osdetect.DetectOS(ip, sshUser, sshPass, 22)
+				if err != nil {
+					log.Printf("Error detecting OS for %s: %v", ip, err)
+					osType = "Unknown"
+				}
+				newHost := Host{IP: ip, Hostname: hostname, OS: osType}
 				mu.Lock()
 				aliveHosts = append(aliveHosts, newHost)
 				mu.Unlock()
-				fmt.Printf("Host %s is alive.\n", ip)
+				fmt.Printf("Host %s is alive. Detected OS: %s\n", ip, osType)
 			} else {
 				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
 			}
