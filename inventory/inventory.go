@@ -1,13 +1,18 @@
 // File: inventory.go
 // Directory: EagleDeploy_CLI/inventory
-// Purpose: Manages inventory data retrieval and provides an inventory management menu.
+// Purpose: Manages inventory data retrieval, adding hosts, managing inventory, and provides an inventory management menu.
 
 package inventory
 
 import (
 	"EagleDeploy_CLI/config"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net"
+	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
 // Inventory represents the structure of inventory.yaml
@@ -45,6 +50,19 @@ func LoadInventory() (*Inventory, error) {
 	return &inventory, nil
 }
 
+// SaveInventory writes the updated inventory back to inventory.yaml
+func SaveInventory(inv *Inventory) {
+	data, err := yaml.Marshal(inv)
+	if err != nil {
+		log.Printf("Failed to marshal inventory: %v", err)
+		return
+	}
+	err = ioutil.WriteFile("./inventory/inventory.yaml", data, 0644)
+	if err != nil {
+		log.Printf("Failed to write inventory.yaml: %v", err)
+	}
+}
+
 // GetHosts returns the list of hosts from the inventory
 func GetHosts() map[string]Host {
 	inv, err := LoadInventory()
@@ -55,7 +73,6 @@ func GetHosts() map[string]Host {
 	hostsMap := make(map[string]Host)
 	for _, host := range inv.Hosts {
 		hostsMap[host.IP] = host
-		hostsMap[host.Hostname] = host
 	}
 	return hostsMap
 }
@@ -80,13 +97,65 @@ func GetUsers() []User {
 	return inv.Users
 }
 
+// detectHostname attempts to resolve the hostname via DNS
+func detectHostname(ip string) string {
+	hostnames, err := net.LookupAddr(ip)
+	if err == nil && len(hostnames) > 0 {
+		return strings.TrimSuffix(hostnames[0], ".")
+	}
+	return ""
+}
+
+// AddHost prompts for IP input, detects hostname, and appends to inventory.yaml
+func AddHost(ip string) {
+	hostname := detectHostname(ip)
+	newHost := Host{IP: ip, Hostname: hostname, OS: ""}
+
+	inv, err := LoadInventory()
+	if err != nil {
+		inv = &Inventory{}
+	}
+	inv.Hosts = append(inv.Hosts, newHost)
+	SaveInventory(inv)
+	fmt.Printf("Added host: %s (Hostname: %s)\n", ip, hostname)
+}
+
+// ManageInventory allows modifying hosts, users, and SSH credentials
+func ManageInventory() {
+	for {
+		fmt.Println("\nManage Current Inventory:")
+		fmt.Println("1. Edit Hosts")
+		fmt.Println("2. Edit Users")
+		fmt.Println("3. Edit SSH Credentials")
+		fmt.Println("0. Return to Inventory Menu")
+		fmt.Print("Select an option: ")
+
+		var choice int
+		fmt.Scanln(&choice)
+
+		switch choice {
+		case 1:
+			fmt.Println("Editing hosts...") // Placeholder for future functionality
+		case 2:
+			fmt.Println("Editing users...") // Placeholder for future functionality
+		case 3:
+			fmt.Println("Editing SSH credentials...") // Placeholder for future functionality
+		case 0:
+			return
+		default:
+			fmt.Println("Invalid choice, please try again.")
+		}
+	}
+}
+
 // DisplayInventoryMenu provides an interactive menu for inventory management
 func DisplayInventoryMenu() {
 	for {
 		fmt.Println("\nInventory Management Menu:")
-		fmt.Println("1. List Hosts")
-		fmt.Println("2. Show SSH Credentials")
-		fmt.Println("3. List Users")
+		fmt.Println("1. Add Hosts")
+		fmt.Println("2. Manage Current Inventory")
+		fmt.Println("3. Show SSH Credentials")
+		fmt.Println("4. List Users")
 		fmt.Println("0. Return to Main Menu")
 		fmt.Print("Select an option: ")
 
@@ -95,14 +164,16 @@ func DisplayInventoryMenu() {
 
 		switch choice {
 		case 1:
-			fmt.Println("\nRegistered Hosts:")
-			for _, host := range GetHosts() {
-				fmt.Printf("- IP: %s, Hostname: %s, OS: %s\n", host.IP, host.Hostname, host.OS)
-			}
+			fmt.Print("Enter IP Address or Range: ")
+			var ip string
+			fmt.Scanln(&ip)
+			AddHost(ip)
 		case 2:
+			ManageInventory()
+		case 3:
 			user, pass := GetSSHCreds()
 			fmt.Printf("\nSSH User: %s\nSSH Password: %s\n", user, pass)
-		case 3:
+		case 4:
 			fmt.Println("\nRegistered Users:")
 			for _, user := range GetUsers() {
 				fmt.Printf("- Username: %s, Group: %s\n", user.Username, user.Group)
