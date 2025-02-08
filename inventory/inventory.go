@@ -283,6 +283,27 @@ func DeleteHost(index int) {
 	fmt.Println("Host deleted successfully")
 }
 
+// EditSSHCreds allows updating the SSH credentials in the inventory.
+func EditSSHCreds() {
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
+		return
+	}
+	var newUser, newPass string
+	fmt.Print("Enter new SSH username: ")
+	fmt.Scanln(&newUser)
+	fmt.Print("Enter new SSH password: ")
+	fmt.Scanln(&newPass)
+
+	inv.SSHCred = SSHCred{
+		SSHUser: newUser,
+		SSHPass: newPass,
+	}
+	SaveInventory(inv)
+	fmt.Println("SSH credentials updated successfully.")
+}
+
 // ManageInventory allows modifying hosts, users, and SSH credentials
 func ManageInventory() {
 	for {
@@ -290,8 +311,7 @@ func ManageInventory() {
 		fmt.Println("1. List Hosts")
 		fmt.Println("2. Update Host")
 		fmt.Println("3. Delete Host")
-		fmt.Println("4. Edit Users")
-		fmt.Println("5. Edit SSH Credentials")
+		fmt.Println("4. Edit SSH Credentials")
 		fmt.Println("0. Return to Inventory Menu")
 		fmt.Print("Select an option: ")
 
@@ -326,9 +346,7 @@ func ManageInventory() {
 			index-- // Convert to zero-based index
 			DeleteHost(index)
 		case 4:
-			fmt.Println("Editing users...") // Placeholder for future functionality
-		case 5:
-			fmt.Println("Editing SSH credentials...") // Placeholder for future functionality
+			EditSSHCreds()
 		case 0:
 			return
 		default:
