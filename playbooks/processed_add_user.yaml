@@ -3,95 +3,108 @@ version: "2.1"
 hosts:
   - "10.42.56.100"
   - "10.42.56.101"
+  - "10.42.56.102"
 vars:
   SSHCred:
     ssh_user: "eagleadmin"
     ssh_pass: "@dminPass123"
-  user_name: "steve"
-  user_password: "ComplexP@ssw0rd!"
+  user_name: "billybob"
+  user_password: "P@ssw0rd123"
 tasks:
-  - name: "Add user steve on Linux systems"
+  - name: "Add user billybob on Linux systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS in ["Linux", "Ubuntu", "Fedora"]
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "[{10.42.56.100  Linux
 } {10.42.56.101  Linux
+} {10.42.56.102  
+Microsoft Windows [Version 10.0.22631.4751]
 }]"
     loop_control:
       loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash steve
+      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash billybob
 
-  - name: "Add user steve on Windows systems"
+  - name: "Add user billybob on Windows systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS in ["Windows"]
+    when: item.OS | lower contains "windows"
     loop: "[{10.42.56.100  Linux
 } {10.42.56.101  Linux
+} {10.42.56.102  
+Microsoft Windows [Version 10.0.22631.4751]
 }]"
     loop_control:
       loop_var: item
     command: |
-      net user steve ComplexP@ssw0rd! /add
+      net user billybob P@ssw0rd123 /add
 
   - name: "Pause to ensure user creation"
     command: sleep 2
 
-  - name: "Verify user steve exists on Linux systems"
+  - name: "Verify user billybob exists on Linux systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS in ["Linux", "Ubuntu", "Fedora"]
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "[{10.42.56.100  Linux
 } {10.42.56.101  Linux
+} {10.42.56.102  
+Microsoft Windows [Version 10.0.22631.4751]
 }]"
     loop_control:
       loop_var: item
-    command: id steve
+    command: id billybob
     register: user_exists
     ignore_errors: true
 
-  - name: "Verify user steve exists on Windows systems"
+  - name: "Verify user billybob exists on Windows systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS in ["Windows"]
+    when: item.OS | lower contains "windows"
     loop: "[{10.42.56.100  Linux
 } {10.42.56.101  Linux
+} {10.42.56.102  
+Microsoft Windows [Version 10.0.22631.4751]
 }]"
     loop_control:
       loop_var: item
-    command: net user steve
+    command: net user billybob
     register: user_exists
     ignore_errors: true
 
-  - name: "Set password for user steve on Linux systems"
+  - name: "Set password for user billybob on Linux systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS in ["Linux", "Ubuntu", "Fedora"] and user_exists.rc == 0
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"] and user_exists.rc == 0
     loop: "[{10.42.56.100  Linux
 } {10.42.56.101  Linux
+} {10.42.56.102  
+Microsoft Windows [Version 10.0.22631.4751]
 }]"
     loop_control:
       loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S bash -c "echo 'steve:ComplexP@ssw0rd!' | chpasswd"
+      echo "@dminPass123" | sudo -S bash -c "echo 'billybob:P@ssw0rd123' | chpasswd"
 
-  - name: "Set password for user steve on Windows systems"
+  - name: "Set password for user billybob on Windows systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS in ["Windows"] and user_exists.rc == 0
+    when: item.OS | lower contains "windows" and user_exists.rc == 0
     loop: "[{10.42.56.100  Linux
 } {10.42.56.101  Linux
+} {10.42.56.102  
+Microsoft Windows [Version 10.0.22631.4751]
 }]"
     loop_control:
       loop_var: item
     command: |
-      net user steve ComplexP@ssw0rd!
+      net user billybob P@ssw0rd123
 
 settings:
   port: 22

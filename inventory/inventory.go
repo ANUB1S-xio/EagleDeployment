@@ -126,41 +126,51 @@ func checkHostAlive(ip string) bool {
 
 // parseIPRange parses an IP range string and returns a slice of IP addresses
 func parseIPRange(ipRange string) ([]string, error) {
+	fmt.Printf("Parsing IP range: %s\n", ipRange) // Debug statement
 	var ips []string
 	parts := strings.Split(ipRange, "-")
-	if len(parts) != 2 {
+	fmt.Printf("Parts: %v\n", parts) // Debug statement
+	if len(parts) == 1 {
+		// Single IP address
+		ip := net.ParseIP(parts[0])
+		if ip == nil {
+			return nil, fmt.Errorf("invalid IP address format")
+		}
+		return []string{ip.String()}, nil
+	} else if len(parts) == 2 {
+		// IP range
+		startIP := net.ParseIP(parts[0])
+		if startIP == nil {
+			return nil, fmt.Errorf("invalid start IP address")
+		}
+
+		var endIP net.IP
+		if strings.Contains(parts[1], ".") {
+			endIP = net.ParseIP(parts[1])
+			if endIP == nil {
+				return nil, fmt.Errorf("invalid end IP address")
+			}
+		} else {
+			// Handle the shorter format (e.g., 10.42.56.1-254)
+			startIPParts := strings.Split(parts[0], ".")
+			if len(startIPParts) != 4 {
+				return nil, fmt.Errorf("invalid start IP address format")
+			}
+			endIP = net.ParseIP(fmt.Sprintf("%s.%s.%s.%s", startIPParts[0], startIPParts[1], startIPParts[2], parts[1]))
+			if endIP == nil {
+				return nil, fmt.Errorf("invalid end IP address")
+			}
+		}
+
+		for ip := startIP; !ip.Equal(endIP); ip = nextIP(ip) {
+			ips = append(ips, ip.String())
+		}
+		ips = append(ips, endIP.String()) // Include the end IP
+
+		return ips, nil
+	} else {
 		return nil, fmt.Errorf("invalid IP range format")
 	}
-
-	startIP := net.ParseIP(parts[0])
-	if startIP == nil {
-		return nil, fmt.Errorf("invalid start IP address")
-	}
-
-	var endIP net.IP
-	if strings.Contains(parts[1], ".") {
-		endIP = net.ParseIP(parts[1])
-		if endIP == nil {
-			return nil, fmt.Errorf("invalid end IP address")
-		}
-	} else {
-		// Handle the shorter format (e.g., 10.42.56.1-254)
-		startIPParts := strings.Split(parts[0], ".")
-		if len(startIPParts) != 4 {
-			return nil, fmt.Errorf("invalid start IP address format")
-		}
-		endIP = net.ParseIP(fmt.Sprintf("%s.%s.%s.%s", startIPParts[0], startIPParts[1], startIPParts[2], parts[1]))
-		if endIP == nil {
-			return nil, fmt.Errorf("invalid end IP address")
-		}
-	}
-
-	for ip := startIP; !ip.Equal(endIP); ip = nextIP(ip) {
-		ips = append(ips, ip.String())
-	}
-	ips = append(ips, endIP.String()) // Include the end IP
-
-	return ips, nil
 }
 
 // nextIP returns the next IP address in sequence
@@ -175,9 +185,77 @@ func nextIP(ip net.IP) net.IP {
 	return ip
 }
 
-// AddHost prompts for IP input, detects hostname and OS,
-// and appends to inventory.yaml if the host is alive.
+// AddHost prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
 func AddHost(ipRange string) {
+	ips, err := parseIPRange(ipRange)
+	if err != nil {
+		fmt.Printf("Error parsing IP range: %v\n", err)
+		return
+	}
+
+	inv, err := LoadInventory()
+	if err != nil {
+		inv = &Inventory{}
+	}
+
+	existingHosts := make(map[string]bool)
+	for _, host := range inv.Hosts {
+		existingHosts[host.IP] = true
+	}
+
+	var mu sync.Mutex
+	var g errgroup.Group
+	var aliveHosts []Host
+
+	sshUser, sshPass := GetSSHCreds()
+
+	for _, ip := range ips {
+		ip := ip // capture range variable
+		g.Go(func() error {
+			if checkHostAlive(ip) {
+				hostname := detectHostname(ip)
+				// Call osdetect.DetectOS to get the OS type
+				osType, err := osdetect.DetectOS(ip, sshUser, sshPass, 22)
+				if err != nil {
+					log.Printf("Error detecting OS for %s: %v", ip, err)
+					osType = "Unknown"
+				}
+				newHost := Host{IP: ip, Hostname: hostname, OS: osType}
+				mu.Lock()
+				aliveHosts = append(aliveHosts, newHost)
+				mu.Unlock()
+				fmt.Printf("Host %s is alive. Detected OS: %s\n", ip, osType)
+			} else {
+				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
+			}
+			return nil
+		})
+	}
+
+	if err := g.Wait(); err != nil {
+		fmt.Printf("Error checking hosts: %v\n", err)
+	}
+
+	// Add alive hosts to inventory if they are not duplicates
+	for _, host := range aliveHosts {
+		if !existingHosts[host.IP] {
+			inv.Hosts = append(inv.Hosts, host)
+			existingHosts[host.IP] = true
+			fmt.Printf("Added host: %s (Hostname: %s)\n", host.IP, host.Hostname)
+		} else {
+			fmt.Printf("Host %s already exists in the inventory. Skipping.\n", host.IP)
+		}
+	}
+
+	SaveInventory(inv)
+}
+
+// scanAndAddIP prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
+func scanAndAddIP() {
+	fmt.Print("Enter IP Address or Range: ")
+	var ipRange string
+	fmt.Scanln(&ipRange)
+
 	ips, err := parseIPRange(ipRange)
 	if err != nil {
 		fmt.Printf("Error parsing IP range: %v\n", err)
@@ -374,10 +452,7 @@ func DisplayInventoryMenu() {
 
 		switch choice {
 		case 1:
-			fmt.Print("Enter IP Address or Range: ")
-			var ip string
-			fmt.Scanln(&ip)
-			AddHost(ip)
+			scanAndAddIP()
 		case 2:
 			ManageInventory()
 		case 3:
@@ -415,6 +490,15 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		SSHCred:      inv.SSHCred,
 		UserName:     "steve",            // Set the user name here
 		UserPassword: "ComplexP@ssw0rd!", // Set the user password here
+	}
+
+	// Truncate the password for Windows hosts
+	for i, host := range data.Hosts {
+		if strings.Contains(strings.ToLower(host.OS), "windows") {
+			if len(data.UserPassword) > 14 {
+				data.Hosts[i].OS = data.UserPassword[:14]
+			}
+		}
 	}
 
 	tmplBytes, err := ioutil.ReadFile(templatePath)

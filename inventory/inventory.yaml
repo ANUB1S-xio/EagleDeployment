@@ -7,6 +7,9 @@ Hosts:
   Hostname: ""
   OS: |
     Linux
+- IP: 10.42.56.102
+  Hostname: ""
+  OS: "\r\nMicrosoft Windows [Version 10.0.22631.4751]\r\n"
 SSH_CRED:
   ssh_user: eagleadmin
   ssh_pass: '@dminPass123'

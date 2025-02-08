@@ -15,7 +15,7 @@ tasks:
     ssh_user: "{{ .SSHCred.SSHUser }}"
     ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: item.OS in ["Linux", "Ubuntu", "Fedora"]
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
@@ -26,7 +26,7 @@ tasks:
     ssh_user: "{{ .SSHCred.SSHUser }}"
     ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: item.OS in ["Windows"]
+    when: item.OS | lower contains "windows"
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
@@ -40,7 +40,7 @@ tasks:
     ssh_user: "{{ .SSHCred.SSHUser }}"
     ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: item.OS in ["Linux", "Ubuntu", "Fedora"]
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
@@ -52,7 +52,7 @@ tasks:
     ssh_user: "{{ .SSHCred.SSHUser }}"
     ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: item.OS in ["Windows"]
+    when: item.OS | lower contains "windows"
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
@@ -64,7 +64,7 @@ tasks:
     ssh_user: "{{ .SSHCred.SSHUser }}"
     ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: item.OS in ["Linux", "Ubuntu", "Fedora"] and user_exists.rc == 0
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"] and user_exists.rc == 0
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
@@ -75,7 +75,7 @@ tasks:
     ssh_user: "{{ .SSHCred.SSHUser }}"
     ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: item.OS in ["Windows"] and user_exists.rc == 0
+    when: item.OS | lower contains "windows" and user_exists.rc == 0
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
