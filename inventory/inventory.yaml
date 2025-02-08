@@ -1,0 +1,16 @@
+Hosts:
+  - IP: 192.168.1.100
+    Hostname: server1
+    OS: ubuntu
+  - IP: 192.168.1.101
+    Hostname: server2
+    OS: fedora
+
+SSH_CRED:
+  ssh_user: eagleadmin
+  ssh_pass: "@dminPass123"
+
+Users:
+  - username: testuser
+    password: "ComplexP@ss"
+    group: admin

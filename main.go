@@ -7,8 +7,8 @@ package main
 import (
 	"EagleDeploy_CLI/config"
 	"EagleDeploy_CLI/executor"
+	"EagleDeploy_CLI/inventory"
 	"EagleDeploy_CLI/tasks"
-	"EagleDeploy_CLI/utils"
 	"fmt"
 	"log"
 	"os"
@@ -83,16 +83,6 @@ func executeYAML(playbookPath string, targetHosts []string) {
 		log.Fatalf("Invalid port value: %v", err)
 	}
 
-	// Detect OS and set command syntax
-	osCommands := utils.DetectOS()
-
-	// Pass detected variables to the playbook
-	playbook.Settings["package_update_command"] = osCommands.PackageUpdate
-	playbook.Settings["user_add_command"] = osCommands.UserAdd
-
-	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
-	fmt.Printf("Detected OS Commands: %+v\n", osCommands)
-
 	// Execute tasks concurrently using the executor package
 	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
 }
@@ -164,7 +154,7 @@ func main() {
 			}
 
 		case 3: // Manage Inventory
-			fmt.Println("Managing inventory (not yet implemented).")
+			inventory.DisplayInventoryMenu()
 
 		case 4: // Enable/Disable Detailed Logging
 			fmt.Print("Enable detailed logging? (y/n): ")
