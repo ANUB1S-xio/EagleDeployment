@@ -1,13 +1,25 @@
 Hosts:
-- IP: 192.168.1.100
-  Hostname: server1
-  OS: ubuntu
-- IP: 192.168.1.101
-  Hostname: server2
-  OS: fedora
+- IP: 10.42.56.91
+  Hostname: htl-docker.htl.local
+  OS: ""
+- IP: 10.42.56.101
+  Hostname: ""
+  OS: ""
+- IP: 10.42.56.100
+  Hostname: ""
+  OS: ""
+- IP: 10.42.56.91
+  Hostname: htl-docker.htl.local
+  OS: ""
+- IP: 10.42.56.101
+  Hostname: ""
+  OS: ""
+- IP: 10.42.56.100
+  Hostname: ""
+  OS: ""
 - IP: 10.42.56.102
   Hostname: ""
-  OS: Windows
+  OS: ""
 SSH_CRED:
   ssh_user: eagleadmin
   ssh_pass: '@dminPass123'

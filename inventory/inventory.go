@@ -10,8 +10,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os/exec"
 	"strings"
+	"sync"
 
+	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v2"
 )
 
@@ -106,18 +109,106 @@ func detectHostname(ip string) string {
 	return ""
 }
 
-// AddHost prompts for IP input, detects hostname, and appends to inventory.yaml
-func AddHost(ip string) {
-	hostname := detectHostname(ip)
-	newHost := Host{IP: ip, Hostname: hostname, OS: ""}
+// checkHostAlive uses the system's ping command to check if the host is alive
+func checkHostAlive(ip string) bool {
+	cmd := exec.Command("ping", "-n", "3", "-w", "5000", ip)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("Failed to ping host: %v\n", err)
+		return false
+	}
+	return strings.Contains(string(output), "TTL=")
+}
+
+// parseIPRange parses an IP range string and returns a slice of IP addresses
+func parseIPRange(ipRange string) ([]string, error) {
+	var ips []string
+	parts := strings.Split(ipRange, "-")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("invalid IP range format")
+	}
+
+	startIP := net.ParseIP(parts[0])
+	if startIP == nil {
+		return nil, fmt.Errorf("invalid start IP address")
+	}
+
+	var endIP net.IP
+	if strings.Contains(parts[1], ".") {
+		endIP = net.ParseIP(parts[1])
+		if endIP == nil {
+			return nil, fmt.Errorf("invalid end IP address")
+		}
+	} else {
+		// Handle the shorter format (e.g., 10.42.56.1-254)
+		startIPParts := strings.Split(parts[0], ".")
+		if len(startIPParts) != 4 {
+			return nil, fmt.Errorf("invalid start IP address format")
+		}
+		endIP = net.ParseIP(fmt.Sprintf("%s.%s.%s.%s", startIPParts[0], startIPParts[1], startIPParts[2], parts[1]))
+		if endIP == nil {
+			return nil, fmt.Errorf("invalid end IP address")
+		}
+	}
+
+	for ip := startIP; !ip.Equal(endIP); ip = nextIP(ip) {
+		ips = append(ips, ip.String())
+	}
+	ips = append(ips, endIP.String()) // Include the end IP
+
+	return ips, nil
+}
+
+// nextIP returns the next IP address in sequence
+func nextIP(ip net.IP) net.IP {
+	ip = ip.To4()
+	for j := len(ip) - 1; j >= 0; j-- {
+		ip[j]++
+		if ip[j] > 0 {
+			break
+		}
+	}
+	return ip
+}
+
+// AddHost prompts for IP input, detects hostname, and appends to inventory.yaml if the host is alive
+func AddHost(ipRange string) {
+	ips, err := parseIPRange(ipRange)
+	if err != nil {
+		fmt.Printf("Error parsing IP range: %v\n", err)
+		return
+	}
 
 	inv, err := LoadInventory()
 	if err != nil {
 		inv = &Inventory{}
 	}
-	inv.Hosts = append(inv.Hosts, newHost)
+
+	var mu sync.Mutex
+	var g errgroup.Group
+
+	for _, ip := range ips {
+		ip := ip // capture range variable
+		g.Go(func() error {
+			if checkHostAlive(ip) {
+				hostname := detectHostname(ip)
+				newHost := Host{IP: ip, Hostname: hostname, OS: ""}
+				mu.Lock()
+				inv.Hosts = append(inv.Hosts, newHost)
+				mu.Unlock()
+				fmt.Printf("Added host: %s (Hostname: %s)\n", ip, hostname)
+			} else {
+				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
+			}
+			return nil
+		})
+	}
+
+	if err := g.Wait(); err != nil {
+		fmt.Printf("Error adding hosts: %v\n", err)
+	}
+
 	SaveInventory(inv)
-	fmt.Printf("Added host: %s (Hostname: %s)\n", ip, hostname)
 }
 
 // ListHosts prints all current hosts in the inventory
