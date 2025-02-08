@@ -184,8 +184,14 @@ func AddHost(ipRange string) {
 		inv = &Inventory{}
 	}
 
+	existingHosts := make(map[string]bool)
+	for _, host := range inv.Hosts {
+		existingHosts[host.IP] = true
+	}
+
 	var mu sync.Mutex
 	var g errgroup.Group
+	var aliveHosts []Host
 
 	for _, ip := range ips {
 		ip := ip // capture range variable
@@ -194,9 +200,9 @@ func AddHost(ipRange string) {
 				hostname := detectHostname(ip)
 				newHost := Host{IP: ip, Hostname: hostname, OS: ""}
 				mu.Lock()
-				inv.Hosts = append(inv.Hosts, newHost)
+				aliveHosts = append(aliveHosts, newHost)
 				mu.Unlock()
-				fmt.Printf("Added host: %s (Hostname: %s)\n", ip, hostname)
+				fmt.Printf("Host %s is alive.\n", ip)
 			} else {
 				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
 			}
@@ -205,7 +211,18 @@ func AddHost(ipRange string) {
 	}
 
 	if err := g.Wait(); err != nil {
-		fmt.Printf("Error adding hosts: %v\n", err)
+		fmt.Printf("Error checking hosts: %v\n", err)
+	}
+
+	// Add alive hosts to inventory if they are not duplicates
+	for _, host := range aliveHosts {
+		if !existingHosts[host.IP] {
+			inv.Hosts = append(inv.Hosts, host)
+			existingHosts[host.IP] = true
+			fmt.Printf("Added host: %s (Hostname: %s)\n", host.IP, host.Hostname)
+		} else {
+			fmt.Printf("Host %s already exists in the inventory. Skipping.\n", host.IP)
+		}
 	}
 
 	SaveInventory(inv)

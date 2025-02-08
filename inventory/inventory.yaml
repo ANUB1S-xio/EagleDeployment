@@ -2,22 +2,13 @@ Hosts:
 - IP: 10.42.56.91
   Hostname: htl-docker.htl.local
   OS: ""
-- IP: 10.42.56.101
-  Hostname: ""
-  OS: ""
-- IP: 10.42.56.100
-  Hostname: ""
-  OS: ""
-- IP: 10.42.56.91
-  Hostname: htl-docker.htl.local
-  OS: ""
-- IP: 10.42.56.101
-  Hostname: ""
-  OS: ""
-- IP: 10.42.56.100
-  Hostname: ""
-  OS: ""
 - IP: 10.42.56.102
+  Hostname: ""
+  OS: ""
+- IP: 10.42.56.100
+  Hostname: ""
+  OS: ""
+- IP: 10.42.56.101
   Hostname: ""
   OS: ""
 SSH_CRED:
