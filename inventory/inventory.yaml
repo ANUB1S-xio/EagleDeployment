@@ -5,12 +5,9 @@ Hosts:
 - IP: 192.168.1.101
   Hostname: server2
   OS: fedora
-- IP: 10.42.56.95-103
+- IP: 10.42.56.102
   Hostname: ""
-  OS: ""
-- IP: 10.42.56.95-10.42.56.103
-  Hostname: ""
-  OS: ""
+  OS: Windows
 SSH_CRED:
   ssh_user: eagleadmin
   ssh_pass: '@dminPass123'

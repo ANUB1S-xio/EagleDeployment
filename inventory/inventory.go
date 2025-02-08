@@ -120,13 +120,60 @@ func AddHost(ip string) {
 	fmt.Printf("Added host: %s (Hostname: %s)\n", ip, hostname)
 }
 
+// ListHosts prints all current hosts in the inventory
+func ListHosts() {
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
+		return
+	}
+	fmt.Println("\nCurrent Hosts:")
+	for i, host := range inv.Hosts {
+		fmt.Printf("%d. IP: %s, Hostname: %s, OS: %s\n", i+1, host.IP, host.Hostname, host.OS)
+	}
+}
+
+// UpdateHost updates the details of a host in the inventory
+func UpdateHost(index int, newHost Host) {
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
+		return
+	}
+	if index < 0 || index >= len(inv.Hosts) {
+		fmt.Println("Invalid host index")
+		return
+	}
+	inv.Hosts[index] = newHost
+	SaveInventory(inv)
+	fmt.Println("Host updated successfully")
+}
+
+// DeleteHost removes a host from the inventory
+func DeleteHost(index int) {
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
+		return
+	}
+	if index < 0 || index >= len(inv.Hosts) {
+		fmt.Println("Invalid host index")
+		return
+	}
+	inv.Hosts = append(inv.Hosts[:index], inv.Hosts[index+1:]...)
+	SaveInventory(inv)
+	fmt.Println("Host deleted successfully")
+}
+
 // ManageInventory allows modifying hosts, users, and SSH credentials
 func ManageInventory() {
 	for {
 		fmt.Println("\nManage Current Inventory:")
-		fmt.Println("1. Edit Hosts")
-		fmt.Println("2. Edit Users")
-		fmt.Println("3. Edit SSH Credentials")
+		fmt.Println("1. List Hosts")
+		fmt.Println("2. Update Host")
+		fmt.Println("3. Delete Host")
+		fmt.Println("4. Edit Users")
+		fmt.Println("5. Edit SSH Credentials")
 		fmt.Println("0. Return to Inventory Menu")
 		fmt.Print("Select an option: ")
 
@@ -135,10 +182,34 @@ func ManageInventory() {
 
 		switch choice {
 		case 1:
-			fmt.Println("Editing hosts...") // Placeholder for future functionality
+			ListHosts()
 		case 2:
-			fmt.Println("Editing users...") // Placeholder for future functionality
+			ListHosts()
+			fmt.Print("Enter the index of the host to update: ")
+			var index int
+			fmt.Scanln(&index)
+			index-- // Convert to zero-based index
+			fmt.Print("Enter new IP: ")
+			var ip string
+			fmt.Scanln(&ip)
+			fmt.Print("Enter new Hostname: ")
+			var hostname string
+			fmt.Scanln(&hostname)
+			fmt.Print("Enter new OS: ")
+			var os string
+			fmt.Scanln(&os)
+			newHost := Host{IP: ip, Hostname: hostname, OS: os}
+			UpdateHost(index, newHost)
 		case 3:
+			ListHosts()
+			fmt.Print("Enter the index of the host to delete: ")
+			var index int
+			fmt.Scanln(&index)
+			index-- // Convert to zero-based index
+			DeleteHost(index)
+		case 4:
+			fmt.Println("Editing users...") // Placeholder for future functionality
+		case 5:
 			fmt.Println("Editing SSH credentials...") // Placeholder for future functionality
 		case 0:
 			return
