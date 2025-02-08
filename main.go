@@ -53,16 +53,20 @@ func listPlaybooks() []string {
 // - targetHosts: List of target hostnames or IPs to override default playbook hosts.
 // Called By: main (when a user selects a playbook to execute).
 // Succeeds: Executor functions for task execution.
+// Execute Playbook with Inventory Injection
 func executeYAML(playbookPath string, targetHosts []string) {
-	playbook := &tasks.Playbook{} // Load playbook into a structured format
-	err := config.LoadConfig(playbookPath, playbook)
+	// Process the playbook template by injecting inventory data
+	processedPlaybook := "./playbooks/processed_add_user.yaml"
+	err := inventory.InjectInventoryIntoPlaybook(playbookPath, processedPlaybook)
 	if err != nil {
-		log.Fatalf("Failed to load playbook: %v", err)
+		log.Fatalf("Failed to inject inventory into playbook: %v", err)
 	}
 
-	// Validate that the playbook contains tasks
-	if len(playbook.Tasks) == 0 {
-		log.Fatalf("No tasks found in the playbook.")
+	// Now load and execute the processed playbook
+	playbook := &tasks.Playbook{}
+	err = config.LoadConfig(processedPlaybook, playbook)
+	if err != nil {
+		log.Fatalf("Failed to load playbook: %v", err)
 	}
 
 	// Use targetHosts if provided; otherwise, use playbook hosts
@@ -71,13 +75,11 @@ func executeYAML(playbookPath string, targetHosts []string) {
 		hosts = targetHosts
 	}
 
-	// Get port setting from the playbook
+	// Get port setting from the playbook settings
 	portStr := playbook.Settings["port"]
 	if portStr == "" {
 		log.Fatalf("Port is not specified in the playbook settings.")
 	}
-
-	// Convert port from string to int
 	port, err := strconv.Atoi(portStr)
 	if err != nil {
 		log.Fatalf("Invalid port value: %v", err)

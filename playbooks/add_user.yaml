@@ -1,41 +1,86 @@
-# File: add_users.yaml
-# Directory Path: /EagleDeploy_CLI/
-
 name: "Basic_Add_Users"
 version: "2.1"
 hosts:
-  - "192.168.70.30" # ubuntu1
-  - "192.168.70.32" # ubuntu2
-  - "192.168.70.33" # fedora
+{{- range .Hosts }}
+  - "{{ .IP }}"
+{{- end }}
+vars:
+  SSHCred:
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_pass: "{{ .SSHCred.SSHPass }}"
+  user_name: "{{ .UserName }}"
+  user_password: "{{ .UserPassword }}"
 tasks:
-
-  - name: "Add user john on Linux systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "Add user {{ .UserName }} on Linux systems"
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: os_type.stdout in ["ubuntu", "fedora"]
+    when: item.OS in ["Linux", "Ubuntu", "Fedora"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash smith
+      echo "{{ .SSHCred.SSHPass }}" | sudo -S useradd -m -s /bin/bash {{ .UserName }}
+
+  - name: "Add user {{ .UserName }} on Windows systems"
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_password: "{{ .SSHCred.SSHPass }}"
+    port: 22
+    when: item.OS in ["Windows"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: |
+      net user {{ .UserName }} {{ .UserPassword }} /add
 
   - name: "Pause to ensure user creation"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
     command: sleep 2
 
-  - name: "Verify user john exists"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "Verify user {{ .UserName }} exists on Linux systems"
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    command: |
-      echo "@dminPass123" | sudo -S id smith
+    when: item.OS in ["Linux", "Ubuntu", "Fedora"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: id {{ .UserName }}
+    register: user_exists
+    ignore_errors: true
 
-  - name: "Set password for user john on Linux systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "Verify user {{ .UserName }} exists on Windows systems"
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_password: "{{ .SSHCred.SSHPass }}"
     port: 22
-    when: os_type.stdout in ["ubuntu", "fedora"]
+    when: item.OS in ["Windows"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: net user {{ .UserName }}
+    register: user_exists
+    ignore_errors: true
+
+  - name: "Set password for user {{ .UserName }} on Linux systems"
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_password: "{{ .SSHCred.SSHPass }}"
+    port: 22
+    when: item.OS in ["Linux", "Ubuntu", "Fedora"] and user_exists.rc == 0
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S bash -c "echo 'smith:ComplexP@ssw0rd!' | chpasswd"
+      echo "{{ .SSHCred.SSHPass }}" | sudo -S bash -c "echo '{{ .UserName }}:{{ .UserPassword }}' | chpasswd"
+
+  - name: "Set password for user {{ .UserName }} on Windows systems"
+    ssh_user: "{{ .SSHCred.SSHUser }}"
+    ssh_password: "{{ .SSHCred.SSHPass }}"
+    port: 22
+    when: item.OS in ["Windows"] and user_exists.rc == 0
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: |
+      net user {{ .UserName }} {{ .UserPassword }}
+
 settings:
-   port: 22
+  port: 22

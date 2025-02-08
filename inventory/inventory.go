@@ -7,13 +7,16 @@ package inventory
 import (
 	"EagleDeploy_CLI/config"
 	"EagleDeploy_CLI/osdetect"
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
 	"os/exec"
 	"strings"
 	"sync"
+	"text/template"
 
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v2"
@@ -391,4 +394,47 @@ func DisplayInventoryMenu() {
 			fmt.Println("Invalid choice, please try again.")
 		}
 	}
+}
+
+// InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
+// and writes the rendered output to outputPath.
+func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
+	inv, err := LoadInventory()
+	if err != nil {
+		return fmt.Errorf("failed to load inventory: %v", err)
+	}
+
+	// Prepare data structure containing all hosts (with OS), SSH credentials, and user details
+	data := struct {
+		Hosts        []Host
+		SSHCred      SSHCred
+		UserName     string
+		UserPassword string
+	}{
+		Hosts:        inv.Hosts,
+		SSHCred:      inv.SSHCred,
+		UserName:     "steve",            // Set the user name here
+		UserPassword: "ComplexP@ssw0rd!", // Set the user password here
+	}
+
+	tmplBytes, err := ioutil.ReadFile(templatePath)
+	if err != nil {
+		return fmt.Errorf("failed to read playbook template: %v", err)
+	}
+
+	tmpl, err := template.New("playbook").Parse(string(tmplBytes))
+	if err != nil {
+		return fmt.Errorf("failed to parse playbook template: %v", err)
+	}
+
+	var rendered bytes.Buffer
+	if err := tmpl.Execute(&rendered, data); err != nil {
+		return fmt.Errorf("failed to execute template: %v", err)
+	}
+
+	if err := os.WriteFile(outputPath, rendered.Bytes(), 0644); err != nil {
+		return fmt.Errorf("failed to write rendered playbook: %v", err)
+	}
+
+	return nil
 }
