@@ -32,6 +32,3 @@ func DetectOS(host, user, password string, port int) (string, error) {
 
 	return "Unknown", fmt.Errorf("unable to determine OS for host %s", host)
 }
-
-// NOTE: The UpdateInventory function that depended on the inventory package has been removed
-// to prevent import cycles. Inventory updates using OS detection should be handled in the inventory package.
