@@ -84,8 +84,15 @@ func GetHosts() map[string]Host {
 	return hostsMap
 }
 
-// GetSSHCreds returns SSH credentials from inventory.yaml
+// GetSSHCreds returns SSH credentials from environment variables or inventory.yaml
 func GetSSHCreds() (string, string) {
+	sshUser := os.Getenv("SSH_USER")
+	sshPass := os.Getenv("SSH_PASS")
+
+	if sshUser != "" && sshPass != "" {
+		return sshUser, sshPass
+	}
+
 	inv, err := LoadInventory()
 	if err != nil {
 		log.Printf("Error retrieving SSH credentials: %v", err)
@@ -479,26 +486,36 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		return fmt.Errorf("failed to load inventory: %v", err)
 	}
 
-	// Prepare data structure containing all hosts (with OS), SSH credentials, and user details
+	sshUser, sshPass := GetSSHCreds()
+
+	// Prepare template data
 	data := struct {
-		Hosts        []Host
-		SSHCred      SSHCred
-		UserName     string
-		UserPassword string
+		Hosts   []Host
+		SSHCred SSHCred
+		Vars    struct {
+			UserName     string
+			UserPassword string
+		}
 	}{
-		Hosts:        inv.Hosts,
-		SSHCred:      inv.SSHCred,
-		UserName:     "steve",            // Set the user name here
-		UserPassword: "ComplexP@ssw0rd!", // Set the user password here
+		Hosts: inv.Hosts,
+		SSHCred: SSHCred{
+			SSHUser: sshUser,
+			SSHPass: sshPass,
+		},
+		Vars: struct {
+			UserName     string
+			UserPassword string
+		}{
+			UserName:     "stevensupreme",
+			UserPassword: "aw3some!",
+		},
 	}
 
-	// Truncate the password for Windows hosts
-	for i, host := range data.Hosts {
-		if strings.Contains(strings.ToLower(host.OS), "windows") {
-			if len(data.UserPassword) > 14 {
-				data.Hosts[i].OS = data.UserPassword[:14]
-			}
-		}
+	// Create template with custom functions
+	funcMap := template.FuncMap{
+		"env":      os.Getenv,
+		"lower":    strings.ToLower,
+		"contains": strings.Contains,
 	}
 
 	tmplBytes, err := ioutil.ReadFile(templatePath)
@@ -506,7 +523,7 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		return fmt.Errorf("failed to read playbook template: %v", err)
 	}
 
-	tmpl, err := template.New("playbook").Parse(string(tmplBytes))
+	tmpl, err := template.New("playbook").Funcs(funcMap).Parse(string(tmplBytes))
 	if err != nil {
 		return fmt.Errorf("failed to parse playbook template: %v", err)
 	}
