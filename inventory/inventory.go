@@ -504,13 +504,11 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 			SSHUser: sshUser,
 			SSHPass: sshPass,
 		},
+		// Let these be empty - they will be set by the playbook
 		Vars: struct {
 			UserName     string
 			UserPassword string
-		}{
-			UserName:     "stevensupreme",
-			UserPassword: "aw3some!",
-		},
+		}{},
 	}
 
 	// Create template with custom functions

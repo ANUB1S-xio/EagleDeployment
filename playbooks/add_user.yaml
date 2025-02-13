@@ -5,8 +5,8 @@ hosts:
   - "{{ .IP }}"
 {{- end }}
 vars:
-  user_name: "{{ .Vars.UserName }}"      # Maps to struct field
-  user_password: "{{ .Vars.UserPassword }}"  # Maps to struct field
+  user_name: "new_admin"      # Change this value to set the username
+  user_password: "P@ssw0rd"   # Change this value to set the password
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -17,7 +17,7 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .vars.user_name }}"
 
   - name: "Add user on Windows systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
