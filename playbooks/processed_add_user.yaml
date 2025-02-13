@@ -5,8 +5,8 @@ hosts:
   - "10.42.56.101"
   - "10.42.56.102"
 vars:
-  user_name: "stevensupreme"
-  user_password: "aw3some!"
+  user_name: "stevensupreme"      # Maps to struct field
+  user_password: "aw3some!"  # Maps to struct field
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "eagleadmin"

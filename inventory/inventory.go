@@ -86,13 +86,15 @@ func GetHosts() map[string]Host {
 
 // GetSSHCreds returns SSH credentials from environment variables or inventory.yaml
 func GetSSHCreds() (string, string) {
-	sshUser := os.Getenv("SSH_USER")
-	sshPass := os.Getenv("SSH_PASS")
+	// First try to get from environment variables
+	sshUser := os.Getenv("EAGLE_SSH_USER")
+	sshPass := os.Getenv("EAGLE_SSH_PASS")
 
 	if sshUser != "" && sshPass != "" {
 		return sshUser, sshPass
 	}
 
+	// Fallback to inventory.yaml
 	inv, err := LoadInventory()
 	if err != nil {
 		log.Printf("Error retrieving SSH credentials: %v", err)

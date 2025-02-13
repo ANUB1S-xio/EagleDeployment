@@ -5,23 +5,23 @@ hosts:
   - "{{ .IP }}"
 {{- end }}
 vars:
-  user_name: "{{ .Vars.UserName }}"
-  user_password: "{{ .Vars.UserPassword }}"
+  user_name: "{{ .Vars.UserName }}"      # Maps to struct field
+  user_password: "{{ .Vars.UserPassword }}"  # Maps to struct field
 tasks:
   - name: "Add user on Linux systems"
-    ssh_user: "{{ .SSHCred.SSHUser }}"
-    ssh_password: "{{ .SSHCred.SSHPass }}"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
     when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
     command: |
-      echo "{{ .SSHCred.SSHPass }}" | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
 
   - name: "Add user on Windows systems"
-    ssh_user: "{{ .SSHCred.SSHUser }}"
-    ssh_password: "{{ .SSHCred.SSHPass }}"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
     when: item.OS | lower contains "windows"
     loop: "{{ .Hosts }}"
@@ -34,8 +34,8 @@ tasks:
     command: sleep 2
 
   - name: "Verify user exists on Linux systems"
-    ssh_user: "{{ .SSHCred.SSHUser }}"
-    ssh_password: "{{ .SSHCred.SSHPass }}"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
     when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "{{ .Hosts }}"
@@ -47,8 +47,8 @@ tasks:
     ignore_errors: true
 
   - name: "Verify user exists on Windows systems"
-    ssh_user: "{{ .SSHCred.SSHUser }}"
-    ssh_password: "{{ .SSHCred.SSHPass }}"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
     when: item.OS | lower contains "windows"
     loop: "{{ .Hosts }}"
@@ -59,19 +59,19 @@ tasks:
     ignore_errors: true
 
   - name: "Set password for user on Linux systems"
-    ssh_user: "{{ .SSHCred.SSHUser }}"
-    ssh_password: "{{ .SSHCred.SSHPass }}"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
     when: item.OS | lower in ["linux", "ubuntu", "fedora"] and user_exists.rc == 0
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
     command: |
-      echo "{{ .SSHCred.SSHPass }}" | sudo -S bash -c "echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | chpasswd"
+      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S bash -c "echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | chpasswd"
 
   - name: "Set password for user on Windows systems"
-    ssh_user: "{{ .SSHCred.SSHUser }}"
-    ssh_password: "{{ .SSHCred.SSHPass }}"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
     when: item.OS | lower contains "windows" and user_exists.rc == 0
     loop: "{{ .Hosts }}"
