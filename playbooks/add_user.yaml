@@ -7,6 +7,8 @@ hosts:
 vars:
   user_name: "new_admin"      # Change this value to set the username
   user_password: "P@ssw0rd"   # Change this value to set the password
+  eagle_user: "default_user"
+  eagle_pass: "default_pass"
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -29,6 +31,18 @@ tasks:
       loop_var: item
     command: |
       net user "{{ .Vars.UserName }}" "{{ .Vars.UserPassword }}" /add
+
+  - name: "Add user on Linux"
+    shell: |
+      sudo useradd -m {{ eagle_user }}
+      echo "{{ eagle_user }}:{{ eagle_pass }}" | sudo chpasswd
+    when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+
+  - name: "Add user on Windows"
+    shell: |
+      net user {{ eagle_user }} {{ eagle_pass }} /add
+      net localgroup Administrators {{ eagle_user }} /add
+    when: ansible_os_family == "Windows"
 
   - name: "Pause to ensure user creation"
     command: sleep 2
