@@ -7,8 +7,6 @@ hosts:
 vars:
   user_name: "new_admin"      # Change this value to set the username
   user_password: "P@ssw0rd"   # Change this value to set the password
-  eagle_user: "default_user"
-  eagle_pass: "default_pass"
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -19,7 +17,7 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .vars.user_name }}"
+      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
 
   - name: "Add user on Windows systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -31,21 +29,6 @@ tasks:
       loop_var: item
     command: |
       net user "{{ .Vars.UserName }}" "{{ .Vars.UserPassword }}" /add
-
-  - name: "Add user on Linux"
-    shell: |
-      sudo useradd -m {{ eagle_user }}
-      echo "{{ eagle_user }}:{{ eagle_pass }}" | sudo chpasswd
-    when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"
-
-  - name: "Add user on Windows"
-    shell: |
-      net user {{ eagle_user }} {{ eagle_pass }} /add
-      net localgroup Administrators {{ eagle_user }} /add
-    when: ansible_os_family == "Windows"
-
-  - name: "Pause to ensure user creation"
-    command: sleep 2
 
   - name: "Verify user exists on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -68,7 +51,8 @@ tasks:
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
-    command: net user "{{ .Vars.UserName }}"
+    command: |
+      net user "{{ .Vars.UserName }}"
     register: user_exists
     ignore_errors: true
 
@@ -82,17 +66,6 @@ tasks:
       loop_var: item
     command: |
       echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S bash -c "echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | chpasswd"
-
-  - name: "Set password for user on Windows systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when: item.OS | lower contains "windows" and user_exists.rc == 0
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      net user "{{ .Vars.UserName }}" "{{ .Vars.UserPassword }}"
 
 settings:
   port: 22

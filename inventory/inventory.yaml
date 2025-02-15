@@ -1,12 +1,11 @@
 Hosts:
+- IP: 10.42.56.101
+  Hostname: node1-hunterpc
+  OS: Linux - Ubuntu 24.04
 - IP: 10.42.56.100
   Hostname: ""
-  OS: |
-    Linux
-- IP: 10.42.56.101
-  Hostname: ""
-  OS: |
-    Linux
+  OS: Linux - Ubuntu 24.04
 - IP: 10.42.56.102
-  Hostname: ""
-  OS: "\r\nMicrosoft Windows [Version 10.0.22631.4751]\r\n"
+  Hostname: Node_3
+  OS: Windows 11 Pro
+
