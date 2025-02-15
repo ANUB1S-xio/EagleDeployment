@@ -46,24 +46,10 @@ specifications:
 
 Next Steps to Improve Alignment:
 
-    Concurrency:
-
-        - Implement concurrent task execution across hosts. Go’s goroutines would allow us to deploy 
-          tasks in parallel, improving scalability.
-
-    State Management:
-
-        - Introduce a stateful tracking system (e.g., SQLite) to record task status and allow for rollback 
-          or retry in future executions.
-
     Class-based Refactoring:
 
         - Refactor the tool into components resembling CommandParser, ExecuteCommand, and ErrorHandling. 
           This would give the structure more modularity, allowing future expansion for additional commands 
           and error-handling strategies.
 
-    Plugins and Modules:
 
-        - Implement a plugin system that lets users extend functionality by adding custom modules. This 
-          could allow for tailored tasks like package installation, service management, or monitoring as 
-          outlined in the use case diagram.
