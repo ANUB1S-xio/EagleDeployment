@@ -5,8 +5,8 @@ hosts:
   - "{{ .IP }}"
 {{- end }}
 vars:
-  user_name: "new_admin"      # Change this value to set the username
-  user_password: "P@ssw0rd"   # Change this value to set the password
+  user_name: "{{ .Vars.UserName }}"      # Use the passed username from inventory file
+  user_password: "{{ .Vars.UserPassword }}"   # Use the passed password from inventory file
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -30,37 +30,11 @@ tasks:
     command: |
       net user "{{ .Vars.UserName }}" "{{ .Vars.UserPassword }}" /add
 
-  - name: "Verify user exists on Linux systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      id "{{ .Vars.UserName }}"
-    register: user_exists
-    ignore_errors: true
-
-  - name: "Verify user exists on Windows systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when: item.OS | lower contains "windows"
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      net user "{{ .Vars.UserName }}"
-    register: user_exists
-    ignore_errors: true
-
   - name: "Set password for user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
     ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: item.OS | lower in ["linux", "ubuntu", "fedora"] and user_exists.rc == 0
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item

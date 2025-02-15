@@ -490,6 +490,51 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 
 	sshUser, sshPass := GetSSHCreds()
 
+	// Initialize user credentials
+	var userName, userPass string
+
+	// Check inventory for users first
+	if len(inv.Users) > 0 {
+		// Use the first user from inventory
+		if inv.Users[0].Username != "" && inv.Users[0].Password != "" {
+			userName = inv.Users[0].Username
+			userPass = inv.Users[0].Password
+			log.Printf("Using existing user from inventory: %s", userName)
+		} else {
+			log.Printf("Invalid user in inventory, prompting for new credentials")
+		}
+	}
+
+	// Prompt for credentials if we don't have valid ones
+	if userName == "" || userPass == "" {
+		// Prompt for user credentials
+		fmt.Print("Enter username for new user: ")
+		fmt.Scanln(&userName)
+		fmt.Print("Enter password for new user: ")
+		fmt.Scanln(&userPass)
+
+		if userName != "" && userPass != "" {
+			// Create new user in inventory
+			newUser := User{
+				Username: userName,
+				Password: userPass,
+				Group:    "users",
+			}
+
+			// Clear existing users if any
+			inv.Users = []User{newUser}
+			SaveInventory(inv)
+			log.Printf("Created new user: %s", userName)
+		} else {
+			return fmt.Errorf("username and password cannot be empty")
+		}
+	}
+
+	// Final verification of credentials
+	if userName == "" || userPass == "" {
+		return fmt.Errorf("failed to get user credentials - please enter valid credentials")
+	}
+
 	// Prepare template data
 	data := struct {
 		Hosts   []Host
@@ -504,11 +549,13 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 			SSHUser: sshUser,
 			SSHPass: sshPass,
 		},
-		// Let these be empty - they will be set by the playbook
 		Vars: struct {
 			UserName     string
 			UserPassword string
-		}{},
+		}{
+			UserName:     userName,
+			UserPassword: userPass,
+		},
 	}
 
 	// Create template with custom functions

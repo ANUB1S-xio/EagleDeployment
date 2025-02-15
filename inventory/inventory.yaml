@@ -8,4 +8,10 @@ Hosts:
 - IP: 10.42.56.102
   Hostname: Node_3
   OS: Windows 11 Pro
-
+SSH_CRED:
+  ssh_user: ""
+  ssh_pass: ""
+Users:
+- username: test_user01
+  password: tes123_pa12s#
+  group: users
