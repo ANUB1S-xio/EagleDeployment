@@ -113,7 +113,7 @@ nav ul li a:hover::before {
 
 /* Individual Box Styling */
 .info div {
-    width: 47%; /* Ensures boxes do not touch */
+    width: 85%; /* Ensures boxes do not touch */
     padding: 35px;
     background: linear-gradient(to right, #0d0d0d, #1a1a1a); /* Keeping the black theme */
     border-radius: 15px; /* KEEPING ROUNDED CORNERS */
