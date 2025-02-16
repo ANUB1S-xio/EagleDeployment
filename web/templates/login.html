@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="/web/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/login.css">
 </head>
 <body>
     <div class="login-container">
@@ -15,21 +16,21 @@
             <button type="submit">LOGIN</button>
         </form>
         <div class="oauth-login">
-            <button onclick="window.location.href='/web/auth/github'">Sign in with GitHub</button>
-            <button onclick="window.location.href='/web/auth/google'">Sign in with Google</button>
+            <button onclick="window.location.href='/auth/github'">Sign in with GitHub</button>
+            <button onclick="window.location.href='/auth/google'">Sign in with Google</button>
         </div>
     </div>
 
     <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault();
-            fetch("/web/auth/login", {
+            fetch("/auth/login", {
                 method: "POST",
                 body: new FormData(this)
             }).then(response => response.json())
               .then(data => {
                   if (data.success) {
-                      window.location.href = "/web/dashboard.html";
+                      window.location.href = "/dashboard.html";
                   } else {
                       alert("Invalid credentials");
                   }
