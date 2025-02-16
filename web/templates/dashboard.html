@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/web/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
     <header>
         <div class="logo">Eagle<span>Nexus</span></div>
         <nav>
             <ul>
-                <li><a href="/web/dashboard.html">Dashboard</a></li>
-                <li><a href="/web/logout">Logout</a></li>
+                <li><a href="/dashboard.html">Dashboard</a></li>
+                <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -30,11 +31,11 @@
     </main>
     
     <script>
-        fetch("/web/auth/status")
+        fetch("/auth/status")
             .then(response => response.json())
             .then(data => {
                 if (!data.authenticated) {
-                    window.location.href = "/web/login.html";
+                    window.location.href = "/login.html";
                 }
             });
     </script>
