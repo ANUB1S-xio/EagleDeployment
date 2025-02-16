@@ -4,7 +4,7 @@
 /* General Styles */
 body {
     font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle, rgba(0, 128, 64, 0.3), rgba(0, 0, 0, 1)); /* Dark Green */
+    background: radial-gradient(circle, rgba(0, 255, 153, 0.2), rgba(0, 0, 0, 1)); /* Keeping the original black theme */
     color: white;
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(to right, #041f1a, #0c3b2e); /* Dark Green Navbar */
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a); /* Keeping original black navbar */
     padding: 15px 40px;
     width: 100%;
     box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.4);
@@ -82,23 +82,30 @@ nav ul li a:hover::before {
     margin-right: 20px;
 }
 
+/* ========================================= */
+/* HERO SECTION (Black Background Box) FIXED */
+/* ========================================= */
 .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 100px); /* Makes sure it stretches fully to bottom */
-    width: 100%; /* Stretches across full width */
-    background: linear-gradient(to bottom right, #0a291f, #123d2a); /* Dark Green Gradient */
-    border-radius: 0px; /* No rounding on edges */
+    height: calc(100vh - 100px); /* Ensures it stretches to full page */
+    width: 95%; /* Ensures it reaches close to the edges */
+    max-width: 1600px;
+    background: linear-gradient(to bottom right, #1a1a1a, #2d2d2d); /* Keeping the black theme */
+    border-radius: 20px; /* KEEPING ROUNDED CORNERS */
     box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.6);
     padding: 50px;
-    margin-top: 20px; /* Equal space from navbar */
+    margin: 40px auto; /* Ensures equal top and bottom spacing */
 }
 
+/* ========================================= */
+/* SUPPORT & ABOUT US SPACING FIX */
+/* ========================================= */
 .info {
     display: flex;
-    justify-content: space-between; /* Ensures even spacing */
+    justify-content: space-between; /* Proper spacing between boxes */
     width: 90%;
     max-width: 1300px;
     margin-top: 40px;
@@ -106,19 +113,19 @@ nav ul li a:hover::before {
 
 /* Individual Box Styling */
 .info div {
-    width: 47%; /* Makes sure they are not touching */
+    width: 47%; /* Ensures boxes do not touch */
     padding: 35px;
-    background: linear-gradient(to right, #0d3328, #125341); /* Dark Green Box */
-    border-radius: 10px;
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a); /* Keeping the black theme */
+    border-radius: 15px; /* KEEPING ROUNDED CORNERS */
     box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.4);
     text-align: center;
     font-family: 'Orbitron', sans-serif;
     color: white;
 }
 
-/* Buttons - Dark Green Theme */
+/* Buttons */
 button {
-    background: #00aa77;
+    background: #00ff99;
     border: none;
     padding: 12px 20px;
     color: black;
@@ -132,7 +139,7 @@ button {
 }
 
 button:hover {
-    background: #00885d;
+    background: #00cc77;
     transform: scale(1.05);
     box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
 }
