@@ -91,6 +91,8 @@ nav ul li a:hover::before {
     height: 1100px; /* Adjusted height */
     width: 100%; /* Ensure it does not touch webpage edges */
     max-width: 4000px;
+    margin-left: 40px;
+    margin-right: 40px;
     background: linear-gradient(to bottom right, #1a1a1a, #2d2d2d);
     border-radius: 20px;
     box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.6);
