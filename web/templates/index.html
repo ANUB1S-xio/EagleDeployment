@@ -31,28 +31,25 @@
     </main>
     
     <script>
-        document.getElementById('menuLink').addEventListener('click', function(event) {
+        function checkAuthAndRedirect(target) {
             fetch('/auth/status')
                 .then(response => response.json())
                 .then(data => {
                     if (!data.authenticated) {
                         window.location.href = '/login.html';
                     } else {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = target;
                     }
-                });
+                })
+                .catch(error => console.error('Error checking auth status:', error));
+        }
+
+        document.getElementById('menuLink').addEventListener('click', function(event) {
+            checkAuthAndRedirect('/dashboard.html');
         });
 
         document.getElementById('eagleDeployLink').addEventListener('click', function(event) {
-            fetch('/auth/status')
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.authenticated) {
-                        window.location.href = '/login.html';
-                    } else {
-                        window.location.href = '/eagledeploy.html';
-                    }
-                });
+            checkAuthAndRedirect('/eagledeploy.html');
         });
 
         document.getElementById('signInButton').addEventListener('click', function() {
