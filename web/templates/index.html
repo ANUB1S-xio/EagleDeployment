@@ -14,8 +14,6 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="#" id="menuLink">Menu</a></li>
                 <li><a href="#" id="eagleDeployLink">EagleDeploy</a></li>
-                <li><a href="/support">Support</a></li>
-                <li><a href="/about">About Us</a></li>
             </ul>
         </nav>
         <div class="auth-container">
@@ -28,28 +26,44 @@
         <section class="hero">
             <img src="/static/images/laptop.jpg" alt="Hero Image">
         </section>
+
+        <section class="info">
+            <div class="support">
+                <h2>Support</h2>
+                <p>If you need help, our support team is available 24/7.</p>
+                <button onclick="location.href='/login.html'">Contact Support</button>
+            </div>
+
+            <div class="about">
+                <h2>About Us</h2>
+                <p>Eagle Nexus is a powerful automation tool designed for efficient deployment.</p>
+            </div>
+        </section>
     </main>
-    
+
     <script>
-        function checkAuthAndRedirect(target) {
+        document.getElementById('menuLink').addEventListener('click', function() {
             fetch('/auth/status')
                 .then(response => response.json())
                 .then(data => {
                     if (!data.authenticated) {
                         window.location.href = '/login.html';
                     } else {
-                        window.location.href = target;
+                        window.location.href = '/dashboard.html';
                     }
-                })
-                .catch(error => console.error('Error checking auth status:', error));
-        }
-
-        document.getElementById('menuLink').addEventListener('click', function(event) {
-            checkAuthAndRedirect('/dashboard.html');
+                });
         });
 
-        document.getElementById('eagleDeployLink').addEventListener('click', function(event) {
-            checkAuthAndRedirect('/eagledeploy.html');
+        document.getElementById('eagleDeployLink').addEventListener('click', function() {
+            fetch('/auth/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.authenticated) {
+                        window.location.href = '/login.html';
+                    } else {
+                        window.location.href = '/eagledeploy.html';
+                    }
+                });
         });
 
         document.getElementById('signInButton').addEventListener('click', function() {
