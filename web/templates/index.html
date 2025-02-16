@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eagle Nexus - Home</title>
+    <link rel="stylesheet" href="/web/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Eagle<span>Nexus</span></div>
+        <nav>
+            <ul>
+                <li><a href="/web/index.html">Home</a></li>
+                <li><a href="#" id="menuLink">Menu</a></li>
+                <li><a href="/web/eagledeploy">EagleDeploy</a></li>
+                <li><a href="/web/support">Support</a></li>
+                <li><a href="/web/about">About Us</a></li>
+            </ul>
+        </nav>
+        <div class="auth-container">
+            <input type="text" placeholder="Search">
+            <button onclick="location.href='/web/login.html'">Sign In</button>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <img src="/web/static/images/laptop.jpg" alt="Hero Image">
+        </section>
+    </main>
+    
+    <script>
+        document.getElementById('menuLink').addEventListener('click', function(event) {
+            fetch('/web/auth/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.authenticated) {
+                        window.location.href = '/web/login.html';
+                    } else {
+                        window.location.href = '/web/dashboard.html';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
