@@ -51,7 +51,8 @@
                     } else {
                         window.location.href = '/dashboard.html';
                     }
-                });
+                })
+                .catch(() => window.location.href = '/login.html');
         });
 
         document.getElementById('eagleDeployLink').addEventListener('click', function() {
@@ -63,7 +64,8 @@
                     } else {
                         window.location.href = '/eagledeploy.html';
                     }
-                });
+                })
+                .catch(() => window.location.href = '/login.html');
         });
 
         document.getElementById('signInButton').addEventListener('click', function() {
