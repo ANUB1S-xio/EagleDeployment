@@ -4,7 +4,7 @@
 /* General Styles */
 body {
     font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle, rgba(0, 255, 153, 0.2), rgba(0, 0, 0, 1));
+    background: radial-gradient(circle, rgba(0, 128, 64, 0.3), rgba(0, 0, 0, 1)); /* Dark Green */
     color: white;
     margin: 0;
     padding: 0;
@@ -19,13 +19,13 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    background: linear-gradient(to right, #041f1a, #0c3b2e); /* Dark Green Navbar */
     padding: 15px 40px;
     width: 100%;
     box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.4);
 }
 
-/* Logo - Added Left Margin */
+/* Logo */
 .logo {
     font-size: 24px;
     font-weight: bold;
@@ -33,7 +33,7 @@ header {
     margin-left: 20px;
 }
 
-/* Navigation - Increased Spacing Between Items */
+/* Navigation */
 nav ul {
     list-style: none;
     display: flex;
@@ -82,39 +82,33 @@ nav ul li a:hover::before {
     margin-right: 20px;
 }
 
-/* Hero Section - Properly Spaced & Not Touching Navbar */
 .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 1100px; /* Adjusted height */
-    width: 100%; /* Ensure it does not touch webpage edges */
-    max-width: 4000px;
-    margin-left: 40px;
-    margin-right: 40px;
-    background: linear-gradient(to bottom right, #1a1a1a, #2d2d2d);
-    border-radius: 20px;
+    height: calc(100vh - 100px); /* Makes sure it stretches fully to bottom */
+    width: 100%; /* Stretches across full width */
+    background: linear-gradient(to bottom right, #0a291f, #123d2a); /* Dark Green Gradient */
+    border-radius: 0px; /* No rounding on edges */
     box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.6);
     padding: 50px;
-    margin-top: 40px; /* Space from navbar */
-    margin-bottom: 40px; /* Proper bottom spacing */
+    margin-top: 20px; /* Equal space from navbar */
 }
 
-/* Support & About Us - Properly Spaced Horizontally */
 .info {
     display: flex;
-    justify-content: space-evenly; /* Ensure spacing between them */
+    justify-content: space-between; /* Ensures even spacing */
     width: 90%;
-    max-width: 1200px;
-    margin-top: 30px;
+    max-width: 1300px;
+    margin-top: 40px;
 }
 
-/* Support & About Us Box Styling */
+/* Individual Box Styling */
 .info div {
-    width: 45%; /* Ensure proper spacing */
-    padding: 30px;
-    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    width: 47%; /* Makes sure they are not touching */
+    padding: 35px;
+    background: linear-gradient(to right, #0d3328, #125341); /* Dark Green Box */
     border-radius: 10px;
     box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.4);
     text-align: center;
@@ -122,9 +116,9 @@ nav ul li a:hover::before {
     color: white;
 }
 
-/* Buttons - Neon Glow Effect */
+/* Buttons - Dark Green Theme */
 button {
-    background: #00ff99;
+    background: #00aa77;
     border: none;
     padding: 12px 20px;
     color: black;
@@ -138,7 +132,7 @@ button {
 }
 
 button:hover {
-    background: #00cc77;
+    background: #00885d;
     transform: scale(1.05);
     box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
 }
