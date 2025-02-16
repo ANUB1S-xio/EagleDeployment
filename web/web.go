@@ -43,18 +43,24 @@ func StartWebServer() {
 	//fs := http.FileServer(http.Dir("web/frontend/build"))
 	//http.Handle("/", fs)
 	// Serve static files
-	http.Handle("/web/static/", http.StripPrefix("/web/static/", http.FileServer(http.Dir("web/static"))))
+	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("web/static"))))
 
-	// Serve HTML pages
-	http.HandleFunc("/web/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/index.html")
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    		if r.URL.Path == "/" {
+        		http.ServeFile(w, r, "web/templates/index.html")
+   		} else {
+        		http.NotFound(w, r)
+    		}
 	})
-	http.HandleFunc("/web/login.html", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/login.html")
+
+	http.HandleFunc("/login.html", func(w http.ResponseWriter, r *http.Request) {
+    		http.ServeFile(w, r, "web/templates/login.html")
 	})
-	http.HandleFunc("/web/dashboard.html", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/dashboard.html")
+
+	http.HandleFunc("/dashboard.html", func(w http.ResponseWriter, r *http.Request) {
+    		http.ServeFile(w, r, "web/templates/dashboard.html")
 	})
+
 
 	// Start HTTP server on localhost (ED internally used (by admin), no need for secure http or CA Certificates)
 	err = http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", port), nil)
