@@ -43,18 +43,17 @@ func StartWebServer() {
 	//fs := http.FileServer(http.Dir("web/frontend/build"))
 	//http.Handle("/", fs)
 	// Serve static files
-	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("web/static"))))
+	// Serve static files (CSS, JS, images)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
+	// Serve the homepage at "/"
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    		if r.URL.Path == "/" {
-        		http.ServeFile(w, r, "web/templates/index.html")
-   		} else {
-        		http.NotFound(w, r)
-    		}
+   		 http.ServeFile(w, r, "web/templates/index.html")
 	})
 
+	// Serve login and dashboard pages at their respective paths
 	http.HandleFunc("/login.html", func(w http.ResponseWriter, r *http.Request) {
-    		http.ServeFile(w, r, "web/templates/login.html")
+   		 http.ServeFile(w, r, "web/templates/login.html")
 	})
 
 	http.HandleFunc("/dashboard.html", func(w http.ResponseWriter, r *http.Request) {
