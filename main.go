@@ -187,7 +187,7 @@ func main() {
 				}
 
 			case 3: // Manage Inventory
-				fmt.Println("Managing inventory (not yet implemented).")
+				inventory.DisplayInventoryMenu()
 
 			case 4: // Enable/Disable Detailed Logging
 				fmt.Print("Enable detailed logging? (y/n): ")
