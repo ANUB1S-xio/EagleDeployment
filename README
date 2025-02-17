@@ -1,55 +1,227 @@
-The developed code follows the general principles from your initial project documents, 
-but it requires more alignment to fit with the specific requirements in the diagrams and 
-specifications:
+# EagleDeploy - Concurrent Deployment Automation Tool
 
-    Sequence and Use Case Diagrams:
+## Overview
 
-        - The code reflects the basic workflow from the Eagle Deployment Sequence Diagram: it allows 
-          a user to initiate commands, checks for necessary parameters, and processes commands from 
-          a playbook.yaml file. The -e and -l options allow task execution and YAML file listing, 
-          similar to initiating tasks and managing inventories in the diagram.
+EagleDeploy is a Go-based deployment automation tool designed with concurrency and scalability in mind, following both stateful and stateless approaches to deployment automation.
 
-        - The Eagle Deployment Use Case Diagram mentions components like inventory, modules, and plugins. 
-          Currently, we only handle playbooks and hosts. Adding modules and plugins could align the tool 
-          more with the diagram's vision, allowing for specialized tasks or extensions.
+## Network Architecture
 
-    Preliminary Design Specification:
+### OSI Model Implementation
+```ascii
+┌─────────────────┐
+│   Application   │ Layer 7: EagleDeploy CLI Interface
+├─────────────────┤          - Playbook Processing
+│  Presentation  │ Layer 6: - YAML Parsing
+├─────────────────┤          - Command Formatting
+│    Session     │ Layer 5: - SSH Session Management
+├─────────────────┤          - Connection Persistence
+│   Transport    │ Layer 4: - TCP (Port 22 for SSH)
+├─────────────────┤          - Connection Management
+│    Network     │ Layer 3: - IP Routing
+├─────────────────┤          - Host Discovery
+│   Data Link    │ Layer 2: - Network Interface
+├─────────────────┤          - MAC Addressing
+│    Physical    │ Layer 1: - Network Hardware
+└─────────────────┘
+```
 
-        - The design document outlines a goal of building a tool that is both scalable and performant, 
-          similar to Ansible but optimized for concurrency (Go’s main advantage over Python). While our 
-          tool currently runs locally, adding concurrency for parallel host connections would bring it 
-          closer to the specification.
+## Prerequisites
 
-        - The document mentions using a stateful and stateless approach. The current implementation is 
-          essentially stateless, as it doesn’t persist state across runs. Adding a stateful component, 
-          perhaps with task tracking or rollback capabilities, would align more closely with the goals outlined.
+### Development Machine Setup
 
-    State Diagram (Replace Ansible State Diagram):
+1. **Go Installation**
 
-        - The Replace Ansible State Diagram suggests both StatefulEagleDeployment and StatelessEagleDeployment 
-          classes. The current implementation is more like StatelessEagleDeployment, with no persistent state 
-          between executions.
+```powershell
+# Windows (Using winget)
+winget install GoLang.Go
+```
 
-        - We could introduce a state-tracking feature that records task completion and errors, which would 
-          allow for resuming or rolling back on failures. This could be done by writing to a log or database 
-          (e.g., SQLite) to track state across runs.
+```bash
+# Linux (Ubuntu/Debian)
+sudo apt update
+sudo apt install golang-go
 
-    Class Diagram (State Diagram Cap):
+# Linux (Fedora)
+sudo dnf install golang
+```
 
-        - The Class Diagram (State Diagram Cap) outlines a command framework with error handling, command 
-          parsing, and output display. The current code partially aligns with this, using basic error handling 
-          and output for each task.
+2. **Verify Installation**
+```bash
+go version  # Should display: go version go1.23.2 or later
+```
 
-        - To better match this structure, we could refactor the code into distinct classes or modules: 
-          CommandParser, ExecuteCommand, ErrorHandling, etc. This would enhance modularity and follow the 
-          diagram’s structure more closely.
+### Target Machine Requirements
 
-Next Steps to Improve Alignment:
+**Windows:**
+```powershell
+# Enable OpenSSH Server
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+Start-Service sshd
+Set-Service -Name sshd -StartupType 'Automatic'
+```
 
-    Class-based Refactoring:
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
 
-        - Refactor the tool into components resembling CommandParser, ExecuteCommand, and ErrorHandling. 
-          This would give the structure more modularity, allowing future expansion for additional commands 
-          and error-handling strategies.
+**Linux (Fedora):**
+```bash
+sudo dnf install openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd
+```
+
+## SSH Credential Configuration
+
+### Important Security Notice
+> **WARNING**: SSH credentials must belong to an administrator or sudo-enabled user on target systems.
+
+### Windows Environment Variables
+
+```powershell
+# Temporary (Current Session)
+$env:EAGLE_SSH_USER="admin_username"
+$env:EAGLE_SSH_PASS="admin_password"
+$env:EAGLE_SSH_KEY="$HOME\.ssh\id_rsa"
+
+# Permanent (System Level)
+[System.Environment]::SetEnvironmentVariable("EAGLE_SSH_USER", "admin_username", "Machine")
+[System.Environment]::SetEnvironmentVariable("EAGLE_SSH_PASS", "admin_password", "Machine")
+[System.Environment]::SetEnvironmentVariable("EAGLE_SSH_KEY", "$HOME\.ssh\id_rsa", "Machine")
+```
+
+### Linux/MacOS Environment Variables
+
+```bash
+# Temporary (Current Session)
+export EAGLE_SSH_USER="admin_username"
+export EAGLE_SSH_PASS="admin_password"
+export EAGLE_SSH_KEY="$HOME/.ssh/id_rsa"
+
+# Permanent (System Level)
+sudo echo "EAGLE_SSH_USER=admin_username" >> /etc/environment
+sudo echo "EAGLE_SSH_PASS=admin_password" >> /etc/environment
+sudo echo "EAGLE_SSH_KEY=$HOME/.ssh/id_rsa" >> /etc/environment
+```
+
+## Project Structure
+
+```plaintext
+EagleDeploy/
+├── config/                 # Configuration management
+│   └── config.go          # YAML configuration loader
+├── executor/              # Task execution engine
+│   └── executor.go        # Concurrent task execution
+├── inventory/             # Host and credential management
+│   ├── inventory.go       # Inventory operations
+│   └── inventory.yaml     # Host and user definitions
+├── osdetect/             # OS detection utilities
+│   └── os-detect.go      # Remote OS fingerprinting
+├── playbooks/            # YAML playbook templates
+│   ├── add_user.yaml     # User creation playbook
+│   └── *.yaml            # Other playbook templates
+├── sshutils/             # SSH connection utilities
+│   └── sshutils.go       # SSH operations
+└── tasks/                # Task definitions
+    └── tasks.go          # Task and playbook structures
+```
+
+## Usage Examples
+
+### Inventory Configuration
+```yaml
+# filepath: /inventory/inventory.yaml
+Hosts:
+  - IP: "192.168.1.100"
+    Hostname: "server1"
+    OS: "Linux"
+Users:
+  - Username: "eagleuser"    # Must follow OS-specific requirements
+    Password: "EaglePass123!" # Must follow OS-specific requirements
+    Group: "users"
+```
+
+### Basic Playbook
+```yaml
+# filepath: /playbooks/example.yaml
+name: "Sample_Task"
+version: "2.1"
+hosts:
+{{- range .Hosts }}
+  - "{{ .IP }}"
+{{- end }}
+vars:
+  user_name: "{{ .Vars.UserName }}"
+  user_password: "{{ .Vars.UserPassword }}"
+tasks:
+  - name: "Example Task"
+    command: "echo 'Hello World'"
+```
+
+### Username Requirements
+
+- **Linux Systems**: 
+  - Lowercase letters only
+  - No spaces
+  - Max length: 32 characters
+  - Cannot start with numbers
+
+- **Windows Systems**:
+  - Can include upper and lowercase
+  - No spaces
+  - Max length: 20 characters
+  - Cannot contain: `/ \ [ ] : ; | = , + * ? < >`
+
+### Password Requirements
+
+- **Linux Systems**:
+  - Recommended: 8-40 characters
+  - All characters allowed
+
+- **Windows Systems**:
+  - 8-127 characters
+  - Must meet complexity requirements if enabled
+
+## Future Development
+
+### Web Development Plans
+
+1. **Web Interface**
+   - React-based dashboard
+   - Real-time monitoring
+   - Interactive inventory management
+
+2. **API Layer**
+   - RESTful endpoints
+   - WebSocket integration
+   - Authentication system
+
+3. **Database Integration**
+   - Task history tracking
+   - User management
+   - Deployment logs
+
+## Dependencies
+
+```go
+// filepath: /go.mod
+golang.org/x/crypto v0.29.0
+golang.org/x/sync v0.11.0
+gopkg.in/yaml.v2 v2.4.0
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Submit pull requests with documentation
+
+## License
+
+[Add License Information]
 
 
