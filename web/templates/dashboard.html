@@ -3,41 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Eagle Nexus - Dashboard</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
     <header>
         <div class="logo">Eagle<span>Nexus</span></div>
         <nav>
             <ul>
+                <li><a href="/">Home</a></li>
                 <li><a href="/dashboard.html">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
     </header>
-    
+
     <main>
-        <h1>DASHBOARD</h1>
-        <div class="grid-container">
-            <div class="grid-item">Execute Playbooks <br> <span>Admin</span> <button>Update</button></div>
-            <div class="grid-item">List YAML files <br> <span>Admin</span> <button>Update</button></div>
-            <div class="grid-item">Managing Inventory <br> <span>Admin</span> <button>Update</button></div>
-            <div class="grid-item">Enable/Disable Users <br> <span>Admin</span> <button>Update</button></div>
-            <div class="grid-item">Rollback Changes <br> <span>Admin</span> <button>Update</button></div>
-            <div class="grid-item">Help <br> <span>Admin</span> <button>Update</button></div>
-        </div>
+        <section class="dashboard">
+            <h1>Dashboard</h1>
+            <div class="dashboard-grid">
+                <div class="dashboard-item">
+                    <h2>Execute Playbooks</h2>
+                    <p>Admin</p>
+                    <button>Update</button>
+                </div>
+                <div class="dashboard-item">
+                    <h2>List YAML Files</h2>
+                    <p>Admin</p>
+                    <button>Update</button>
+                </div>
+                <div class="dashboard-item">
+                    <h2>Managing Inventory</h2>
+                    <p>Admin</p>
+                    <button>Update</button>
+                </div>
+                <div class="dashboard-item">
+                    <h2>Enable/Disable Users</h2>
+                    <p>Admin</p>
+                    <button>Update</button>
+                </div>
+                <div class="dashboard-item">
+                    <h2>Rollback Changes</h2>
+                    <p>Admin</p>
+                    <button>Update</button>
+                </div>
+                <div class="dashboard-item">
+                    <h2>Help</h2>
+                    <p>Admin</p>
+                    <button>Update</button>
+                </div>
+            </div>
+        </section>
     </main>
-    
-    <script>
-        fetch("/auth/status")
-            .then(response => response.json())
-            .then(data => {
-                if (!data.authenticated) {
-                    window.location.href = "/login.html";
-                }
-            });
-    </script>
 </body>
 </html>
