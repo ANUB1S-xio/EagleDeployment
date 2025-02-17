@@ -82,9 +82,6 @@ nav ul li a:hover::before {
     margin-right: 20px;
 }
 
-/* ========================================= */
-/* HERO SECTION (Black Background Box) FIXED */
-/* ========================================= */
 .hero {
     display: flex;
     flex-direction: column;
@@ -100,9 +97,6 @@ nav ul li a:hover::before {
     margin: 40px auto; /* Ensures equal top and bottom spacing */
 }
 
-/* ========================================= */
-/* SUPPORT & ABOUT US SPACING FIX */
-/* ========================================= */
 .info {
     display: flex;
     justify-content: space-between; /* Proper spacing between boxes */
@@ -143,3 +137,66 @@ button:hover {
     transform: scale(1.05);
     box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
 }
+
+/* ========================================= */
+/* DASHBOARD GRID (3x2 LAYOUT) */
+/* ========================================= */
+.dashboard {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.dashboard h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Columns */
+    grid-template-rows: repeat(2, auto); /* 2 Rows */
+    gap: 20px; /* Spacing between items */
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Dashboard Item (Individual Cards) */
+.dashboard-item {
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.4);
+    text-align: center;
+}
+
+.dashboard-item h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.dashboard-item p {
+    color: #00ff99;
+    font-weight: bold;
+}
+
+.dashboard-item button {
+    background: #00ff99;
+    border: none;
+    padding: 10px 20px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    box-shadow: 0px 0px 10px rgba(0, 255, 153, 0.8);
+}
+
+.dashboard-item button:hover {
+    background: #00cc77;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
+}
+
