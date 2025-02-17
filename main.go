@@ -9,11 +9,14 @@ import (
 	"EagleDeploy_CLI/executor"
 	"EagleDeploy_CLI/inventory"
 	"EagleDeploy_CLI/tasks"
+	"EagleDeploy_CLI/web"
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 // Function: listPlaybooks
@@ -116,76 +119,102 @@ func displayMenu() int {
 func main() {
 	var targetHosts []string
 
-	for {
-		choice := displayMenu()
-		switch choice {
-		case 1: // Execute a Playbook
-			playbooks := listPlaybooks()
-			if len(playbooks) == 0 {
-				fmt.Println("No playbooks found in the 'playbooks' directory.")
-				break
-			}
+	// channel to monitor server lifecycle
+	serverShutdown := make(chan bool, 1)
 
-			fmt.Println("Available Playbooks:")
-			for i, playbook := range playbooks {
-				fmt.Printf("%d. %s\n", i+1, playbook)
-			}
+	go func() {
+		web.StartWebServer()   // server start
+		serverShutdown <- true // notify after server stops
+	}()
 
-			fmt.Print("Select a playbook to execute by number: ")
-			var choice int
-			fmt.Scanln(&choice)
+	// signal handling
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) //terminate signal
 
-			if choice < 1 || choice > len(playbooks) {
-				fmt.Println("Invalid choice. Returning to the menu.")
-				break
-			}
-
-			selectedPlaybook := "./playbooks/" + playbooks[choice-1]
-			fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
-			executeYAML(selectedPlaybook, targetHosts)
-
-		case 2: // List YAML Playbooks
-			playbooks := listPlaybooks()
-			if len(playbooks) == 0 {
-				fmt.Println("No playbooks found in the 'playbooks' directory.")
-			} else {
-				fmt.Println("Available Playbooks:")
-				for _, playbook := range playbooks {
-					fmt.Printf("- %s\n", playbook)
+	go func() {
+		for {
+			choice := displayMenu()
+			switch choice {
+			case 1: // Execute a Playbook
+				playbooks := listPlaybooks()
+				if len(playbooks) == 0 {
+					fmt.Println("No playbooks found in the 'playbooks' directory.")
+					break
 				}
+
+				fmt.Println("Available Playbooks:")
+				for i, playbook := range playbooks {
+					fmt.Printf("%d. %s\n", i+1, playbook)
+				}
+
+				fmt.Print("Select a playbook to execute by number: ")
+				var choice int
+				fmt.Scanln(&choice)
+
+				if choice < 1 || choice > len(playbooks) {
+					fmt.Println("Invalid choice. Returning to the menu.")
+					break
+				}
+
+				selectedPlaybook := "./playbooks/" + playbooks[choice-1]
+				fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
+				executeYAML(selectedPlaybook, targetHosts)
+
+			case 2: // List YAML Playbooks
+				playbooks := listPlaybooks()
+				if len(playbooks) == 0 {
+					fmt.Println("No playbooks found in the 'playbooks' directory.")
+				} else {
+					fmt.Println("Available Playbooks:")
+					for _, playbook := range playbooks {
+						fmt.Printf("- %s\n", playbook)
+					}
+				}
+
+			case 3: // Manage Inventory
+				fmt.Println("Managing inventory (not yet implemented).")
+
+			case 4: // Enable/Disable Detailed Logging
+				fmt.Print("Enable detailed logging? (y/n): ")
+				var response string
+				fmt.Scanln(&response)
+				if strings.ToLower(response) == "y" {
+					fmt.Println("Detailed logging enabled.")
+				} else if strings.ToLower(response) == "n" {
+					fmt.Println("Detailed logging disabled.")
+				} else {
+					fmt.Println("Invalid input. Logging state unchanged.")
+				}
+
+			case 5: // Rollback Changes
+				fmt.Println("Rolling back changes (not yet implemented).")
+
+			case 6: // Show Help
+				fmt.Println("Help Page:")
+				fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
+				fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
+				fmt.Println("-hosts <comma-separated-hosts>: Specify hosts to target (only with -e).")
+				fmt.Println("-h: Display this help page.")
+
+			case 0: // Exit
+				fmt.Println("Exiting EagleDeploy.")
+				serverShutdown <- true
+				return
+
+			default:
+				fmt.Println("Invalid choice. Please try again.")
 			}
-
-		case 3: // Manage Inventory
-			inventory.DisplayInventoryMenu()
-
-		case 4: // Enable/Disable Detailed Logging
-			fmt.Print("Enable detailed logging? (y/n): ")
-			var response string
-			fmt.Scanln(&response)
-			if strings.ToLower(response) == "y" {
-				fmt.Println("Detailed logging enabled.")
-			} else if strings.ToLower(response) == "n" {
-				fmt.Println("Detailed logging disabled.")
-			} else {
-				fmt.Println("Invalid input. Logging state unchanged.")
-			}
-
-		case 5: // Rollback Changes
-			fmt.Println("Rolling back changes (not yet implemented).")
-
-		case 6: // Show Help
-			fmt.Println("Help Page:")
-			fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
-			fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
-			fmt.Println("-hosts <comma-separated-hosts>: Specify hosts to target (only with -e).")
-			fmt.Println("-h: Display this help page.")
-
-		case 0: // Exit
-			fmt.Println("Exiting EagleDeploy.")
-			return
-
-		default:
-			fmt.Println("Invalid choice. Please try again.")
 		}
+	}()
+
+	select {
+	case <-serverShutdown:
+		fmt.Println("")
+		fmt.Println("Server stopped...shutting down...")
+	case <-signalChan:
+		fmt.Println("Termination signal received...")
 	}
+
+	fmt.Println("Closing EagleDeployment...")
+
 }
