@@ -52,9 +52,10 @@ func StartWebServer() {
 	})
 
 	http.HandleFunc("/dashboard", func(w http.ResponseWriter, r *http.Request) {
-		// Authentication check logic goes here
-		http.ServeFile(w, r, "web/templates/dashboard.html")
+    	// Authentication check logic goes here
+    		http.ServeFile(w, r, "web/templates/dashboard.html")
 	})
+
 
 
 	// Start HTTP server on localhost (ED internally used (by admin), no need for secure http or CA Certificates)
