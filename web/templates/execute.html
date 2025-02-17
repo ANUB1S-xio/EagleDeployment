@@ -21,8 +21,8 @@
                 <h3 id="playbookName">None</h3>
             </div>
             <button id="executeButton">Execute</button>
-            <button id="backButton" class="back-button">Back</button>
         </div>
+        <button id="backButton" class="back-button">Back</button> <!-- Placed outside the block -->
     </main>
 
     <script>
@@ -42,7 +42,7 @@
         });
 
         document.getElementById("backButton").addEventListener("click", function() {
-            window.location.href = "/dashboard"; // Redirects back to the Dashboard
+            window.location.href = "/dashboard"; // Redirects back to Dashboard
         });
     </script>
 </body>
