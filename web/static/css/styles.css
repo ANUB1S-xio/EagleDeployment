@@ -1,0 +1,202 @@
+/* Import Cyber-Tech Font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+/* General Styles */
+body {
+    font-family: 'Orbitron', sans-serif;
+    background: radial-gradient(circle, rgba(0, 255, 153, 0.2), rgba(0, 0, 0, 1)); /* Keeping the original black theme */
+    color: white;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Navbar */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a); /* Keeping original black navbar */
+    padding: 15px 40px;
+    width: 100%;
+    box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.4);
+}
+
+/* Logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ff99;
+    margin-left: 20px;
+}
+
+/* Navigation */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: relative;
+}
+
+/* Glow Hover Effect */
+nav ul li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background: #00ff99;
+    box-shadow: 0px 0px 10px #00ff99;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+nav ul li a:hover::before {
+    transform: scaleX(1);
+}
+
+/* Adjust Search & Sign In */
+.auth-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 100px); /* Ensures it stretches to full page */
+    width: 95%; /* Ensures it reaches close to the edges */
+    max-width: 1600px;
+    background: linear-gradient(to bottom right, #1a1a1a, #2d2d2d); /* Keeping the black theme */
+    border-radius: 20px; /* KEEPING ROUNDED CORNERS */
+    box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.6);
+    padding: 50px;
+    margin: 40px auto; /* Ensures equal top and bottom spacing */
+}
+
+.info {
+    display: flex;
+    justify-content: space-between; /* Proper spacing between boxes */
+    width: 90%;
+    max-width: 1300px;
+    margin-top: 40px;
+}
+
+/* Individual Box Styling */
+.info div {
+    width: 85%; /* Ensures boxes do not touch */
+    padding: 35px;
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a); /* Keeping the black theme */
+    border-radius: 15px; /* KEEPING ROUNDED CORNERS */
+    box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.4);
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+}
+
+/* Buttons */
+button {
+    background: #00ff99;
+    border: none;
+    padding: 12px 20px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    box-shadow: 0px 0px 10px rgba(0, 255, 153, 0.8);
+}
+
+button:hover {
+    background: #00cc77;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
+}
+
+/* ========================================= */
+/* DASHBOARD GRID (3x2 LAYOUT) */
+/* ========================================= */
+.dashboard {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.dashboard h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Columns */
+    grid-template-rows: repeat(2, auto); /* 2 Rows */
+    gap: 20px; /* Spacing between items */
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Dashboard Item (Individual Cards) */
+.dashboard-item {
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.4);
+    text-align: center;
+}
+
+.dashboard-item h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.dashboard-item p {
+    color: #00ff99;
+    font-weight: bold;
+}
+
+.dashboard-item button {
+    background: #00ff99;
+    border: none;
+    padding: 10px 20px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    box-shadow: 0px 0px 10px rgba(0, 255, 153, 0.8);
+}
+
+.dashboard-item button:hover {
+    background: #00cc77;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
+}
+

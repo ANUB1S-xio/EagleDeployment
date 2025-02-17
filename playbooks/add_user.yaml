@@ -1,41 +1,56 @@
-# File: add_users.yaml
-# Directory Path: /EagleDeploy_CLI/
-
 name: "Basic_Add_Users"
 version: "2.1"
 hosts:
-  - "192.168.70.30" # ubuntu1
-  - "192.168.70.32" # ubuntu2
-  - "192.168.70.33" # fedora
+{{- range .Hosts }}
+  - "{{ .IP }}"
+{{- end }}
+vars:
+  user_name: "{{ .Vars.UserName }}"      # Use the passed username from inventory file
+  user_password: "{{ .Vars.UserPassword }}"   # Use the passed password from inventory file
 tasks:
-
-  - name: "Add user john on Linux systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "Add user on Linux systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: os_type.stdout in ["ubuntu", "fedora"]
+    when: item.OS | lower in ["linux", "ubuntu"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S useradd -m -s /bin/bash smith
+      echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}" 2>/dev/null
 
-  - name: "Pause to ensure user creation"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "Add user on Fedora systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    command: sleep 2
-
-  - name: "Verify user john exists"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
+    when: item.OS | lower contains "fedora"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S id smith
+      echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}" 2>/dev/null
 
-  - name: "Set password for user john on Linux systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "Add user on Windows systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: os_type.stdout in ["ubuntu", "fedora"]
+    when: item.OS | lower contains "windows"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     command: |
-      echo "@dminPass123" | sudo -S bash -c "echo 'smith:ComplexP@ssw0rd!' | chpasswd"
+      net user "{{ .Vars.UserName }}" "{{ .Vars.UserPassword }}" /add
+
+  - name: "Set password for user on Linux systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: |
+      echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S bash -c "id {{ .Vars.UserName }} && echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | sudo chpasswd" 2>/dev/null
+
 settings:
-   port: 22
+  port: 22

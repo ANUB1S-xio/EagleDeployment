@@ -1,0 +1,9 @@
+Hosts: #use ip range for Demo: 10.42.56.90-120
+
+SSH_CRED:
+  ssh_user: ""
+  ssh_pass: ""
+Users:
+- username: demouser
+  password: DemoPass0982
+  group: users

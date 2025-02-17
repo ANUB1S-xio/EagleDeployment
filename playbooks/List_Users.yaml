@@ -1,19 +1,31 @@
 name: "List_Users_Playbook"
-version: "1.0"
+version: "1.1"
 hosts:
-  - "192.168.70.30" # ubuntu1
-  - "192.168.70.32" # ubuntu2
-  - "192.168.70.33" # fedora
+{{- range .Hosts }}
+  - "{{ .IP }}"
+{{- end }}
 tasks:
-  - name: "List all users on the system"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
+  - name: "List users on Linux systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
+    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     command: |
-      awk -F: '$3 >= 1000 {print $1}' /etc/passwd
-    register: users_output
+      awk -F: '$3 >= 1000 && $3 != 65534 {print $1}' /etc/passwd
 
-  - name: "Log users output"
-    debug:
-      msg: "Users on {{ inventory_hostname }}: {{ users_output.stdout_lines }}"
+  - name: "List users on Windows systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
+    when: item.OS | lower contains "windows"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: |
+      net user | findstr /V "command completed successfully The following users"
+
 settings:
   port: 22

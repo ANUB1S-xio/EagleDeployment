@@ -1,9 +1,11 @@
 // File: executor.go
 // Directory Path: /EagleDeploy_CLI/executor
+// Purpose: Executes tasks remotely using SSH and integrates with inventory management.
 
 package executor
 
 import (
+	"EagleDeploy_CLI/inventory"
 	"EagleDeploy_CLI/sshutils"
 	"EagleDeploy_CLI/tasks"
 	"fmt"
@@ -11,106 +13,73 @@ import (
 	"sync"
 )
 
-// Function: ExecuteRemote
-// Purpose: Executes a task on a remote machine using SSH.
-// Parameters:
-// - task: The task to execute.
-// - port: The port number for the SSH connection.
-// Returns: An error if the task execution fails.
+// ExecuteRemote runs a task on a remote machine
 func ExecuteRemote(task tasks.Task, port int) error {
-	// Using credentials from the playbook (Task struct)
-	username := task.SSHUser
-	password := task.SSHPassword
+	// Fetch SSH credentials
+	sshUser, sshPass := inventory.GetSSHCreds()
 
-	// Validating the presence of SSH credentials
-	if username == "" || password == "" {
-		return fmt.Errorf("SSH username or password is missing in the playbook for task '%s'", task.Name)
+	// Override credentials if playbook provides them
+	if task.SSHUser != "" {
+		sshUser = task.SSHUser
+	}
+	if task.SSHPassword != "" {
+		sshPass = task.SSHPassword
 	}
 
-	// Connecting to the remote host
-	client, err := sshutils.ConnectSSH(task.Host, username, password, port)
+	// Connect to remote host
+	client, err := sshutils.ConnectSSH(task.Host, sshUser, sshPass, port)
 	if err != nil {
-		log.Printf("Failed to connect to host %s on port %d: %v", task.Host, port, err)
-		return err
+		return fmt.Errorf("connection failed to %s: %v", task.Host, err)
 	}
-	defer func() {
-		if cerr := sshutils.CloseSSHConnection(client); cerr != nil {
-			log.Printf("Error closing SSH connection: %v", cerr)
-		}
-	}()
+	defer sshutils.CloseSSHConnection(client)
 
-	// Executing the task command
-	output, err := sshutils.RunSSHCommand(client, task.Command)
+	// Execute the command (without printing output)
+	_, err = sshutils.RunSSHCommand(client, task.Command)
 	if err != nil {
-		log.Printf("Failed to execute task '%s' on host %s: %v", task.Name, task.Host, err)
-		return err
+		return fmt.Errorf("task '%s' failed: %v", task.Name, err)
 	}
 
-	fmt.Printf("Output of task '%s' on host %s:\n%s", task.Name, task.Host, output)
+	// Only print task status
+	log.Printf("Task '%s' executed successfully on host '%s'", task.Name, task.Host)
 	return nil
 }
 
-// Function: ExecuteLocal
-// Purpose: Executes a command locally on the machine.
-// Parameters:
-// - command: The shell command to execute.
-// Returns: An error if the command execution fails.
-func ExecuteLocal(command string) error {
-	log.Printf("Executing local command: %s", command)
-	output, err := sshutils.RunLocalCommand(command)
-	if err != nil {
-		log.Printf("Failed to execute local command '%s': %v", command, err)
-		return err
-	}
-
-	log.Printf("Local command '%s' executed successfully: %s", command, output)
-	return nil
-}
-
-// Function: ExecuteConcurrently
-// Purpose: Executes tasks concurrently across multiple hosts.
-// Parameters:
-// - tasks: A slice of tasks.Task objects to execute.
-// - hosts: A slice of host addresses to execute tasks on.
-// - port: The port number for the SSH connection.
-// Behavior:
-// - Uses goroutines to execute each task on each host.
-// - Collects results and errors via channels for logging.
-// Returns: None.
+// ExecuteConcurrently runs tasks on multiple hosts concurrently using inventory.yaml
 func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
 	var wg sync.WaitGroup
 	results := make(chan string, len(taskList)*len(hosts))
-	errors := make(chan error, len(taskList)*len(hosts))
+	hostMap := inventory.GetHosts() // Get hosts from inventory.yaml
 
-	// Iterate over tasks and hosts to execute them concurrently
+	// Iterate over tasks and execute them on hosts
 	for _, task := range taskList {
 		for _, host := range hosts {
 			wg.Add(1)
 			go func(t tasks.Task, h string) {
 				defer wg.Done()
-				t.Host = h
+
+				// Resolve hostname to IP if necessary
+				if hostData, exists := hostMap[h]; exists {
+					t.Host = hostData.IP
+				}
+
 				err := ExecuteRemote(t, port)
 				if err != nil {
-					errors <- fmt.Errorf("task '%s' on host '%s' failed: %v", t.Name, h, err)
+					log.Printf("Task '%s' failed on host '%s': %v", t.Name, t.Host, err)
 				} else {
-					results <- fmt.Sprintf("Task '%s' executed successfully on host '%s'", t.Name, h)
+					results <- fmt.Sprintf("Task '%s' executed successfully on host '%s'", t.Name, t.Host)
 				}
 			}(task, host)
 		}
 	}
 
-	// Close channels after all goroutines complete
+	// Wait for all tasks to finish
 	go func() {
 		wg.Wait()
 		close(results)
-		close(errors)
 	}()
 
-	// Log results and errors
+	// Log results
 	for res := range results {
 		log.Println(res)
-	}
-	for err := range errors {
-		log.Printf("Error: %v", err)
 	}
 }

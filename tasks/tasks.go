@@ -20,11 +20,11 @@ type Task struct {
 }
 
 type Playbook struct {
-	Name     string         `yaml:"name"`     // The name of the playbook
-	Version  string         `yaml:"version"`  // The version of the playbook
-	Hosts    []string       `yaml:"hosts"`    // List of hosts targeted by the playbook
-	Tasks    []Task         `yaml:"tasks"`    // List of tasks in the playbook
-	Settings map[string]int `yaml:"settings"` // Additional settings like retries, timeouts
+	Name     string            `yaml:"name"`     // The name of the playbook
+	Version  string            `yaml:"version"`  // The version of the playbook
+	Hosts    []string          `yaml:"hosts"`    // List of hosts targeted by the playbook
+	Tasks    []Task            `yaml:"tasks"`    // List of tasks in the playbook
+	Settings map[string]string `yaml:"settings"` // Additional settings like retries, timeouts
 }
 
 // LoadPlaybook loads a playbook from a YAML file.
