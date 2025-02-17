@@ -55,6 +55,10 @@ func StartWebServer() {
     	// Authentication check logic goes here
     		http.ServeFile(w, r, "web/templates/dashboard.html")
 	})
+	// Execute playbook page
+	http.HandleFunc("/execute", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/execute.html")
+	})
 
 
 
