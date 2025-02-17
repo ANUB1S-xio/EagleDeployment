@@ -138,9 +138,6 @@ button:hover {
     box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
 }
 
-/* ========================================= */
-/* DASHBOARD GRID (3x2 LAYOUT) */
-/* ========================================= */
 .dashboard {
     text-align: center;
     margin-top: 50px;
