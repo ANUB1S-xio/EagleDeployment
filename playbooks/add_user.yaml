@@ -17,7 +17,7 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      echo -e "{{ env `EAGLE_SSH_PASS` }}\n" | script -qc 'sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"' /dev/null
 
   - name: "Add user on Fedora systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -28,7 +28,7 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      echo -e "{{ env `EAGLE_SSH_PASS` }}\n" | script -qc 'sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"' /dev/null
 
   - name: "Add user on Windows systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -50,7 +50,7 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      echo "{{ env `EAGLE_SSH_PASS` }}" | sudo -S bash -c "echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | chpasswd"
+      echo -e "{{ env `EAGLE_SSH_PASS` }}\n" | script -qc 'sudo -S bash -c "echo {{ .Vars.UserName }}:{{ .Vars.UserPassword }} | chpasswd"' /dev/null
 
 settings:
   port: 22

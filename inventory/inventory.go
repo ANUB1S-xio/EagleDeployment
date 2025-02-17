@@ -87,21 +87,33 @@ func GetHosts() map[string]Host {
 
 // GetSSHCreds returns SSH credentials from environment variables or inventory.yaml
 func GetSSHCreds() (string, string) {
-	// First try to get from environment variables
+	// Add debug logging
+	log.Printf("Reading SSH credentials from environment variables")
+
 	sshUser := os.Getenv("EAGLE_SSH_USER")
 	sshPass := os.Getenv("EAGLE_SSH_PASS")
 
 	if sshUser != "" && sshPass != "" {
+		log.Printf("Found SSH credentials in environment variables for user: %s", sshUser)
 		return sshUser, sshPass
 	}
 
-	// Fallback to inventory.yaml
+	// Log fallback to inventory.yaml
+	log.Printf("No environment variables found, falling back to inventory.yaml")
+
 	inv, err := LoadInventory()
 	if err != nil {
-		log.Printf("Error retrieving SSH credentials: %v", err)
+		log.Printf("Error retrieving SSH credentials from inventory: %v", err)
 		return "", ""
 	}
-	return inv.SSHCred.SSHUser, inv.SSHCred.SSHPass
+
+	if inv.SSHCred.SSHUser != "" && inv.SSHCred.SSHPass != "" {
+		log.Printf("Found SSH credentials in inventory.yaml for user: %s", inv.SSHCred.SSHUser)
+		return inv.SSHCred.SSHUser, inv.SSHCred.SSHPass
+	}
+
+	log.Printf("No SSH credentials found in either environment or inventory")
+	return "", ""
 }
 
 // GetUsers returns the list of users from inventory.yaml
