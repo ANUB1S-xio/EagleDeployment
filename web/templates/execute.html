@@ -10,6 +10,7 @@
 <body>
     <header>
         <div class="logo">Eagle<span>Nexus</span></div>
+        <button class="logout-button" onclick="logout()">Logout</button>
     </header>
 
     <main class="execute-container">
@@ -20,6 +21,7 @@
                 <h3 id="playbookName">None</h3>
             </div>
             <button id="executeButton">Execute</button>
+            <button id="backButton" class="back-button">Back</button>
         </div>
     </main>
 
@@ -31,8 +33,16 @@
             }
         });
 
+        function logout() {
+            window.location.href = "/";
+        }
+
         document.getElementById("executeButton").addEventListener("click", function() {
             alert("Executing playbook: " + document.getElementById("playbookName").textContent);
+        });
+
+        document.getElementById("backButton").addEventListener("click", function() {
+            window.location.href = "/dashboard"; // Redirects back to the Dashboard
         });
     </script>
 </body>
