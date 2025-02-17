@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Execute Playbook</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Eagle<span>Nexus</span></div>
+    </header>
+
+    <main class="execute-container">
+        <div class="execute-box">
+            <h2>Execute Playbook</h2>
+            <p class="selected-playbook">Current Selected Playbook: <span id="playbookName">None</span></p>
+            <button id="executeButton">Execute</button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectedPlaybook = localStorage.getItem("selectedPlaybook");
+            if (selectedPlaybook) {
+                document.getElementById("playbookName").textContent = selectedPlaybook;
+            }
+        });
+
+        document.getElementById("executeButton").addEventListener("click", function() {
+            alert("Executing playbook: " + document.getElementById("playbookName").textContent);
+        });
+    </script>
+</body>
+</html>
