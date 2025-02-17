@@ -13,9 +13,9 @@ import (
 	"sync"
 )
 
-// ExecuteRemote runs a task on a remote machine using SSH credentials from inventory.yaml
+// ExecuteRemote runs a task on a remote machine
 func ExecuteRemote(task tasks.Task, port int) error {
-	// Fetch SSH credentials from inventory.yaml
+	// Fetch SSH credentials
 	sshUser, sshPass := inventory.GetSSHCreds()
 
 	// Override credentials if playbook provides them
@@ -29,19 +29,18 @@ func ExecuteRemote(task tasks.Task, port int) error {
 	// Connect to remote host
 	client, err := sshutils.ConnectSSH(task.Host, sshUser, sshPass, port)
 	if err != nil {
-		log.Printf("Failed to connect to host %s: %v", task.Host, err)
-		return err
+		return fmt.Errorf("connection failed to %s: %v", task.Host, err)
 	}
 	defer sshutils.CloseSSHConnection(client)
 
-	// Execute the command
-	output, err := sshutils.RunSSHCommand(client, task.Command)
+	// Execute the command (without printing output)
+	_, err = sshutils.RunSSHCommand(client, task.Command)
 	if err != nil {
-		log.Printf("Failed to execute task '%s' on host %s: %v", task.Name, task.Host, err)
-		return err
+		return fmt.Errorf("task '%s' failed: %v", task.Name, err)
 	}
 
-	fmt.Printf("Output of task '%s' on host %s:\n%s", task.Name, task.Host, output)
+	// Only print task status
+	log.Printf("Task '%s' executed successfully on host '%s'", task.Name, task.Host)
 	return nil
 }
 
