@@ -1,6 +1,6 @@
 // File: os-detect.go
 // Directory: EagleDeploy_CLI/osdetect
-// Purpose: Detects OS type of hosts using SSH
+// Purpose: Detects OS type of hosts using SSH and TCP fingerprinting
 
 package osdetect
 
@@ -12,7 +12,24 @@ import (
 	"time"
 )
 
-// DetectOS connects to a host via SSH and attempts multiple detection methods
+// Function: DetectOS
+// Purpose: Primary OS detection function using multiple methods
+// Parameters:
+//   - host: string - Target host address
+//   - user: string - SSH username
+//   - password: string - SSH password
+//   - port: int - SSH port number
+//
+// Returns:
+//   - string - Detected OS type
+//   - error - Any detection errors
+//
+// Called By:
+//   - [`inventory.AddHost`](../inventory/inventory.go)
+//
+// Dependencies:
+//   - sshutils.ConnectSSH
+//   - detectOSFromTCP
 func DetectOS(host, user, password string, port int) (string, error) {
 	// First try TCP fingerprinting
 	osType, err := detectOSFromTCP(host)
@@ -79,7 +96,21 @@ func DetectOS(host, user, password string, port int) (string, error) {
 	return "Unknown", fmt.Errorf("failed to detect OS using all methods")
 }
 
-// New function to detect OS from TCP fingerprinting
+// Function: detectOSFromTCP
+// Purpose: OS detection using TCP fingerprinting
+// Parameters:
+//   - host: string - Target host address
+//
+// Returns:
+//   - string - Detected OS type
+//   - error - Any detection errors
+//
+// Called By:
+//   - DetectOS as first detection attempt
+//
+// Dependencies:
+//   - net.DialTimeout
+//   - TCP ports: 22, 445, 139, 135
 func detectOSFromTCP(host string) (string, error) {
 	// Try connecting to common ports
 	ports := []int{22, 445, 139, 135} // SSH, SMB, NetBIOS
@@ -127,7 +158,16 @@ func detectOSFromTCP(host string) (string, error) {
 	return "Unknown", fmt.Errorf("couldn't determine OS from TCP fingerprinting")
 }
 
-// Enhanced OS-specific parsing functions
+// Function: parseHostnamectl
+// Purpose: Parses output from hostnamectl command
+// Parameters:
+//   - output: string - Command output to parse
+//
+// Returns:
+//   - string - Formatted OS string or empty if not found
+//
+// Called By:
+//   - DetectOS via detection methods
 func parseHostnamectl(output string) string {
 	lines := strings.Split(output, "\n")
 	for _, line := range lines {
@@ -139,6 +179,16 @@ func parseHostnamectl(output string) string {
 	return ""
 }
 
+// Function: parseWindowsOutput
+// Purpose: Parses Windows system information output
+// Parameters:
+//   - output: string - PowerShell command output
+//
+// Returns:
+//   - string - Formatted Windows version string
+//
+// Called By:
+//   - DetectOS via detection methods
 func parseWindowsOutput(output string) string {
 	output = strings.TrimSpace(output)
 	if strings.Contains(output, "Microsoft") {
@@ -147,21 +197,16 @@ func parseWindowsOutput(output string) string {
 	return output
 }
 
-func parseUname(output string) string {
-	panic("unimplemented")
-}
-
-func parseRedHatRelease(output string) string {
-	lines := strings.Split(output, "\n")
-	for _, line := range lines {
-		if strings.Contains(line, "release") {
-			return fmt.Sprintf("Linux - %s", strings.TrimSpace(line))
-		}
-	}
-	return ""
-}
-
-// Add helper functions for parsing different OS release files
+// Function: parseOSRelease
+// Purpose: Parses /etc/os-release file content
+// Parameters:
+//   - output: string - File content
+//
+// Returns:
+//   - string - Formatted Linux distribution string
+//
+// Called By:
+//   - DetectOS via detection methods
 func parseOSRelease(output string) string {
 	lines := strings.Split(output, "\n")
 	var name, version string
@@ -182,8 +227,16 @@ func parseOSRelease(output string) string {
 	return ""
 }
 
-// Add similar parse functions for other release files...
-
+// Function: parseLSBRelease
+// Purpose: Parses lsb_release command output
+// Parameters:
+//   - output: string - Command output
+//
+// Returns:
+//   - string - Formatted Linux distribution string
+//
+// Called By:
+//   - DetectOS via detection methods
 func parseLSBRelease(output string) string {
 	lines := strings.Split(output, "\n")
 	var name, version string
@@ -202,4 +255,41 @@ func parseLSBRelease(output string) string {
 		return fmt.Sprintf("Linux - %s", name)
 	}
 	return ""
+}
+
+// Function: parseRedHatRelease
+// Purpose: Parses /etc/redhat-release file content
+// Parameters:
+//   - output: string - File content
+//
+// Returns:
+//   - string - Formatted Red Hat/Fedora string
+//
+// Called By:
+//   - DetectOS via detection methods
+func parseRedHatRelease(output string) string {
+	lines := strings.Split(output, "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "release") {
+			return fmt.Sprintf("Linux - %s", strings.TrimSpace(line))
+		}
+	}
+	return ""
+}
+
+// Function: parseUname
+// Purpose: Parses uname -a command output
+// Parameters:
+//   - output: string - Command output
+//
+// Returns:
+//   - string - Basic OS type string
+//
+// Called By:
+//   - DetectOS via detection methods
+//
+// Notes:
+//   - Currently unimplemented (placeholder)
+func parseUname(output string) string {
+	panic("unimplemented")
 }

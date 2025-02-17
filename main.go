@@ -20,9 +20,13 @@ import (
 )
 
 // Function: listPlaybooks
-// Purpose: Lists all YAML playbooks in the 'playbooks' directory.
-// Returns: A slice of strings containing the names of the playbooks.
-// Precedes: executeYAML (called when a user selects a playbook to execute).
+// Purpose: Lists all YAML playbooks in the playbooks directory
+// Parameters: None
+// Returns: []string - Slice of playbook filenames
+// Called By: main() when user selects option 1 or 2
+// Dependencies:
+//   - [`os.Stat`](os/os.go) for directory checking
+//   - [`os.ReadDir`](os/os.go) for file listing
 func listPlaybooks() []string {
 	playbooksDir := "./playbooks" // Default directory for playbooks
 
@@ -50,13 +54,17 @@ func listPlaybooks() []string {
 }
 
 // Function: executeYAML
-// Purpose: Executes tasks defined in a YAML playbook on specified target hosts using concurrency.
+// Purpose: Processes and executes a YAML playbook with inventory data
 // Parameters:
-// - playbookPath: Path to the playbook file.
-// - targetHosts: List of target hostnames or IPs to override default playbook hosts.
-// Called By: main (when a user selects a playbook to execute).
-// Succeeds: Executor functions for task execution.
-// Execute Playbook with Inventory Injection
+//   - playbookPath: string - Path to the source playbook
+//   - targetHosts: []string - Optional list of target hosts
+//
+// Returns: None
+// Called By: main() when user selects option 1
+// Dependencies:
+//   - [`inventory.InjectInventoryIntoPlaybook`](inventory/inventory.go)
+//   - [`config.LoadConfig`](config/config.go)
+//   - [`executor.ExecuteConcurrently`](executor/executor.go)
 func executeYAML(playbookPath string, targetHosts []string) {
 	// Process the playbook template by injecting inventory data
 	processedPlaybook := "./playbooks/processed_add_user.yaml"
@@ -93,9 +101,11 @@ func executeYAML(playbookPath string, targetHosts []string) {
 }
 
 // Function: displayMenu
-// Purpose: Displays an interactive menu for the EagleDeploy CLI.
-// Returns: The user's menu choice as an integer.
-// Precedes: main (used for interactive user input).
+// Purpose: Shows interactive CLI menu and captures user input
+// Parameters: None
+// Returns: int - User's menu selection
+// Called By: main() in menu loop
+// Dependencies: None
 func displayMenu() int {
 	fmt.Println()
 	fmt.Println("EagleDeploy Menu:")
@@ -114,8 +124,13 @@ func displayMenu() int {
 }
 
 // Function: main
-// Purpose: The main entry point for the EagleDeploy CLI, handling menu navigation and user actions.
-// References: listPlaybooks, executeYAML, and displayMenu.
+// Purpose: Entry point for CLI application
+// Parameters: None
+// Returns: None
+// Called By: System startup
+// Dependencies:
+//   - [`web.StartWebServer`](web/web.go)
+//   - All core package functions
 func main() {
 	var targetHosts []string
 
@@ -172,7 +187,7 @@ func main() {
 				}
 
 			case 3: // Manage Inventory
-				fmt.Println("Managing inventory (not yet implemented).")
+				inventory.DisplayInventoryMenu()
 
 			case 4: // Enable/Disable Detailed Logging
 				fmt.Print("Enable detailed logging? (y/n): ")

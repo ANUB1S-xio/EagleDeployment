@@ -1,6 +1,6 @@
 // File: inventory.go
 // Directory: EagleDeploy_CLI/inventory
-// Purpose: Manages inventory data retrieval, adding hosts, managing inventory, and provides an inventory management menu.
+// Purpose: Manages inventory data, host discovery, and inventory operations.
 
 package inventory
 

@@ -13,7 +13,22 @@ import (
 	"sync"
 )
 
-// ExecuteRemote runs a task on a remote machine
+// Function: ExecuteRemote
+// Purpose: Executes a single task on a remote machine via SSH
+// Parameters:
+//   - task: tasks.Task - Task configuration to execute
+//   - port: int - SSH port number
+//
+// Returns:
+//   - error - Any execution errors
+//
+// Called By:
+//   - ExecuteConcurrently during parallel execution
+//
+// Dependencies:
+//   - inventory.GetSSHCreds for authentication
+//   - sshutils.ConnectSSH for remote access
+//   - sshutils.RunSSHCommand for command execution
 func ExecuteRemote(task tasks.Task, port int) error {
 	// Fetch SSH credentials
 	sshUser, sshPass := inventory.GetSSHCreds()
@@ -44,7 +59,26 @@ func ExecuteRemote(task tasks.Task, port int) error {
 	return nil
 }
 
-// ExecuteConcurrently runs tasks on multiple hosts concurrently using inventory.yaml
+// Function: ExecuteConcurrently
+// Purpose: Manages parallel task execution across multiple hosts
+// Parameters:
+//   - taskList: []tasks.Task - List of tasks to execute
+//   - hosts: []string - Target host addresses
+//   - port: int - SSH port number
+//
+// Returns: None
+// Called By:
+//   - main.executeYAML during playbook execution
+//
+// Dependencies:
+//   - inventory.GetHosts for host resolution
+//   - sync.WaitGroup for concurrency control
+//   - ExecuteRemote for individual task execution
+//
+// Notes:
+//   - Uses goroutines for parallel execution
+//   - Resolves hostnames to IPs using inventory
+//   - Buffers results in channel for ordered logging
 func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
 	var wg sync.WaitGroup
 	results := make(chan string, len(taskList)*len(hosts))

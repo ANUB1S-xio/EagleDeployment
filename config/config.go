@@ -1,5 +1,6 @@
 // File: config.go
 // Directory Path: /EagleDeploy_CLI/config
+// Purpose: Provides configuration file loading and parsing functionality
 
 package config
 
@@ -11,11 +12,26 @@ import (
 )
 
 // Function: LoadConfig
-// Purpose: Loads a YAML configuration file and unmarshals it into a given Go structure.
+// Purpose: Loads and parses YAML configuration files into Go structures
 // Parameters:
-// - filePath: The file path to the YAML configuration file.
-// - target: The Go structure to populate with the configuration data.
-// Returns: An error if the file cannot be read or unmarshalled.
+//   - filePath: string - Path to YAML configuration file
+//   - target: interface{} - Target structure for unmarshaling
+//
+// Returns:
+//   - error - Any loading or parsing errors
+//
+// Called By:
+//   - [`inventory.LoadInventory`](../inventory/inventory.go)
+//   - [`tasks.LoadPlaybook`](../tasks/tasks.go)
+//
+// Dependencies:
+//   - gopkg.in/yaml.v2 for YAML parsing
+//   - io/ioutil for file operations
+//
+// Notes:
+//   - Handles both inventory and playbook configurations
+//   - Logs all operations for debugging
+//   - Returns detailed error messages
 func LoadConfig(filePath string, target interface{}) error {
 	log.Printf("Loading configuration from file: %s", filePath)
 
