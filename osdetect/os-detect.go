@@ -7,62 +7,199 @@ package osdetect
 import (
 	"EagleDeploy_CLI/sshutils"
 	"fmt"
+	"net"
 	"strings"
+	"time"
 )
 
-// DetectOS connects to a host via SSH and determines its OS.
+// DetectOS connects to a host via SSH and attempts multiple detection methods
 func DetectOS(host, user, password string, port int) (string, error) {
+	// First try TCP fingerprinting
+	osType, err := detectOSFromTCP(host)
+	if err == nil && osType != "Unknown" {
+		return osType, nil
+	}
+
+	// Fall back to SSH detection if TCP fingerprinting fails
 	client, err := sshutils.ConnectSSH(host, user, password, port)
 	if err != nil {
-		return "", fmt.Errorf("failed to connect to host %s: %v", host, err)
+		return "", fmt.Errorf("SSH connection failed: %v", err)
 	}
 	defer sshutils.CloseSSHConnection(client)
 
-	// Try Windows detection first using PowerShell
-	output, err := sshutils.RunSSHCommand(client, "powershell.exe -Command \"(Get-CimInstance Win32_OperatingSystem).Caption\"")
-	if err == nil && strings.Contains(strings.ToLower(output), "windows") {
-		// Clean up the output
-		output = strings.TrimSpace(output)
-		output = strings.Replace(output, "Microsoft ", "", 1)
-		return output, nil
+	// Enhanced detection methods in order of reliability
+	detectionMethods := []struct {
+		name    string
+		command string
+		parser  func(string) string
+	}{
+		// Windows detection
+		{
+			name:    "Windows PowerShell",
+			command: "powershell.exe -Command \"(Get-CimInstance Win32_OperatingSystem).Caption\"",
+			parser:  parseWindowsOutput,
+		},
+		// Linux detection methods
+		{
+			name:    "SystemD OS-Release",
+			command: "cat /etc/os-release",
+			parser:  parseOSRelease,
+		},
+		{
+			name:    "LSB Release",
+			command: "lsb_release -a",
+			parser:  parseLSBRelease,
+		},
+		{
+			name:    "Fedora/RHEL Release",
+			command: "cat /etc/redhat-release",
+			parser:  parseRedHatRelease,
+		},
+		{
+			name:    "System Information",
+			command: "hostnamectl",
+			parser:  parseHostnamectl,
+		},
+		{
+			name:    "Uname Full",
+			command: "uname -a",
+			parser:  parseUname,
+		},
 	}
 
-	// Try Linux detection using os-release
-	output, err = sshutils.RunSSHCommand(client, "cat /etc/os-release")
-	if err == nil {
-		// Parse os-release file
-		lines := strings.Split(output, "\n")
-		var name, version string
-		for _, line := range lines {
-			if strings.HasPrefix(line, "NAME=") {
-				name = strings.Trim(strings.TrimPrefix(line, "NAME="), "\"")
+	for _, method := range detectionMethods {
+		output, err := sshutils.RunSSHCommand(client, method.command)
+		if err == nil {
+			if osType := method.parser(output); osType != "" {
+				return osType, nil
 			}
-			if strings.HasPrefix(line, "VERSION_ID=") {
-				version = strings.Trim(strings.TrimPrefix(line, "VERSION_ID="), "\"")
-			}
-		}
-		if name != "" {
-			if version != "" {
-				return fmt.Sprintf("Linux - %s %s", name, version), nil
-			}
-			return fmt.Sprintf("Linux - %s", name), nil
 		}
 	}
 
-	// Fallback to basic Linux detection
-	output, err = sshutils.RunSSHCommand(client, "uname -a")
-	if err == nil {
-		if strings.Contains(strings.ToLower(output), "ubuntu") {
-			return "Linux - Ubuntu", nil
-		} else if strings.Contains(strings.ToLower(output), "fedora") {
-			return "Linux - Fedora", nil
-		} else if strings.Contains(strings.ToLower(output), "centos") {
-			return "Linux - CentOS", nil
-		} else if strings.Contains(strings.ToLower(output), "debian") {
-			return "Linux - Debian", nil
+	return "Unknown", fmt.Errorf("failed to detect OS using all methods")
+}
+
+// New function to detect OS from TCP fingerprinting
+func detectOSFromTCP(host string) (string, error) {
+	// Try connecting to common ports
+	ports := []int{22, 445, 139, 135} // SSH, SMB, NetBIOS
+	timeout := time.Second * 2
+
+	for _, port := range ports {
+		conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", host, port), timeout)
+		if err != nil {
+			continue
 		}
-		return "Linux - Generic", nil
+		defer conn.Close()
+
+		// Get TCP connection details
+		_, ok := conn.(*net.TCPConn)
+		if !ok {
+			continue
+		}
+
+		// Check TCP window size and other characteristics
+		if port == 445 || port == 139 || port == 135 {
+			return "Windows", nil // Strong indication of Windows
+		}
+
+		// Analyze SSH banner if port 22
+		if port == 22 {
+			buffer := make([]byte, 64)
+			conn.SetReadDeadline(time.Now().Add(timeout))
+			n, _ := conn.Read(buffer)
+			banner := string(buffer[:n])
+
+			switch {
+			case strings.Contains(strings.ToLower(banner), "ubuntu"):
+				return "Linux - Ubuntu", nil
+			case strings.Contains(strings.ToLower(banner), "fedora"):
+				return "Linux - Fedora", nil
+			case strings.Contains(strings.ToLower(banner), "openssh"):
+				if strings.Contains(strings.ToLower(banner), "windows") {
+					return "Windows", nil
+				}
+				return "Linux", nil
+			}
+		}
 	}
 
-	return "Unknown", fmt.Errorf("unable to determine OS for host %s", host)
+	return "Unknown", fmt.Errorf("couldn't determine OS from TCP fingerprinting")
+}
+
+// Enhanced OS-specific parsing functions
+func parseHostnamectl(output string) string {
+	lines := strings.Split(output, "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "Operating System:") {
+			os := strings.TrimSpace(strings.TrimPrefix(line, "Operating System:"))
+			return fmt.Sprintf("Linux - %s", os)
+		}
+	}
+	return ""
+}
+
+func parseWindowsOutput(output string) string {
+	output = strings.TrimSpace(output)
+	if strings.Contains(output, "Microsoft") {
+		return strings.Replace(output, "Microsoft ", "", 1)
+	}
+	return output
+}
+
+func parseUname(output string) string {
+	panic("unimplemented")
+}
+
+func parseRedHatRelease(output string) string {
+	lines := strings.Split(output, "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "release") {
+			return fmt.Sprintf("Linux - %s", strings.TrimSpace(line))
+		}
+	}
+	return ""
+}
+
+// Add helper functions for parsing different OS release files
+func parseOSRelease(output string) string {
+	lines := strings.Split(output, "\n")
+	var name, version string
+	for _, line := range lines {
+		if strings.HasPrefix(line, "NAME=") {
+			name = strings.Trim(strings.TrimPrefix(line, "NAME="), "\"")
+		}
+		if strings.HasPrefix(line, "VERSION_ID=") {
+			version = strings.Trim(strings.TrimPrefix(line, "VERSION_ID="), "\"")
+		}
+	}
+	if name != "" {
+		if version != "" {
+			return fmt.Sprintf("Linux - %s %s", name, version)
+		}
+		return fmt.Sprintf("Linux - %s", name)
+	}
+	return ""
+}
+
+// Add similar parse functions for other release files...
+
+func parseLSBRelease(output string) string {
+	lines := strings.Split(output, "\n")
+	var name, version string
+	for _, line := range lines {
+		if strings.HasPrefix(line, "DISTRIB_ID=") {
+			name = strings.Trim(strings.TrimPrefix(line, "DISTRIB_ID="), "\"")
+		}
+		if strings.HasPrefix(line, "DISTRIB_RELEASE=") {
+			version = strings.Trim(strings.TrimPrefix(line, "DISTRIB_RELEASE="), "\"")
+		}
+	}
+	if name != "" {
+		if version != "" {
+			return fmt.Sprintf("Linux - %s %s", name, version)
+		}
+		return fmt.Sprintf("Linux - %s", name)
+	}
+	return ""
 }

@@ -17,6 +17,7 @@ import (
 	"strings"
 	"sync"
 	"text/template"
+	"time"
 
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v2"
@@ -223,12 +224,27 @@ func AddHost(ipRange string) {
 		g.Go(func() error {
 			if checkHostAlive(ip) {
 				hostname := detectHostname(ip)
-				// Call osdetect.DetectOS to get the OS type
-				osType, err := osdetect.DetectOS(ip, sshUser, sshPass, 22)
+
+				// Add debug logging for SSH credentials
+				log.Printf("Attempting OS detection for %s with credentials - User: %s", ip, sshUser)
+
+				// Add retry logic for OS detection
+				var osType string
+				for attempts := 1; attempts <= 3; attempts++ {
+					osType, err = osdetect.DetectOS(ip, sshUser, sshPass, 22)
+					if err == nil {
+						break
+					}
+					log.Printf("Attempt %d: Error detecting OS for %s: %v", attempts, ip, err)
+					// Wait briefly before retry
+					time.Sleep(2 * time.Second)
+				}
+
 				if err != nil {
-					log.Printf("Error detecting OS for %s: %v", ip, err)
+					log.Printf("All attempts failed to detect OS for %s: %v", ip, err)
 					osType = "Unknown"
 				}
+
 				newHost := Host{IP: ip, Hostname: hostname, OS: osType}
 				mu.Lock()
 				aliveHosts = append(aliveHosts, newHost)

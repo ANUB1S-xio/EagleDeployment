@@ -81,6 +81,7 @@ sudo systemctl start sshd
 > **WARNING**: SSH credentials must belong to an administrator or sudo-enabled user on target systems.
 
 ### Windows Environment Variables
+## (This is important to set up or else the OS detection will not work)
 
 ```powershell
 # Temporary (Current Session)
@@ -89,6 +90,7 @@ $env:EAGLE_SSH_PASS="admin_password"
 $env:EAGLE_SSH_KEY="$HOME\.ssh\id_rsa"
 
 # Permanent (System Level)
+# Only update admin_username & admin_password
 [System.Environment]::SetEnvironmentVariable("EAGLE_SSH_USER", "admin_username", "Machine")
 [System.Environment]::SetEnvironmentVariable("EAGLE_SSH_PASS", "admin_password", "Machine")
 [System.Environment]::SetEnvironmentVariable("EAGLE_SSH_KEY", "$HOME\.ssh\id_rsa", "Machine")

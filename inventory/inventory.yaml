@@ -1,17 +1,20 @@
 Hosts:
-- IP: 10.42.56.101
-  Hostname: node1-hunterpc
-  OS: Linux - Ubuntu 24.04
-- IP: 10.42.56.100
-  Hostname: ""
-  OS: Linux - Ubuntu 24.04
-- IP: 10.42.56.102
-  Hostname: Node_3
+- IP: 10.42.56.106
+  Hostname: node-3-fedora
+  OS: Linux - Fedora Linux 40
+- IP: 10.42.56.99
+  Hostname: node-2-ubuntu
+  OS: Linux - Ubuntu 22.04
+- IP: 10.42.56.98
+  Hostname: node-1-ubuntu
+  OS: Linux - Ubuntu 22.04
+- IP: 10.42.56.110
+  Hostname: node-4-win11
   OS: Windows 11 Pro
 SSH_CRED:
-  ssh_user: ""
-  ssh_pass: ""
+  ssh_user: eagleadmin
+  ssh_pass: '@dminPass123'
 Users:
-- username: test_user01
-  password: tes123_pa12s#
+- username: demouser
+  password: DemoPass098
   group: users
