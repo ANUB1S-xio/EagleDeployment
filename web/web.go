@@ -6,7 +6,16 @@ import (
 	"net/http"
 )
 
-// find open port
+// Function: findPort
+// Purpose: Dynamically finds an available TCP port on localhost
+// Parameters: None
+// Returns:
+//   - int: Available port number
+//   - error: Any error encountered during port discovery
+//
+// Called By: StartWebServer when default port is unavailable
+// Dependencies:
+//   - net.Listen for TCP port binding
 func findPort() (int, error) {
 	listener, err := net.Listen("tcp", "127.0.0.1:0") // Bind to localhost only
 	if err != nil {
@@ -19,7 +28,24 @@ func findPort() (int, error) {
 	return addr.Port, nil
 }
 
-// StartWebServer initializes server with dynamic port signing
+// Function: StartWebServer
+// Purpose: Initializes and runs the web interface server
+// Parameters: None
+// Returns: None
+// Called By:
+//   - main() during application startup
+//
+// Dependencies:
+//   - findPort() for dynamic port allocation
+//   - http package for web server functionality
+//   - web/templates/* for HTML content
+//   - web/static/* for static assets
+//
+// Notes:
+//   - Default port: 8742
+//   - Binds only to localhost for security
+//   - Serves static files and HTML templates
+//   - No HTTPS as it's for internal admin use only
 func StartWebServer() {
 	port := 8742 // Default port
 
@@ -48,18 +74,17 @@ func StartWebServer() {
 
 	// Serve the homepage at "/"
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-   		 http.ServeFile(w, r, "web/templates/index.html")
+		http.ServeFile(w, r, "web/templates/index.html")
 	})
 
 	// Serve login and dashboard pages at their respective paths
 	http.HandleFunc("/login.html", func(w http.ResponseWriter, r *http.Request) {
-   		 http.ServeFile(w, r, "web/templates/login.html")
+		http.ServeFile(w, r, "web/templates/login.html")
 	})
 
 	http.HandleFunc("/dashboard.html", func(w http.ResponseWriter, r *http.Request) {
-    		http.ServeFile(w, r, "web/templates/dashboard.html")
+		http.ServeFile(w, r, "web/templates/dashboard.html")
 	})
-
 
 	// Start HTTP server on localhost (ED internally used (by admin), no need for secure http or CA Certificates)
 	err = http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", port), nil)

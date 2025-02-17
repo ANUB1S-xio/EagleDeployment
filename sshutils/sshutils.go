@@ -16,14 +16,23 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-// ConnectSSH establishes an SSH connection to a remote server.
+// Function: ConnectSSH
+// Purpose: Establishes an SSH connection to a remote server
 // Parameters:
-// - host: The remote server address.
-// - user: The SSH username.
-// - password: The SSH password.
-// - port: The SSH port number.
+//   - host: string - The remote server address
+//   - user: string - The SSH username
+//   - password: string - The SSH password
+//   - port: int - The SSH port number
+//
 // Returns:
-// - An SSH client instance or an error if the connection fails.
+//   - *ssh.Client - SSH client instance
+//   - error - Any connection errors
+//
+// Called By:
+//   - [`executor.ExecuteRemote`](../executor/executor.go)
+//
+// Dependencies:
+//   - golang.org/x/crypto/ssh
 func ConnectSSH(host, user, password string, port int) (*ssh.Client, error) {
 	log.Printf("Connecting to SSH server: %s on port: %d as user: %s", host, port, user)
 
@@ -46,12 +55,21 @@ func ConnectSSH(host, user, password string, port int) (*ssh.Client, error) {
 	return client, nil
 }
 
-// RunSSHCommand executes a command on a remote host via SSH.
+// Function: RunSSHCommand
+// Purpose: Executes a command on a remote host via SSH
 // Parameters:
-// - client: An SSH client instance.
-// - command: The command to execute.
+//   - client: *ssh.Client - Active SSH connection
+//   - command: string - Command to execute
+//
 // Returns:
-// - The command output or an error if execution fails.
+//   - string - Command output
+//   - error - Any execution errors
+//
+// Called By:
+//   - [`executor.ExecuteRemote`](../executor/executor.go)
+//
+// Dependencies:
+//   - Active SSH client connection
 func RunSSHCommand(client *ssh.Client, command string) (string, error) {
 	session, err := client.NewSession()
 	if err != nil {
@@ -66,11 +84,21 @@ func RunSSHCommand(client *ssh.Client, command string) (string, error) {
 	return string(output), nil
 }
 
-// RunLocalCommand executes a shell command locally.
+// Function: RunLocalCommand
+// Purpose: Executes a shell command on the local system
 // Parameters:
-// - command: The shell command to execute.
+//   - command: string - Shell command to execute
+//
 // Returns:
-// - The command output or an error if execution fails.
+//   - string - Command output
+//   - error - Any execution errors
+//
+// Called By:
+//   - Various playbook tasks requiring local execution
+//
+// Dependencies:
+//   - os/exec for command execution
+//   - bash shell availability
 func RunLocalCommand(command string) (string, error) {
 	cmd := exec.Command("bash", "-c", command)
 	var stdout, stderr bytes.Buffer
@@ -86,10 +114,20 @@ func RunLocalCommand(command string) (string, error) {
 }
 
 // Function: CloseSSHConnection
-// Purpose: Closes an established SSH connection safely.
+// Purpose: Safely closes an established SSH connection
 // Parameters:
-// - client: The SSH client connection to close.
-// Returns: An error if the connection fails to close.
+//   - client: *ssh.Client - The SSH connection to close
+//
+// Returns:
+//   - error - Any errors during connection closure
+//
+// Called By:
+//   - [`executor.ExecuteRemote`](../executor/executor.go)
+//   - Cleanup routines
+//
+// Notes:
+//   - Handles nil client gracefully
+//   - Logs connection closure status
 func CloseSSHConnection(client *ssh.Client) error {
 	if client == nil {
 		return nil // No connection to close
