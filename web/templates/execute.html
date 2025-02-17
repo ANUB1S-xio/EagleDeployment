@@ -9,19 +9,15 @@
 </head>
 <body>
     <header>
-        <div class="logo">Eagle<span>Nexus</span></div>
-        <a href="/" class="logout-button">Logout</a> <!-- Logout matches Dashboard -->
-    </header>
-
     <main class="execute-container">
         <div class="execute-box">
             <h2>Execute Playbook</h2>
+            <p class="selected-playbook">Current Selected Playbook: <span id="playbookName">None</span></p>
             <div class="selected-playbook-block">
                 <p>Current Selected Playbook:</p>
                 <h3 id="playbookName">None</h3>
             </div>
             <button id="executeButton">Execute</button>
-            <button id="backButton" class="back-button">Back</button> <!-- Back button added -->
         </div>
     </main>
 
@@ -35,10 +31,6 @@
 
         document.getElementById("executeButton").addEventListener("click", function() {
             alert("Executing playbook: " + document.getElementById("playbookName").textContent);
-        });
-
-        document.getElementById("backButton").addEventListener("click", function() {
-            window.location.href = "/dashboard"; // Redirects back to Dashboard
         });
     </script>
 </body>
