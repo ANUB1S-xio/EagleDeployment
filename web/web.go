@@ -46,13 +46,14 @@ func StartWebServer() {
 	// Serve static files (CSS, JS, images)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	// Serve login and dashboard pages at their respective paths
-	http.HandleFunc("/login.html", func(w http.ResponseWriter, r *http.Request) {
-   		 http.ServeFile(w, r, "web/templates/login.html")
+	// Default to Login Page
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/login.html")
 	})
 
-	http.HandleFunc("/dashboard.html", func(w http.ResponseWriter, r *http.Request) {
-    		http.ServeFile(w, r, "web/templates/dashboard.html")
+	http.HandleFunc("/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		// Authentication check logic goes here
+		http.ServeFile(w, r, "web/templates/dashboard.html")
 	})
 
 
