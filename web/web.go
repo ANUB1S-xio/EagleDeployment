@@ -46,11 +46,6 @@ func StartWebServer() {
 	// Serve static files (CSS, JS, images)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	// Serve the homepage at "/"
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-   		 http.ServeFile(w, r, "web/templates/index.html")
-	})
-
 	// Serve login and dashboard pages at their respective paths
 	http.HandleFunc("/login.html", func(w http.ResponseWriter, r *http.Request) {
    		 http.ServeFile(w, r, "web/templates/login.html")
