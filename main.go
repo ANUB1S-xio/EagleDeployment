@@ -141,6 +141,9 @@ func main() {
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) // terminate signal
 
+	//wait for web server to start first
+	time.Sleep(1 * time.Second)
+
 	go func() {
 		for {
 			choice := displayMenu()
