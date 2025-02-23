@@ -1,36 +1,32 @@
 // File: executor.go
 // Directory Path: /EagleDeploy_CLI/executor
+// Purpose: Executes tasks defined in YAML playbooks via SSH concurrently, remotely, or locally.
 
 package executor
 
 import (
+	"EagleDeploy_CLI/config"
+	"EagleDeploy_CLI/inventory"
 	"EagleDeploy_CLI/sshutils"
 	"EagleDeploy_CLI/tasks"
 	"fmt"
 	"log"
+	"strconv"
 	"sync"
 )
 
-// Function: ExecuteRemote
-// Purpose: Executes a task on a remote machine using SSH.
-// Parameters:
-// - task: The task to execute.
-// - port: The port number for the SSH connection.
-// Returns: An error if the task execution fails.
+// ExecuteRemote executes a task on a remote machine using SSH.
 func ExecuteRemote(task tasks.Task, port int) error {
-	// Using credentials from the playbook (Task struct)
 	username := task.SSHUser
 	password := task.SSHPassword
 
-	// Validating the presence of SSH credentials
 	if username == "" || password == "" {
-		return fmt.Errorf("SSH username or password is missing in the playbook for task '%s'", task.Name)
+		return fmt.Errorf("SSH username or password missing for task '%s'", task.Name)
 	}
 
-	// Connecting to the remote host
 	client, err := sshutils.ConnectSSH(task.Host, username, password, port)
 	if err != nil {
-		log.Printf("Failed to connect to host %s on port %d: %v", task.Host, port, err)
+		log.Printf("Failed SSH connection to %s:%d: %v", task.Host, port, err)
 		return err
 	}
 	defer func() {
@@ -39,50 +35,35 @@ func ExecuteRemote(task tasks.Task, port int) error {
 		}
 	}()
 
-	// Executing the task command
 	output, err := sshutils.RunSSHCommand(client, task.Command)
 	if err != nil {
-		log.Printf("Failed to execute task '%s' on host %s: %v", task.Name, task.Host, err)
+		log.Printf("Failed executing '%s' on host %s: %v", task.Name, task.Host, err)
 		return err
 	}
 
-	fmt.Printf("Output of task '%s' on host %s:\n%s", task.Name, task.Host, output)
+	fmt.Printf("Output of task '%s' on host %s:\n%s\n", task.Name, task.Host, output)
 	return nil
 }
 
-// Function: ExecuteLocal
-// Purpose: Executes a command locally on the machine.
-// Parameters:
-// - command: The shell command to execute.
-// Returns: An error if the command execution fails.
+// ExecuteLocal executes a command locally on the machine.
 func ExecuteLocal(command string) error {
 	log.Printf("Executing local command: %s", command)
 	output, err := sshutils.RunLocalCommand(command)
 	if err != nil {
-		log.Printf("Failed to execute local command '%s': %v", command, err)
+		log.Printf("Failed executing local command '%s': %v", command, err)
 		return err
 	}
 
-	log.Printf("Local command '%s' executed successfully: %s", command, output)
+	log.Printf("Local command output: %s", output)
 	return nil
 }
 
-// Function: ExecuteConcurrently
-// Purpose: Executes tasks concurrently across multiple hosts.
-// Parameters:
-// - tasks: A slice of tasks.Task objects to execute.
-// - hosts: A slice of host addresses to execute tasks on.
-// - port: The port number for the SSH connection.
-// Behavior:
-// - Uses goroutines to execute each task on each host.
-// - Collects results and errors via channels for logging.
-// Returns: None.
+// ExecuteConcurrently executes multiple tasks across multiple hosts concurrently.
 func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
 	var wg sync.WaitGroup
 	results := make(chan string, len(taskList)*len(hosts))
 	errors := make(chan error, len(taskList)*len(hosts))
 
-	// Iterate over tasks and hosts to execute them concurrently
 	for _, task := range taskList {
 		for _, host := range hosts {
 			wg.Add(1)
@@ -99,18 +80,62 @@ func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
 		}
 	}
 
-	// Close channels after all goroutines complete
 	go func() {
 		wg.Wait()
 		close(results)
 		close(errors)
 	}()
 
-	// Log results and errors
 	for res := range results {
 		log.Println(res)
 	}
 	for err := range errors {
 		log.Printf("Error: %v", err)
 	}
+}
+
+// ExecuteYAML processes a YAML playbook by injecting inventory data and executing tasks concurrently.
+func ExecuteYAML(playbookPath string, targetHosts []string) {
+	processedPlaybook := "./playbooks/processed_playbook.yaml"
+	
+	// Inject inventory data into playbook template
+	err := inventory.InjectInventoryIntoPlaybook(playbookPath, processedPlaybook)
+	if err != nil {
+		log.Fatalf("Inventory injection failed: %v", err)
+		return
+	}
+
+	// Load processed YAML into playbook struct
+	playbook := &tasks.Playbook{}
+	err = config.LoadConfig(processedPlaybook, playbook)
+	if err != nil {
+		log.Fatalf("Playbook load failed: %v", err)
+		return
+	}
+
+	if len(playbook.Tasks) == 0 {
+		log.Fatalf("No tasks found in playbook: %s", processedPlaybook)
+		return
+	}
+
+	// Use provided targetHosts or default from playbook
+	hosts := playbook.Hosts
+	if len(targetHosts) > 0 {
+		hosts = targetHosts
+	}
+
+	portStr := playbook.Settings["port"]
+	if portStr == "" {
+		log.Fatalf("Playbook settings missing port")
+		return
+	}
+
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		log.Fatalf("Invalid port '%s': %v", portStr, err)
+		return
+	}
+
+	fmt.Printf("Executing Playbook: '%s' on Hosts: %v\n", playbook.Name, hosts)
+	ExecuteConcurrently(playbook.Tasks, hosts, port)
 }
