@@ -14,7 +14,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"strconv"
 	"strings"
 	"syscall"
 )
@@ -67,7 +66,7 @@ func listPlaybooks() []string {
 //   - [`executor.ExecuteConcurrently`](executor/executor.go)
 func executeYAML(playbookPath string, targetHosts []string) {
 	// Process the playbook template by injecting inventory data
-	processedPlaybook := "./playbooks/processed_playbook.yaml"
+	processedPlaybook := "./playbooks/processed_add_user.yaml"
 	err := inventory.InjectInventoryIntoPlaybook(playbookPath, processedPlaybook)
 	if err != nil {
 		log.Fatalf("Failed to inject inventory into playbook: %v", err)
@@ -86,14 +85,10 @@ func executeYAML(playbookPath string, targetHosts []string) {
 		hosts = targetHosts
 	}
 
-	// Get port setting from the playbook settings
-	portStr := playbook.Settings["port"]
-	if portStr == "" {
-		log.Fatalf("Port is not specified in the playbook settings.")
-	}
-	port, err := strconv.Atoi(portStr)
-	if err != nil {
-		log.Fatalf("Invalid port value: %v", err)
+	// Port is already an integer
+	port := playbook.Settings["port"]
+	if port == 0 {
+		log.Fatalf("Port is not specified or invalid in the playbook settings.")
 	}
 
 	// Execute tasks concurrently using the executor package
@@ -137,7 +132,6 @@ func main() {
 	// channel to monitor server lifecycle
 	serverShutdown := make(chan bool, 1)
 
-	// Start the web server concurrently
 	go func() {
 		web.StartWebServer()   // server start
 		serverShutdown <- true // notify after server stops
@@ -145,7 +139,7 @@ func main() {
 
 	// signal handling
 	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) //terminate signal
+	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) // terminate signal
 
 	go func() {
 		for {
@@ -225,8 +219,7 @@ func main() {
 
 	select {
 	case <-serverShutdown:
-		fmt.Println("")
-		fmt.Println("Server stopped...shutting down...")
+		fmt.Println("\nServer stopped...shutting down...")
 	case <-signalChan:
 		fmt.Println("Termination signal received...")
 	}
