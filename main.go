@@ -128,11 +128,11 @@ func displayMenu() int {
 //   - [`web.StartWebServer`](web/web.go)
 //   - All core package functions
 func main() {
+	fmt.Println()
 	var targetHosts []string
 
 	// channel to monitor server lifecycle
 	serverShutdown := make(chan bool, 1)
-	fmt.PrintLn("") // line break
 	go func() {
 		web.StartWebServer()   // server start
 		serverShutdown <- true // notify after server stops
