@@ -1,0 +1,100 @@
+
+.list-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px; /* Spacing between panels */
+    margin-top: 100px;
+}
+
+/* Left side: Bigger YAML Edit panel */
+.edit-panel {
+    width: 60%;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0,255,153,0.4);
+}
+
+/* Bigger textarea for YAML content */
+.edit-panel textarea {
+    height: 350px;
+    resize: none;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    padding: 15px;
+    font-size: 14px;
+    width: 100%;
+}
+
+/* Button spacing */
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+/* Same style as dashboard buttons */
+.button-group button {
+    background: #00ff99;
+    border: none;
+    padding: 10px 15px;
+    color: black;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0px 0px 10px rgba(0,255,153,0.8);
+    font-size: 14px;
+}
+
+.button-group button:hover {
+    background: #00cc77;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(0,255,153,1);
+}
+
+/* Right side: Styled YAML Select Panel */
+.select-panel {
+    width: 25%;
+    height: 450px;
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0,255,153,0.4);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Label for dropdown */
+.select-panel label {
+    font-weight: bold;
+    color: #00ff99;
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Styled dropdown menu */
+.select-panel select {
+    width: 90%;
+    padding: 12px;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
