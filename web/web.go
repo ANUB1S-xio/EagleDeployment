@@ -64,6 +64,41 @@ func StartWebServer() {
 		http.ServeFile(w, r, "web/templates/list.html")
 	})
 
+	// API endpoint for executing YAML playbooks
+	http.HandleFunc("/api/execute", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		r.ParseForm()
+		playbookName := r.FormValue("playbook")
+
+		if playbookName == "" {
+			http.Error(w, "No playbook selected", http.StatusBadRequest)
+			return
+		}
+
+		playbookPath := fmt.Sprintf("./playbooks/%s", playbookName)
+		go executeYAML(playbookPath, nil)
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Executing playbook: %s", playbookName)
+	})
+
+	// API endpoint to list available YAML playbooks
+	http.HandleFunc("/api/list_playbooks", func(w http.ResponseWriter, r *http.Request) {
+		playbooks := listPlaybooks()
+		if playbooks == nil {
+			http.Error(w, "No playbooks found", http.StatusNotFound)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(playbooks)
+	})
+
+
 
 	// Start HTTP server on localhost (ED internally used (by admin), no need for secure http or CA Certificates)
 	err = http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", port), nil)
