@@ -11,7 +11,6 @@ import (
 	"EagleDeploy_CLI/tasks"
 	"fmt"
 	"log"
-	"strconv"
 	"sync"
 )
 
@@ -97,7 +96,7 @@ func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
 // ExecuteYAML processes a YAML playbook by injecting inventory data and executing tasks concurrently.
 func ExecuteYAML(playbookPath string, targetHosts []string) {
 	processedPlaybook := "./playbooks/processed_playbook.yaml"
-	
+
 	// Inject inventory data into playbook template
 	err := inventory.InjectInventoryIntoPlaybook(playbookPath, processedPlaybook)
 	if err != nil {
@@ -124,15 +123,10 @@ func ExecuteYAML(playbookPath string, targetHosts []string) {
 		hosts = targetHosts
 	}
 
-	portStr := playbook.Settings["port"]
-	if portStr == "" {
-		log.Fatalf("Playbook settings missing port")
-		return
-	}
-
-	port, err := strconv.Atoi(portStr)
-	if err != nil {
-		log.Fatalf("Invalid port '%s': %v", portStr, err)
+	// port is already an int, no need for strconv
+	port := playbook.Settings["port"]
+	if port == 0 {
+		log.Fatalf("Playbook settings missing or invalid port")
 		return
 	}
 
