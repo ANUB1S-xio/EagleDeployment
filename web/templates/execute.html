@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eagle Nexus - Execute YAML</title>
+  <!-- Reuse the same CSS files to maintain a consistent look -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+  <header>
+    <div class="logo">Eagle<span>Nexus</span></div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="execute-yml" style="text-align: center; margin-top: 50px;">
+      <h1>Execute YAML Playbook</h1>
+      <form action="/execute" method="post" style="max-width: 800px; margin: 0 auto;">
+        <!-- Optionally include a hidden field if you need to pass a pre-selected file reference -->
+        <input type="hidden" name="yaml-file" value="preselected_playbook.yml">
+        <button type="submit">Execute</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
