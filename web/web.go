@@ -59,7 +59,10 @@ func StartWebServer() {
 	http.HandleFunc("/execute", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/execute.html")
 	})
-
+	// list playbook page
+	http.HandleFunc("/list", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/list.html")
+	})
 
 
 	// Start HTTP server on localhost (ED internally used (by admin), no need for secure http or CA Certificates)
