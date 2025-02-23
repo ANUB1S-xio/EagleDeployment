@@ -132,7 +132,7 @@ func main() {
 
 	// channel to monitor server lifecycle
 	serverShutdown := make(chan bool, 1)
-
+	fmt.PrintLn("") // line break
 	go func() {
 		web.StartWebServer()   // server start
 		serverShutdown <- true // notify after server stops
