@@ -4,7 +4,7 @@
 /* General Styles */
 body {
     font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle, rgba(24, 24, 24, 0.5), rgba(0, 0, 0, 1)); /* Keeping the original black theme */
+    background: radial-gradient(circle, rgba(0, 255, 153, 0.2), rgba(0, 0, 0, 1)); /* Keeping the original black theme */
     color: white;
     margin: 0;
     padding: 0;
