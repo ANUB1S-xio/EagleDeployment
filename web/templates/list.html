@@ -23,6 +23,7 @@
             <h1>List & Edit YAML Files</h1>
             <div class="list-container">
                 
+                <!-- Left Panel: YAML Edit Window -->
                 <div class="edit-panel">
                     <textarea id="yamlContent" readonly> # YAML content displays here after selection.</textarea>
                     <div class="button-group">
@@ -31,8 +32,9 @@
                     </div>
                 </div>
 
+                <!-- Right Panel: Dropdown List -->
                 <div class="select-panel">
-                    <label for="yamlSelect">Selected YAML File:</label>
+                    <label for="yamlSelect">Select YAML File:</label>
                     <select id="yamlSelect">
                         <option value="" disabled selected>Select YAML</option>
                         <option value="playbook1.yml">playbook1.yml</option>
