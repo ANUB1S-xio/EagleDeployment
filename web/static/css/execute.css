@@ -54,3 +54,36 @@
     transform: scale(1.05);
     box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
 }
+
+.execute-container {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.playbook-selection {
+    margin: 20px 0;
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #00ff99;
+    border: 2px solid #00ff99;
+}
+
+button {
+    background: #00ff99;
+    border: none;
+    padding: 12px 20px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #00cc77;
+}
