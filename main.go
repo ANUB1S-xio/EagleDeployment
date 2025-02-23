@@ -1,6 +1,6 @@
 // File: main.go
 // Directory Path: /EagleDeploy_CLI/
-// Purpose: Entry point for EagleDeploy CLI with web integration and YAML playbook execution.
+// Purpose: Main entry point for the EagleDeploy CLI, handling menu navigation and execution of YAML playbooks.
 
 package main
 
@@ -19,21 +19,31 @@ import (
 	"syscall"
 )
 
-// listPlaybooks lists all YAML playbooks in the 'playbooks' directory.
+// Function: listPlaybooks
+// Purpose: Lists all YAML playbooks in the playbooks directory
+// Parameters: None
+// Returns: []string - Slice of playbook filenames
+// Called By: main() when user selects option 1 or 2
+// Dependencies:
+//   - [`os.Stat`](os/os.go) for directory checking
+//   - [`os.ReadDir`](os/os.go) for file listing
 func listPlaybooks() []string {
-	playbooksDir := "./playbooks"
+	playbooksDir := "./playbooks" // Default directory for playbooks
 
+	// Ensure the playbooks directory exists
 	if _, err := os.Stat(playbooksDir); os.IsNotExist(err) {
 		log.Printf("Playbooks directory not found: %s", playbooksDir)
 		return nil
 	}
 
+	// Read the playbooks directory
 	files, err := os.ReadDir(playbooksDir)
 	if err != nil {
 		log.Printf("Failed to read playbooks directory: %v", err)
 		return nil
 	}
 
+	// Filter files to include only YAML playbooks
 	var playbooks []string
 	for _, file := range files {
 		if !file.IsDir() && (strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml")) {
@@ -43,40 +53,62 @@ func listPlaybooks() []string {
 	return playbooks
 }
 
-// executeYAML handles executing tasks defined in a YAML playbook.
+// Function: executeYAML
+// Purpose: Processes and executes a YAML playbook with inventory data
+// Parameters:
+//   - playbookPath: string - Path to the source playbook
+//   - targetHosts: []string - Optional list of target hosts
+//
+// Returns: None
+// Called By: main() when user selects option 1
+// Dependencies:
+//   - [`inventory.InjectInventoryIntoPlaybook`](inventory/inventory.go)
+//   - [`config.LoadConfig`](config/config.go)
+//   - [`executor.ExecuteConcurrently`](executor/executor.go)
 func executeYAML(playbookPath string, targetHosts []string) {
+	// Process the playbook template by injecting inventory data
+	processedPlaybook := "./playbooks/processed_add_user.yaml"
+	err := inventory.InjectInventoryIntoPlaybook(playbookPath, processedPlaybook)
+	if err != nil {
+		log.Fatalf("Failed to inject inventory into playbook: %v", err)
+	}
+
+	// Now load and execute the processed playbook
 	playbook := &tasks.Playbook{}
-	err := config.LoadConfig(playbookPath, playbook)
+	err = config.LoadConfig(processedPlaybook, playbook)
 	if err != nil {
 		log.Fatalf("Failed to load playbook: %v", err)
 	}
 
-	if len(playbook.Tasks) == 0 {
-		log.Fatalf("No tasks found in the playbook.")
-	}
-
+	// Use targetHosts if provided; otherwise, use playbook hosts
 	hosts := playbook.Hosts
 	if len(targetHosts) > 0 {
 		hosts = targetHosts
 	}
 
+	// Get port setting from the playbook settings
 	portStr := playbook.Settings["port"]
 	if portStr == "" {
-		log.Fatalf("Port is not specified in playbook settings.")
+		log.Fatalf("Port is not specified in the playbook settings.")
 	}
 	port, err := strconv.Atoi(portStr)
 	if err != nil {
-		log.Fatalf("Invalid port specified: %v", err)
+		log.Fatalf("Invalid port value: %v", err)
 	}
 
-	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
-
+	// Execute tasks concurrently using the executor package
 	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
 }
 
-// displayMenu shows the CLI menu and gets user input.
+// Function: displayMenu
+// Purpose: Shows interactive CLI menu and captures user input
+// Parameters: None
+// Returns: int - User's menu selection
+// Called By: main() in menu loop
+// Dependencies: None
 func displayMenu() int {
-	fmt.Println("\nEagleDeploy Menu:")
+	fmt.Println()
+	fmt.Println("EagleDeploy Menu:")
 	fmt.Println("1. Execute a Playbook")
 	fmt.Println("2. List YAML Playbooks")
 	fmt.Println("3. Manage Inventory")
@@ -91,25 +123,37 @@ func displayMenu() int {
 	return choice
 }
 
-// main entry point starts web server and handles CLI interactions.
+// Function: main
+// Purpose: Entry point for CLI application
+// Parameters: None
+// Returns: None
+// Called By: System startup
+// Dependencies:
+//   - [`web.StartWebServer`](web/web.go)
+//   - All core package functions
 func main() {
+	var targetHosts []string
+
+	// channel to monitor server lifecycle
 	serverShutdown := make(chan bool, 1)
 
 	go func() {
-		web.StartWebServer()   // Web server starts here
-		serverShutdown <- true // Notify when web server stops
+		web.StartWebServer()   // server start
+		serverShutdown <- true // notify after server stops
 	}()
 
+	// signal handling
 	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) //terminate signal
 
 	go func() {
 		for {
-			switch displayMenu() {
-			case 1:
+			choice := displayMenu()
+			switch choice {
+			case 1: // Execute a Playbook
 				playbooks := listPlaybooks()
 				if len(playbooks) == 0 {
-					fmt.Println("No playbooks found.")
+					fmt.Println("No playbooks found in the 'playbooks' directory.")
 					break
 				}
 
@@ -118,22 +162,23 @@ func main() {
 					fmt.Printf("%d. %s\n", i+1, playbook)
 				}
 
-				fmt.Print("Select playbook by number: ")
+				fmt.Print("Select a playbook to execute by number: ")
 				var choice int
 				fmt.Scanln(&choice)
 
 				if choice < 1 || choice > len(playbooks) {
-					fmt.Println("Invalid selection.")
+					fmt.Println("Invalid choice. Returning to the menu.")
 					break
 				}
 
 				selectedPlaybook := "./playbooks/" + playbooks[choice-1]
-				executeYAML(selectedPlaybook, nil)
+				fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
+				executeYAML(selectedPlaybook, targetHosts)
 
-			case 2:
+			case 2: // List YAML Playbooks
 				playbooks := listPlaybooks()
 				if len(playbooks) == 0 {
-					fmt.Println("No playbooks available.")
+					fmt.Println("No playbooks found in the 'playbooks' directory.")
 				} else {
 					fmt.Println("Available Playbooks:")
 					for _, playbook := range playbooks {
@@ -141,49 +186,50 @@ func main() {
 					}
 				}
 
-			case 3:
+			case 3: // Manage Inventory
 				inventory.DisplayInventoryMenu()
 
-			case 4:
+			case 4: // Enable/Disable Detailed Logging
 				fmt.Print("Enable detailed logging? (y/n): ")
 				var response string
 				fmt.Scanln(&response)
-				switch strings.ToLower(response) {
-				case "y":
+				if strings.ToLower(response) == "y" {
 					fmt.Println("Detailed logging enabled.")
-				case "n":
+				} else if strings.ToLower(response) == "n" {
 					fmt.Println("Detailed logging disabled.")
-				default:
+				} else {
 					fmt.Println("Invalid input. Logging state unchanged.")
 				}
 
-			case 5:
-				fmt.Println("Rollback not implemented yet.")
+			case 5: // Rollback Changes
+				fmt.Println("Rolling back changes (not yet implemented).")
 
-			case 6:
-				fmt.Println("Help:")
-				fmt.Println("-e <yaml-file>: Execute YAML file.")
-				fmt.Println("-l <keyword>: List YAML files or names.")
-				fmt.Println("-hosts <comma-separated-hosts>: Override hosts (with -e).")
-				fmt.Println("-h: Display help.")
+			case 6: // Show Help
+				fmt.Println("Help Page:")
+				fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
+				fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
+				fmt.Println("-hosts <comma-separated-hosts>: Specify hosts to target (only with -e).")
+				fmt.Println("-h: Display this help page.")
 
-			case 0:
+			case 0: // Exit
 				fmt.Println("Exiting EagleDeploy.")
 				serverShutdown <- true
 				return
 
 			default:
-				fmt.Println("Invalid choice.")
+				fmt.Println("Invalid choice. Please try again.")
 			}
 		}
 	}()
 
 	select {
 	case <-serverShutdown:
-		fmt.Println("\nWeb server stopped, shutting down.")
+		fmt.Println("")
+		fmt.Println("Server stopped...shutting down...")
 	case <-signalChan:
-		fmt.Println("\nTermination signal received, shutting down.")
+		fmt.Println("Termination signal received...")
 	}
 
-	fmt.Println("EagleDeployment terminated gracefully.")
+	fmt.Println("Closing EagleDeployment...")
+
 }
