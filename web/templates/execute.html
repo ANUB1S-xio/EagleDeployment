@@ -3,43 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eagle Nexus - Execute Playbook</title>
+    <title>Execute Playbook</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
     <header>
         <div class="logo">Eagle<span>Nexus</span></div>
         <nav>
             <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="dashboard">
+        <section class="execute-container">
             <h1>Execute Playbook</h1>
-            <div class="execute-container">
-                <div class="selected-yaml">
-                    <p>Selected Playbook:</p>
-                    <h2 id="playbookName">None</h2>
-                </div>
-                <button id="executeButton">Execute</button>
+            <div class="playbook-selection">
+                <label for="playbook-list">Select Playbook:</label>
+                <select id="playbook-list"></select>
             </div>
+            <button id="execute-button">Execute</button>
         </section>
     </main>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const selectedPlaybook = localStorage.getItem("selectedPlaybook");
-            if (selectedPlaybook) {
-                document.getElementById("playbookName").textContent = selectedPlaybook;
-            }
-        });
+        // Fetch list of YAML playbooks from backend
+        fetch('/api/list_playbooks')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById("playbook-list");
+                data.forEach(playbook => {
+                    const option = document.createElement("option");
+                    option.value = playbook;
+                    option.textContent = playbook;
+                    select.appendChild(option);
+                });
+            });
 
-        document.getElementById("executeButton").addEventListener("click", function() {
-            alert("Executing playbook: " + document.getElementById("playbookName").textContent);
+        // Send execute request when button is clicked
+        document.getElementById("execute-button").addEventListener("click", function() {
+            const selectedPlaybook = document.getElementById("playbook-list").value;
+            fetch("/api/execute", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `playbook=${selectedPlaybook}`
+            }).then(response => {
+                if (response.ok) alert("Playbook execution started!");
+                else alert("Failed to execute playbook");
+            });
         });
     </script>
 </body>
