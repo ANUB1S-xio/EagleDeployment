@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eagle Nexus - List YAML Files</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/list.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Eagle<span>Nexus</span></div>
+        <nav>
+            <ul>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard">
+            <h1>List & Edit YAML Files</h1>
+            <div class="list-container">
+                
+                <div class="edit-panel">
+                    <textarea id="yamlContent" readonly> # YAML content displays here after selection.</textarea>
+                    <div class="button-group">
+                        <button id="editBtn">Edit</button>
+                        <button id="confirmBtn">Confirm</button>
+                    </div>
+                </div>
+
+                <div class="select-panel">
+                    <label for="yamlSelect">Selected YAML File:</label>
+                    <select id="yamlSelect">
+                        <option value="" disabled selected>Select YAML</option>
+                        <option value="playbook1.yml">playbook1.yml</option>
+                        <option value="playbook2.yml">playbook2.yml</option>
+                        <option value="inventory.yml">inventory.yml</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById("yamlSelect").addEventListener("change", function() {
+            const selectedFile = this.value;
+            document.getElementById("yamlContent").value = `# Contents of ${selectedFile}\n\n`; // Placeholder integration
+            document.getElementById("yamlContent").readOnly = true;
+        });
+
+        document.getElementById("editBtn").addEventListener("click", function() {
+            document.getElementById("yamlContent").readOnly = false;
+        });
+
+        document.getElementById("confirmBtn").addEventListener("click", function() {
+            document.getElementById("yamlContent").readOnly = true;
+            alert("YAML file updated locally.");
+        });
+    </script>
+</body>
+</html>
