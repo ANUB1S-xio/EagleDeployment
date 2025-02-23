@@ -106,3 +106,31 @@ func StartWebServer() {
 		fmt.Printf("Web Interface failed to start: %v\n", err)
 	}
 }
+
+
+// Helper function: listPlaybooks (copy from main.go)
+func listPlaybooks() []string {
+	playbooksDir := "./playbooks"
+	if _, err := os.Stat(playbooksDir); os.IsNotExist(err) {
+		return nil
+	}
+
+	files, err := os.ReadDir(playbooksDir)
+	if err != nil {
+		return nil
+	}
+
+	var playbooks []string
+	for _, file := range files {
+		if !file.IsDir() && (strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml")) {
+			playbooks = append(playbooks, file.Name())
+		}
+	}
+	return playbooks
+}
+
+// Placeholder for executeYAML (move or call from main.go appropriately later)
+func executeYAML(playbookPath string, targetHosts []string) {
+	fmt.Printf("Executing playbook: %s\n", playbookPath)
+	// Future integration with your main.go executeYAML logic here
+}
