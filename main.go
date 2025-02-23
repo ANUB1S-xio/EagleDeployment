@@ -67,7 +67,7 @@ func listPlaybooks() []string {
 //   - [`executor.ExecuteConcurrently`](executor/executor.go)
 func executeYAML(playbookPath string, targetHosts []string) {
 	// Process the playbook template by injecting inventory data
-	processedPlaybook := "./playbooks/processed_add_user.yaml"
+	processedPlaybook := "./playbooks/processed_playbook.yaml"
 	err := inventory.InjectInventoryIntoPlaybook(playbookPath, processedPlaybook)
 	if err != nil {
 		log.Fatalf("Failed to inject inventory into playbook: %v", err)
@@ -137,6 +137,7 @@ func main() {
 	// channel to monitor server lifecycle
 	serverShutdown := make(chan bool, 1)
 
+	// Start the web server concurrently
 	go func() {
 		web.StartWebServer()   // server start
 		serverShutdown <- true // notify after server stops
@@ -231,5 +232,4 @@ func main() {
 	}
 
 	fmt.Println("Closing EagleDeployment...")
-
 }
