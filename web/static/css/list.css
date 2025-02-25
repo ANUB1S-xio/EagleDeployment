@@ -5,6 +5,7 @@
     align-items: flex-start;
     gap: 50px; /* Spacing between panels */
     margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 /* Left side: Bigger YAML Edit panel */
