@@ -137,7 +137,6 @@ func main() {
 
 	go func() {
 		for {
-			// Use the displayMenu function instead of directly calling menu.RunMainMenu()
 			choice := displayMenu()
 			switch choice {
 			case 0: // Execute a Playbook
@@ -148,23 +147,10 @@ func main() {
 					executeYAML(selectedPlaybook, targetHosts)
 				}
 
-			case 1: // List YAML Playbooks
-				playbooks := listPlaybooks()
-				if len(playbooks) == 0 {
-					fmt.Println("No playbooks found in the 'playbooks' directory.")
-				} else {
-					fmt.Println("Available Playbooks:")
-					for _, playbook := range playbooks {
-						fmt.Printf("- %s\n", playbook)
-					}
-				}
-				fmt.Println("\nPress Enter to continue...")
-				fmt.Scanln()
-
-			case 2: // Manage Inventory
+			case 1: // Manage Inventory (was option 2)
 				menu.RunInventoryMenu()
 
-			case 3: // Enable/Disable Detailed Logging
+			case 2: // Enable/Disable Detailed Logging (was option 3)
 				fmt.Print("Enable detailed logging? (y/n): ")
 				var response string
 				fmt.Scanln(&response)
@@ -176,21 +162,7 @@ func main() {
 					fmt.Println("Invalid input. Logging state unchanged.")
 				}
 
-			case 4: // Rollback Changes
-				fmt.Println("Rolling back changes (not yet implemented).")
-				fmt.Println("\nPress Enter to continue...")
-				fmt.Scanln()
-
-			case 5: // Show Help
-				fmt.Println("Help Page:")
-				fmt.Println("-e <yaml-file>: Execute the specified YAML file.")
-				fmt.Println("-l <keyword>: List YAML files or related names in the EagleDeployment directory.")
-				fmt.Println("-hosts <comma-separated-hosts>: Specify hosts to target (only with -e).")
-				fmt.Println("-h: Display this help page.")
-				fmt.Println("\nPress Enter to continue...")
-				fmt.Scanln()
-
-			case 6, -1: // Exit or ESC/Ctrl+C
+			case -1: // User pressed q or Ctrl+C to exit
 				fmt.Println("Exiting EagleDeploy.")
 				serverShutdown <- true
 				return
