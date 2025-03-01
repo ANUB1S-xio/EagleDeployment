@@ -1,59 +1,28 @@
-name: "Basic_Add_Users"
-version: "2.1"
+name: "List_Users_Playbook"
+version: "1.1"
 hosts:
-  - "10.42.56.99"
-  - "10.42.56.103"
-  - "10.42.56.98"
-  - "10.42.56.110"
-  - "10.42.56.115"
-  - "10.42.56.106"
-vars:
-  user_name: "demouser"      # Use the passed username from inventory file
-  user_password: "DemoPass0982"   # Use the passed password from inventory file
 tasks:
-  - name: "Add user on Linux systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
-    when: item.OS | lower in ["linux", "ubuntu"]
-    loop: "[{10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.106  Linux}]"
-    loop_control:
-      loop_var: item
-    command: |
-      echo '@dminPass123' | sudo -S useradd -m -s /bin/bash "demouser" 2>/dev/null
-
-  - name: "Add user on Fedora systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
-    when: item.OS | lower contains "fedora"
-    loop: "[{10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.106  Linux}]"
-    loop_control:
-      loop_var: item
-    command: |
-      echo '@dminPass123' | sudo -S useradd -m -s /bin/bash "demouser" 2>/dev/null
-
-  - name: "Add user on Windows systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
-    when: item.OS | lower contains "windows"
-    loop: "[{10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.106  Linux}]"
-    loop_control:
-      loop_var: item
-    command: |
-      net user "demouser" "DemoPass0982" /add
-
-  - name: "Set password for user on Linux systems"
+  - name: "List users on Linux systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
     when: item.OS | lower in ["linux", "ubuntu", "fedora"]
-    loop: "[{10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.106  Linux}]"
+    loop: "[]"
     loop_control:
       loop_var: item
     command: |
-      echo '@dminPass123' | sudo -S bash -c "echo 'demouser:DemoPass0982' | chpasswd" 2>/dev/null
+      awk -F: '$3 >= 1000 && $3 != 65534 {print $1}' /etc/passwd
+
+  - name: "List users on Windows systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
+    port: 22
+    when: item.OS | lower contains "windows"
+    loop: "[]"
+    loop_control:
+      loop_var: item
+    command: |
+      net user | findstr /V "command completed successfully The following users"
 
 settings:
   port: 22
