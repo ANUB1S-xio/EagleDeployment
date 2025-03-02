@@ -18,14 +18,6 @@ var (
 			Foreground(lipgloss.Color("#00ff99")).
 			Padding(1, 0, 0, 0)
 
-	programNameStyle = lipgloss.NewStyle().
-				Bold(true).
-				Foreground(lipgloss.Color("#00ffff")).
-				Background(lipgloss.Color("#333333")).
-				PaddingLeft(4).
-				PaddingRight(4).
-				MarginBottom(1)
-
 	itemStyle = lipgloss.NewStyle().
 			Padding(0, 0, 0, 2)
 

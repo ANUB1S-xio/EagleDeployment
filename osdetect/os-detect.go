@@ -117,7 +117,7 @@ func detectOSFromTCP(host string) (string, error) {
 	timeout := time.Second * 2
 
 	for _, port := range ports {
-		conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", host, port), timeout)
+		conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, fmt.Sprintf("%d", port)), timeout)
 		if err != nil {
 			continue
 		}
