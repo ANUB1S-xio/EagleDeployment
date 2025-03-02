@@ -4,8 +4,8 @@
   "entries": [
     {
       "event": {
-        "id": "4133d3ad-c328-40b8-851d-723ebe47eaa7",
-        "timestamp": "2025-03-01T22:14:08.8933712-06:00",
+        "id": "a61f9c8f-a519-48bb-a27f-eb5eefe68124",
+        "timestamp": "2025-03-02T10:27:02.2468511-06:00",
         "level": "INFO",
         "category": "Telemetry",
         "message": "Session started",
@@ -15,57 +15,57 @@
         "source": "once.go",
         "function": "sync.(*Once).doSlow",
         "line": 76,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:14:08.8933712-06:00"
+      "time_written": "2025-03-02T10:27:02.2468511-06:00"
     },
     {
       "event": {
-        "id": "ca13d0bf-b3bd-4326-baac-2ed2a6a584d2",
-        "timestamp": "2025-03-01T22:14:08.8938678-06:00",
+        "id": "ceb2067c-0335-4191-9111-d424d198abb5",
+        "timestamp": "2025-03-02T10:27:02.2468511-06:00",
         "level": "INFO",
         "category": "App",
         "message": "EagleDeploy starting",
         "source": "main.go",
         "function": "main.main",
-        "line": 425,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "line": 426,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:14:08.8938678-06:00"
+      "time_written": "2025-03-02T10:27:02.2468511-06:00"
     },
     {
       "event": {
-        "id": "f6712928-8d58-4b2a-8e94-9ba7f0326535",
-        "timestamp": "2025-03-01T22:14:08.8938678-06:00",
+        "id": "a8154abf-8b57-42fe-bf8b-f91f272b135f",
+        "timestamp": "2025-03-02T10:27:02.2468511-06:00",
         "level": "INFO",
         "category": "Web",
         "message": "Starting web server",
         "source": "main.go",
         "function": "main.main.func1",
-        "line": 433,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "line": 434,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:14:08.8938678-06:00"
+      "time_written": "2025-03-02T10:27:02.2468511-06:00"
     },
     {
       "event": {
-        "id": "f75415e6-93fd-43ea-957f-04143229edc7",
-        "timestamp": "2025-03-01T22:14:08.8953628-06:00",
+        "id": "003fc239-4e8c-4a2e-b18c-786185210297",
+        "timestamp": "2025-03-02T10:27:02.2478433-06:00",
         "level": "INFO",
         "category": "Web",
         "message": "Using default port",
@@ -73,21 +73,21 @@
           "port": 8742
         },
         "source": "web.go",
-        "function": "EagleDeploy_CLI/web.StartWebServer",
-        "line": 59,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 60,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:14:08.8953628-06:00"
+      "time_written": "2025-03-02T10:27:02.2478433-06:00"
     },
     {
       "event": {
-        "id": "14fa5867-bde0-4d3b-899f-9be7b9b529fc",
-        "timestamp": "2025-03-01T22:14:08.8953628-06:00",
+        "id": "6a7f9617-17ee-4df4-bd8c-d9219b5ed080",
+        "timestamp": "2025-03-02T10:27:02.2478433-06:00",
         "level": "INFO",
         "category": "Web",
         "message": "Starting web server",
@@ -95,88 +95,45 @@
           "address": "127.0.0.1:8742"
         },
         "source": "web.go",
-        "function": "EagleDeploy_CLI/web.StartWebServer",
-        "line": 96,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 97,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:14:08.8953628-06:00"
+      "time_written": "2025-03-02T10:27:02.2478433-06:00"
     },
     {
       "event": {
-        "id": "6e6bb4c3-8793-4d14-b324-77a953faa452",
-        "timestamp": "2025-03-01T22:14:08.9148272-06:00",
+        "id": "4c5d6158-e1fe-4dd3-b152-89625d664b33",
+        "timestamp": "2025-03-02T10:27:02.2618494-06:00",
         "level": "INFO",
         "category": "Web",
         "message": "HTTP request",
         "data": {
           "method": "GET",
           "path": "/health",
-          "remote": "127.0.0.1:50343"
+          "remote": "127.0.0.1:55431"
         },
         "source": "web.go",
-        "function": "EagleDeploy_CLI/web.StartWebServer.StartWebServer.func1.func6",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func6",
+        "line": 74,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:14:08.9148272-06:00"
+      "time_written": "2025-03-02T10:27:02.2618494-06:00"
     },
     {
       "event": {
-        "id": "0d125cce-5556-41fe-8cba-ef98eff61230",
-        "timestamp": "2025-03-01T22:14:28.2323847-06:00",
-        "level": "INFO",
-        "category": "Settings",
-        "message": "Opening log viewer",
-        "source": "main.go",
-        "function": "main.main.func2",
-        "line": 466,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:14:28.2323847-06:00"
-    },
-    {
-      "event": {
-        "id": "0a7150bf-14a2-47fc-9b25-75764dcfc128",
-        "timestamp": "2025-03-01T22:14:52.1881487-06:00",
-        "level": "INFO",
-        "category": "Web",
-        "message": "HTTP request",
-        "data": {
-          "method": "GET",
-          "path": "/health",
-          "remote": "127.0.0.1:50376"
-        },
-        "source": "web.go",
-        "function": "EagleDeploy_CLI/web.StartWebServer.StartWebServer.func1.func6",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:14:52.1881487-06:00"
-    },
-    {
-      "event": {
-        "id": "8bd80841-63d1-4af4-af2b-518199367090",
-        "timestamp": "2025-03-01T22:15:08.4412371-06:00",
+        "id": "0cc12719-a9bd-49ed-bbb6-62cc46c5e0b0",
+        "timestamp": "2025-03-02T10:27:07.5016922-06:00",
         "level": "INFO",
         "category": "Playbook",
         "message": "Executing playbook",
@@ -186,20 +143,20 @@
         },
         "source": "main.go",
         "function": "main.main.func2",
-        "line": 453,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "line": 454,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4412371-06:00"
+      "time_written": "2025-03-02T10:27:07.5016922-06:00"
     },
     {
       "event": {
-        "id": "726683ed-9a0c-4494-8d65-0b592c50cb03",
-        "timestamp": "2025-03-01T22:15:08.441603-06:00",
+        "id": "ad92e5a7-7fef-4e91-9066-b7bee00f2607",
+        "timestamp": "2025-03-02T10:27:07.5016922-06:00",
         "level": "INFO",
         "category": "Playbook",
         "message": "Starting playbook execution",
@@ -209,20 +166,20 @@
         },
         "source": "main.go",
         "function": "main.executeYAML",
-        "line": 74,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "line": 75,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.441603-06:00"
+      "time_written": "2025-03-02T10:27:07.5016922-06:00"
     },
     {
       "event": {
-        "id": "646c49af-595d-45ed-882c-f602e4b48872",
-        "timestamp": "2025-03-01T22:15:08.441603-06:00",
+        "id": "19a1c46f-f544-4e09-b3aa-aa6410879f95",
+        "timestamp": "2025-03-02T10:27:07.5016922-06:00",
         "level": "INFO",
         "category": "Playbook",
         "message": "Injecting inventory into playbook",
@@ -231,21 +188,21 @@
           "template_path": "./playbooks/add_user.yaml"
         },
         "source": "inventory.go",
-        "function": "EagleDeploy_CLI/inventory.InjectInventoryIntoPlaybook",
+        "function": "EagleDeployment/inventory.InjectInventoryIntoPlaybook",
         "line": 593,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.441603-06:00"
+      "time_written": "2025-03-02T10:27:07.5016922-06:00"
     },
     {
       "event": {
-        "id": "3f49766c-a4f6-486b-b22c-611806b29e25",
-        "timestamp": "2025-03-01T22:15:08.4425484-06:00",
+        "id": "9d29fa9b-8b7a-42ef-a705-f0e7a65b629e",
+        "timestamp": "2025-03-02T10:27:07.5026926-06:00",
         "level": "INFO",
         "category": "Playbook",
         "message": "Successfully injected inventory into playbook",
@@ -255,21 +212,21 @@
           "template_path": "./playbooks/add_user.yaml"
         },
         "source": "inventory.go",
-        "function": "EagleDeploy_CLI/inventory.InjectInventoryIntoPlaybook",
+        "function": "EagleDeployment/inventory.InjectInventoryIntoPlaybook",
         "line": 718,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4425484-06:00"
+      "time_written": "2025-03-02T10:27:07.5026926-06:00"
     },
     {
       "event": {
-        "id": "ed49768a-fa5c-4a9a-b253-2cffb53ed136",
-        "timestamp": "2025-03-01T22:15:08.4425484-06:00",
+        "id": "837b627c-ad10-42f4-bf89-bc06c1a000f9",
+        "timestamp": "2025-03-02T10:27:07.5031891-06:00",
         "level": "INFO",
         "category": "Playbook",
         "message": "Using hosts from playbook",
@@ -285,284 +242,284 @@
         },
         "source": "main.go",
         "function": "main.executeYAML",
-        "line": 109,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "line": 110,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4425484-06:00"
+      "time_written": "2025-03-02T10:27:07.5031891-06:00"
     },
     {
       "event": {
-        "id": "d870486e-4db5-4da4-adcb-00a9aed50b94",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
+        "id": "4f9f65da-4395-40bf-9237-b9a91a2eeb92",
+        "timestamp": "2025-03-02T10:27:07.5031891-06:00",
         "level": "INFO",
         "category": "Playbook",
         "message": "Executing tasks concurrently",
         "data": {
           "hosts_count": 6,
           "port": 22,
-          "tasks_count": 4
+          "tasks_count": 3
         },
         "source": "main.go",
         "function": "main.executeYAML",
-        "line": 130,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "line": 131,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
+      "time_written": "2025-03-02T10:27:07.5031891-06:00"
     },
     {
       "event": {
-        "id": "4c529bdc-b0a9-4f9b-8cfd-6ee8f8773f54",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
+        "id": "0f3a4673-21d0-4528-9f90-e2f324b84499",
+        "timestamp": "2025-03-02T10:27:07.5031891-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting concurrent task execution",
         "data": {
           "hosts_count": 6,
           "port": 22,
-          "tasks_count": 4
+          "tasks_count": 3
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteConcurrently",
+        "function": "EagleDeployment/executor.ExecuteConcurrently",
         "line": 118,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
+      "time_written": "2025-03-02T10:27:07.5031891-06:00"
     },
     {
       "event": {
-        "id": "6e9ddab2-93d5-4520-91ed-e3bce5895efd",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
+        "id": "162c72d9-e7a1-42cb-bc9c-6a715daa1a62",
+        "timestamp": "2025-03-02T10:27:07.5031891-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.110",
+          "port": 22,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5031891-06:00"
+    },
+    {
+      "event": {
+        "id": "4c34e6e2-cfe9-4c93-8059-8cccb6ceff42",
+        "timestamp": "2025-03-02T10:27:07.5031891-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
         "data": {
           "host": "10.42.56.115",
           "port": 22,
-          "task_name": "Add user on Linux systems"
+          "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
+      "time_written": "2025-03-02T10:27:07.5031891-06:00"
     },
     {
       "event": {
-        "id": "8e9d1686-00ef-4268-9423-c56630c29e7f",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.98",
-          "port": 22,
-          "task_name": "Add user on Fedora systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
-    },
-    {
-      "event": {
-        "id": "f54ff3a5-4b49-435c-87b0-c81177a80680",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.99",
-          "port": 22,
-          "task_name": "Add user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
-    },
-    {
-      "event": {
-        "id": "2252b87e-9539-4113-9ce5-7d62cb1903e5",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
+        "id": "1da28d0a-11c7-4dc1-9e5c-aea5865f8084",
+        "timestamp": "2025-03-02T10:27:07.5036862-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
         "data": {
           "host": "10.42.56.106",
           "port": 22,
-          "task_name": "Add user on Fedora systems"
+          "task_name": "Set password for user on Linux and Fedora systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
+      "time_written": "2025-03-02T10:27:07.5036862-06:00"
     },
     {
       "event": {
-        "id": "7020947d-360b-464e-b08b-82deea62ad6d",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.103",
-          "port": 22,
-          "task_name": "Add user on Fedora systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
-    },
-    {
-      "event": {
-        "id": "d1b8b14f-1234-4a9a-81f5-923253932983",
-        "timestamp": "2025-03-01T22:15:08.4430447-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.103",
-          "port": 22,
-          "task_name": "Add user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4430447-06:00"
-    },
-    {
-      "event": {
-        "id": "4643f443-296d-4e36-be53-e8860333cb74",
-        "timestamp": "2025-03-01T22:15:08.4435415-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.106",
-          "port": 22,
-          "task_name": "Add user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4435415-06:00"
-    },
-    {
-      "event": {
-        "id": "305d46a0-2cf3-4f82-995c-eef01dce2dd7",
-        "timestamp": "2025-03-01T22:15:08.4435415-06:00",
+        "id": "01417e46-c5e1-4eeb-af0a-00522bfe1b16",
+        "timestamp": "2025-03-02T10:27:07.5036862-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
         "data": {
           "host": "10.42.56.115",
           "port": 22,
-          "task_name": "Add user on Fedora systems"
+          "task_name": "Add user on Linux and Fedora systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4435415-06:00"
+      "time_written": "2025-03-02T10:27:07.5036862-06:00"
     },
     {
       "event": {
-        "id": "4a61f719-1525-4692-ba5b-924aa920f11a",
-        "timestamp": "2025-03-01T22:15:08.4435415-06:00",
+        "id": "8c2726ca-89b5-45ed-ab48-3aff1761bb6e",
+        "timestamp": "2025-03-02T10:27:07.5036862-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.99",
+          "port": 22,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5036862-06:00"
+    },
+    {
+      "event": {
+        "id": "ebe99dbf-e135-4566-a94c-68b585f2a1a0",
+        "timestamp": "2025-03-02T10:27:07.5036862-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.115",
+          "port": 22,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5036862-06:00"
+    },
+    {
+      "event": {
+        "id": "61fe611c-98f5-4774-a197-7091c65c9fe0",
+        "timestamp": "2025-03-02T10:27:07.5041829-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
         "data": {
           "host": "10.42.56.103",
           "port": 22,
-          "task_name": "Add user on Windows systems"
+          "task_name": "Set password for user on Linux and Fedora systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4435415-06:00"
+      "time_written": "2025-03-02T10:27:07.5041829-06:00"
     },
     {
       "event": {
-        "id": "af7f53ca-3215-43e9-9cb4-42bce1997244",
-        "timestamp": "2025-03-01T22:15:08.4435415-06:00",
+        "id": "77c240cc-8b01-4771-8040-d824b46256b9",
+        "timestamp": "2025-03-02T10:27:07.5041829-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.98",
+          "port": 22,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5041829-06:00"
+    },
+    {
+      "event": {
+        "id": "51f8136a-5f64-4836-b557-b5e7c8361e4a",
+        "timestamp": "2025-03-02T10:27:07.5041829-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.110",
+          "port": 22,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5041829-06:00"
+    },
+    {
+      "event": {
+        "id": "6e2dd2a6-e620-4ce6-9e45-6d24994ebd8d",
+        "timestamp": "2025-03-02T10:27:07.5041829-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
@@ -572,21 +529,141 @@
           "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4435415-06:00"
+      "time_written": "2025-03-02T10:27:07.5041829-06:00"
     },
     {
       "event": {
-        "id": "017f322f-928f-4d19-be6f-98cbc8451291",
-        "timestamp": "2025-03-01T22:15:08.4435415-06:00",
+        "id": "887cea5b-886c-4891-8fc9-25eab2ee3135",
+        "timestamp": "2025-03-02T10:27:07.5041829-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.99",
+          "port": 22,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5041829-06:00"
+    },
+    {
+      "event": {
+        "id": "6e66943c-9028-433b-aec4-9a2e128630e5",
+        "timestamp": "2025-03-02T10:27:07.5041829-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.103",
+          "port": 22,
+          "task_name": "Add user on Windows systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5041829-06:00"
+    },
+    {
+      "event": {
+        "id": "c4274490-89f2-4938-bcb7-6c7f227db3f1",
+        "timestamp": "2025-03-02T10:27:07.5046794-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.103",
+          "port": 22,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5046794-06:00"
+    },
+    {
+      "event": {
+        "id": "ae82bcf4-c534-43a2-a177-9e8deb1e6b13",
+        "timestamp": "2025-03-02T10:27:07.5046794-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.106",
+          "port": 22,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5046794-06:00"
+    },
+    {
+      "event": {
+        "id": "95002964-35e8-43a5-b474-2220542f2412",
+        "timestamp": "2025-03-02T10:27:07.5046794-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Starting task execution",
+        "data": {
+          "host": "10.42.56.98",
+          "port": 22,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 36,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.5046794-06:00"
+    },
+    {
+      "event": {
+        "id": "fcb837eb-ec77-4dbf-9e64-b42e76296fe2",
+        "timestamp": "2025-03-02T10:27:07.5046794-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
@@ -596,21 +673,21 @@
           "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4435415-06:00"
+      "time_written": "2025-03-02T10:27:07.5046794-06:00"
     },
     {
       "event": {
-        "id": "94d8a82e-1edc-4724-9c80-f3e8edc2528a",
-        "timestamp": "2025-03-01T22:15:08.4435415-06:00",
+        "id": "2f384c26-3bb6-4ab4-a460-fcc763d31b46",
+        "timestamp": "2025-03-02T10:27:07.5046794-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
@@ -620,141 +697,21 @@
           "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4435415-06:00"
+      "time_written": "2025-03-02T10:27:07.5046794-06:00"
     },
     {
       "event": {
-        "id": "719d1e13-2f8e-4d6a-acc4-abfcf5262ec1",
-        "timestamp": "2025-03-01T22:15:08.4440371-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.115",
-          "port": 22,
-          "task_name": "Add user on Windows systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4440371-06:00"
-    },
-    {
-      "event": {
-        "id": "0c2d8acf-97da-4455-b558-073490637469",
-        "timestamp": "2025-03-01T22:15:08.4440371-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.110",
-          "port": 22,
-          "task_name": "Add user on Fedora systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4440371-06:00"
-    },
-    {
-      "event": {
-        "id": "4ee662a7-43ec-4a5b-abab-3f5b449435aa",
-        "timestamp": "2025-03-01T22:15:08.4440371-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.98",
-          "port": 22,
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4440371-06:00"
-    },
-    {
-      "event": {
-        "id": "090016b0-802b-49a0-b52e-8fe91764a81a",
-        "timestamp": "2025-03-01T22:15:08.4440371-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.99",
-          "port": 22,
-          "task_name": "Add user on Fedora systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4440371-06:00"
-    },
-    {
-      "event": {
-        "id": "5c0f40e3-5d5e-4fe3-92a6-ae4d13cbcd1b",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.106",
-          "port": 22,
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
-    },
-    {
-      "event": {
-        "id": "1e822780-f265-43a8-a951-5ecd8853cfc3",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
+        "id": "1cb15f5f-3d33-410e-b96d-6a4a075c4d07",
+        "timestamp": "2025-03-02T10:27:07.5046794-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Starting task execution",
@@ -764,436 +721,490 @@
           "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
+      "time_written": "2025-03-02T10:27:07.5046794-06:00"
     },
     {
       "event": {
-        "id": "84d6b94a-ae3c-45a5-b3f2-6d8aab8e8deb",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
-        "level": "INFO",
+        "id": "b4685e66-2c44-4c8b-92b1-68f5b89d24b1",
+        "timestamp": "2025-03-02T10:27:07.7385043-06:00",
+        "level": "ERROR",
         "category": "Execution",
-        "message": "Starting task execution",
+        "message": "Task execution failed",
         "data": {
-          "host": "10.42.56.115",
-          "port": 22,
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
-    },
-    {
-      "event": {
-        "id": "2fe02ce9-ccd0-41f0-a9bd-b99ce195b4ba",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.103",
-          "port": 22,
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
-    },
-    {
-      "event": {
-        "id": "977ce17d-8038-49f8-90a6-a1d55a1381be",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
-          "host": "10.42.56.99",
-          "port": 22,
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
-    },
-    {
-      "event": {
-        "id": "8eeabe90-7d26-4f4d-80d3-68ba2ab1976c",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
-        "level": "INFO",
-        "category": "Execution",
-        "message": "Starting task execution",
-        "data": {
+          "command": "if [ \"$(whoami)\" != \"root\" ]; then\n  echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser6\"\nelse\n  useradd -m -s /bin/bash \"demouser6\"\nfi\n",
+          "error": "failed to run command: Process exited with status 1\n\"$(whoami)\" was unexpected at this time.\r\n",
           "host": "10.42.56.110",
-          "port": 22,
-          "task_name": "Set password for user on Linux systems"
+          "task_name": "Add user on Linux and Fedora systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 73,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
+      "time_written": "2025-03-02T10:27:07.7385043-06:00"
     },
     {
       "event": {
-        "id": "e21efd55-2da9-41f1-9637-b3f4ca1ddfaf",
-        "timestamp": "2025-03-01T22:15:08.4445351-06:00",
-        "level": "INFO",
+        "id": "1d7a23e6-53b1-41b4-b7e1-91b547c8bd54",
+        "timestamp": "2025-03-02T10:27:07.7395058-06:00",
+        "level": "ERROR",
         "category": "Execution",
-        "message": "Starting task execution",
+        "message": "Task execution failed",
         "data": {
-          "host": "10.42.56.98",
-          "port": 22,
-          "task_name": "Add user on Linux systems"
+          "command": "if [ \"$(whoami)\" != \"root\" ]; then\n  echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser6\"\nelse\n  useradd -m -s /bin/bash \"demouser6\"\nfi\n",
+          "error": "failed to run command: Process exited with status 1\n\"$(whoami)\" was unexpected at this time.\r\n",
+          "host": "10.42.56.115",
+          "task_name": "Add user on Linux and Fedora systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 73,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.4445351-06:00"
+      "time_written": "2025-03-02T10:27:07.7395058-06:00"
     },
     {
       "event": {
-        "id": "48b8648b-b1d5-4586-9cab-e8544cfcef9d",
-        "timestamp": "2025-03-01T22:15:08.445053-06:00",
-        "level": "INFO",
+        "id": "b1c82c7c-9760-4827-a80f-6fa204a7b1a2",
+        "timestamp": "2025-03-02T10:27:07.7451455-06:00",
+        "level": "ERROR",
         "category": "Execution",
-        "message": "Starting task execution",
+        "message": "Task execution failed",
         "data": {
+          "command": "if id \"demouser6\" \u0026\u003e/dev/null; then\n  echo 'demouser6:DemoPass0982' | sudo chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n",
+          "error": "failed to run command: Process exited with status 1\n\"demouser6\" was unexpected at this time.\r\n",
+          "host": "10.42.56.115",
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 73,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.7451455-06:00"
+    },
+    {
+      "event": {
+        "id": "1a95e0fd-28a0-4307-98a8-86ddebf2663d",
+        "timestamp": "2025-03-02T10:27:07.7540952-06:00",
+        "level": "ERROR",
+        "category": "Execution",
+        "message": "Task execution failed",
+        "data": {
+          "command": "if id \"demouser6\" \u0026\u003e/dev/null; then\n  echo 'demouser6:DemoPass0982' | sudo chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n",
+          "error": "failed to run command: Process exited with status 1\n\"demouser6\" was unexpected at this time.\r\n",
           "host": "10.42.56.110",
-          "port": 22,
-          "task_name": "Add user on Linux systems"
+          "task_name": "Set password for user on Linux and Fedora systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 36,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.445053-06:00"
-    },
-    {
-      "event": {
-        "id": "9881e234-2bcf-48a9-847b-123c7b53e783",
-        "timestamp": "2025-03-01T22:15:08.7568545-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser3\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 255\nThe system cannot find the path specified.\r\n",
-          "host": "10.42.56.115",
-          "task_name": "Add user on Fedora systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.7568545-06:00"
+      "time_written": "2025-03-02T10:27:07.7540952-06:00"
     },
     {
       "event": {
-        "id": "ac122110-c0d8-4a7b-8df3-fb144df4cc5f",
-        "timestamp": "2025-03-01T22:15:08.7620542-06:00",
+        "id": "378f5017-fe5e-4ee2-8c8c-62faff78601b",
+        "timestamp": "2025-03-02T10:27:07.8129636-06:00",
         "level": "ERROR",
         "category": "Execution",
         "message": "Task execution failed",
         "data": {
-          "command": "echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser3\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 255\nThe system cannot find the path specified.\r\n",
-          "host": "10.42.56.115",
-          "task_name": "Add user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.7620542-06:00"
-    },
-    {
-      "event": {
-        "id": "b5a3e369-6c3a-4d04-b6fd-9cae7065bfe6",
-        "timestamp": "2025-03-01T22:15:08.7636069-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "echo '@dminPass123' | sudo -S bash -c \"id demouser3 \u0026\u0026 echo 'demouser3:DemoPass0982' | sudo chpasswd\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 255\nThe system cannot find the path specified.\r\n",
-          "host": "10.42.56.115",
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.7636069-06:00"
-    },
-    {
-      "event": {
-        "id": "f1bdfe81-4e21-44e1-b6cb-99fb8f374efe",
-        "timestamp": "2025-03-01T22:15:08.7855697-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser3\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 255\nThe system cannot find the path specified.\r\n",
-          "host": "10.42.56.110",
-          "task_name": "Add user on Fedora systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.7855697-06:00"
-    },
-    {
-      "event": {
-        "id": "e282a768-cc6b-4bd7-a927-072a9b9fc29b",
-        "timestamp": "2025-03-01T22:15:08.7880603-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "net user \"demouser3\" \"DemoPass0982\" /add\n",
-          "error": "failed to run command: Process exited with status 127\nbash: line 1: net: command not found\n",
+          "command": "powershell -Command \"\u0026 {net user \\\"demouser6\\\" \\\"DemoPass0982\\\" /add}\"\n",
+          "error": "failed to run command: Process exited with status 127\nbash: line 1: powershell: command not found\n",
           "host": "10.42.56.99",
           "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.7880603-06:00"
+      "time_written": "2025-03-02T10:27:07.8129636-06:00"
     },
     {
       "event": {
-        "id": "5ad89d92-82f8-4c6d-abe3-3ffd6f1f058d",
-        "timestamp": "2025-03-01T22:15:08.7885589-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "echo '@dminPass123' | sudo -S bash -c \"id demouser3 \u0026\u0026 echo 'demouser3:DemoPass0982' | sudo chpasswd\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 255\nThe system cannot find the path specified.\r\n",
-          "host": "10.42.56.110",
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.7885589-06:00"
-    },
-    {
-      "event": {
-        "id": "fe643602-5834-4190-8049-0266eda72996",
-        "timestamp": "2025-03-01T22:15:08.7901236-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser3\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 255\nThe system cannot find the path specified.\r\n",
-          "host": "10.42.56.110",
-          "task_name": "Add user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.7901236-06:00"
-    },
-    {
-      "event": {
-        "id": "e6ec0014-82e7-431c-b957-8df4e9c5ac39",
-        "timestamp": "2025-03-01T22:15:08.8427506-06:00",
+        "id": "59be58b1-353a-4ba9-ab32-6a97fb7c6d49",
+        "timestamp": "2025-03-02T10:27:07.8129636-06:00",
         "level": "INFO",
         "category": "Execution",
         "message": "Task executed successfully",
         "data": {
-          "command": "net user \"demouser3\" \"DemoPass0982\" /add\n",
+          "command": "if id \"demouser6\" \u0026\u003e/dev/null; then\n  echo 'demouser6:DemoPass0982' | sudo chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n",
+          "host": "10.42.56.98",
+          "output_length": 43,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.8129636-06:00"
+    },
+    {
+      "event": {
+        "id": "187d1791-38e8-40bd-85a1-fc8e95481b4d",
+        "timestamp": "2025-03-02T10:27:07.8159375-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if id \"demouser6\" \u0026\u003e/dev/null; then\n  echo 'demouser6:DemoPass0982' | sudo chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n",
+          "host": "10.42.56.99",
+          "output_length": 43,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.8159375-06:00"
+    },
+    {
+      "event": {
+        "id": "42eb5269-799d-4035-9625-b6c36647d2c3",
+        "timestamp": "2025-03-02T10:27:07.8276839-06:00",
+        "level": "ERROR",
+        "category": "Execution",
+        "message": "Task execution failed",
+        "data": {
+          "command": "powershell -Command \"\u0026 {net user \\\"demouser6\\\" \\\"DemoPass0982\\\" /add}\"\n",
+          "error": "failed to run command: Process exited with status 127\nbash: line 1: powershell: command not found\n",
+          "host": "10.42.56.98",
+          "task_name": "Add user on Windows systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 73,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.8276839-06:00"
+    },
+    {
+      "event": {
+        "id": "a87fb817-81e6-49d4-b3d6-f9014978e215",
+        "timestamp": "2025-03-02T10:27:07.8877543-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if [ \"$(whoami)\" != \"root\" ]; then\n  echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser6\"\nelse\n  useradd -m -s /bin/bash \"demouser6\"\nfi\n",
+          "host": "10.42.56.99",
+          "output_length": 32,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.8877543-06:00"
+    },
+    {
+      "event": {
+        "id": "db73f964-7c7e-486c-8507-cdecf5b1be9d",
+        "timestamp": "2025-03-02T10:27:07.8981991-06:00",
+        "level": "ERROR",
+        "category": "Execution",
+        "message": "Task execution failed",
+        "data": {
+          "command": "powershell -Command \"\u0026 {net user \\\"demouser6\\\" \\\"DemoPass0982\\\" /add}\"\n",
+          "error": "failed to run command: Process exited with status 127\nbash: powershell: command not found\n",
+          "host": "10.42.56.103",
+          "task_name": "Add user on Windows systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 73,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.8981991-06:00"
+    },
+    {
+      "event": {
+        "id": "9b13962e-4cc7-4e24-9bed-ae8d86ecd3fc",
+        "timestamp": "2025-03-02T10:27:07.9029276-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if id \"demouser6\" \u0026\u003e/dev/null; then\n  echo 'demouser6:DemoPass0982' | sudo chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n",
+          "host": "10.42.56.103",
+          "output_length": 43,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.9029276-06:00"
+    },
+    {
+      "event": {
+        "id": "436de165-cba3-4ba3-ac95-6faa34275bf0",
+        "timestamp": "2025-03-02T10:27:07.9178759-06:00",
+        "level": "ERROR",
+        "category": "Execution",
+        "message": "Task execution failed",
+        "data": {
+          "command": "powershell -Command \"\u0026 {net user \\\"demouser6\\\" \\\"DemoPass0982\\\" /add}\"\n",
+          "error": "failed to run command: Process exited with status 127\nbash: powershell: command not found\n",
+          "host": "10.42.56.106",
+          "task_name": "Add user on Windows systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 73,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.9178759-06:00"
+    },
+    {
+      "event": {
+        "id": "3fae492f-e056-4d11-a940-f5d8893e53db",
+        "timestamp": "2025-03-02T10:27:07.9319755-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if id \"demouser6\" \u0026\u003e/dev/null; then\n  echo 'demouser6:DemoPass0982' | sudo chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n",
+          "host": "10.42.56.106",
+          "output_length": 43,
+          "task_name": "Set password for user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:07.9319755-06:00"
+    },
+    {
+      "event": {
+        "id": "4cd74544-3e22-40f2-879e-61edd33b9f40",
+        "timestamp": "2025-03-02T10:27:08.1225715-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if [ \"$(whoami)\" != \"root\" ]; then\n  echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser6\"\nelse\n  useradd -m -s /bin/bash \"demouser6\"\nfi\n",
+          "host": "10.42.56.98",
+          "output_length": 32,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:08.1225715-06:00"
+    },
+    {
+      "event": {
+        "id": "5714a3b9-487c-4b61-b748-dc12217e67dd",
+        "timestamp": "2025-03-02T10:27:08.3821507-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if [ \"$(whoami)\" != \"root\" ]; then\n  echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser6\"\nelse\n  useradd -m -s /bin/bash \"demouser6\"\nfi\n",
+          "host": "10.42.56.103",
+          "output_length": 32,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:08.3821507-06:00"
+    },
+    {
+      "event": {
+        "id": "c5dd0e55-81fa-4ada-9e08-33a435eba55a",
+        "timestamp": "2025-03-02T10:27:09.2672252-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "if [ \"$(whoami)\" != \"root\" ]; then\n  echo '@dminPass123' | sudo -S useradd -m -s /bin/bash \"demouser6\"\nelse\n  useradd -m -s /bin/bash \"demouser6\"\nfi\n",
+          "host": "10.42.56.106",
+          "output_length": 32,
+          "task_name": "Add user on Linux and Fedora systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:09.2672252-06:00"
+    },
+    {
+      "event": {
+        "id": "31350215-663b-4103-b686-c61ad403fac4",
+        "timestamp": "2025-03-02T10:27:11.0011719-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "powershell -Command \"\u0026 {net user \\\"demouser6\\\" \\\"DemoPass0982\\\" /add}\"\n",
+          "host": "10.42.56.110",
+          "output_length": 39,
+          "task_name": "Add user on Windows systems"
+        },
+        "source": "executor.go",
+        "function": "EagleDeployment/executor.ExecuteRemote",
+        "line": 83,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
+        "host_info": {
+          "hostname": "Hunter-PC-R",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-03-02T10:27:11.0011719-06:00"
+    },
+    {
+      "event": {
+        "id": "d4fce8f5-e461-46fa-a7d3-d9e2deb631b8",
+        "timestamp": "2025-03-02T10:27:11.863182-06:00",
+        "level": "INFO",
+        "category": "Execution",
+        "message": "Task executed successfully",
+        "data": {
+          "command": "powershell -Command \"\u0026 {net user \\\"demouser6\\\" \\\"DemoPass0982\\\" /add}\"\n",
           "host": "10.42.56.115",
           "output_length": 39,
           "task_name": "Add user on Windows systems"
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
+        "function": "EagleDeployment/executor.ExecuteRemote",
         "line": 83,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.8427506-06:00"
+      "time_written": "2025-03-02T10:27:11.863182-06:00"
     },
     {
       "event": {
-        "id": "75cc01df-3d0b-4dbf-9f25-b2cb3bc01d31",
-        "timestamp": "2025-03-01T22:15:08.8494142-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "net user \"demouser3\" \"DemoPass0982\" /add\n",
-          "error": "failed to run command: Process exited with status 127\nbash: line 1: net: command not found\n",
-          "host": "10.42.56.98",
-          "task_name": "Add user on Windows systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.8494142-06:00"
-    },
-    {
-      "event": {
-        "id": "edf9cbeb-60aa-4ba3-89d8-882a5be66b75",
-        "timestamp": "2025-03-01T22:15:08.859701-06:00",
+        "id": "83ccdfa6-df1d-44e3-8c46-62599b9b571e",
+        "timestamp": "2025-03-02T10:27:11.8633833-06:00",
         "level": "INFO",
         "category": "Execution",
-        "message": "Task executed successfully",
+        "message": "Completed concurrent task execution",
         "data": {
-          "command": "net user \"demouser3\" \"DemoPass0982\" /add\n",
-          "host": "10.42.56.110",
-          "output_length": 39,
-          "task_name": "Add user on Windows systems"
+          "successful_tasks": 10,
+          "total_tasks": 18
         },
         "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 83,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
+        "function": "EagleDeployment/executor.ExecuteConcurrently",
+        "line": 163,
+        "session_id": "b996267e-3b97-4cbc-9b1d-ef83c21ae8d8",
         "host_info": {
           "hostname": "Hunter-PC-R",
           "os": "windows",
           "arch": "amd64"
         }
       },
-      "time_written": "2025-03-01T22:15:08.859701-06:00"
-    },
-    {
-      "event": {
-        "id": "47b23ae8-4dcc-4d7b-9aea-2ba06706343d",
-        "timestamp": "2025-03-01T22:15:08.8624167-06:00",
-        "level": "ERROR",
-        "category": "Execution",
-        "message": "Task execution failed",
-        "data": {
-          "command": "echo '@dminPass123' | sudo -S bash -c \"id demouser3 \u0026\u0026 echo 'demouser3:DemoPass0982' | sudo chpasswd\" 2\u003e/dev/null\n",
-          "error": "failed to run command: Process exited with status 1\n",
-          "host": "10.42.56.99",
-          "task_name": "Set password for user on Linux systems"
-        },
-        "source": "executor.go",
-        "function": "EagleDeploy_CLI/executor.ExecuteRemote",
-        "line": 73,
-        "session_id": "19dcbdcd-c97d-4667-9c79-83af292ecf5f",
-        "host_info": {
-          "hostname": "Hunter-PC-R",
-          "os": "windows",
-          "arch": "amd64"
-        }
-      },
-      "time_written": "2025-03-01T22:15:08.8624167-06:00"
+      "time_written": "2025-03-02T10:27:11.8633833-06:00"
     }
   ],
-  "last_sync": "2025-03-01T22:15:08.8624167-06:00"
+  "last_sync": "2025-03-02T10:27:11.8633833-06:00"
 }

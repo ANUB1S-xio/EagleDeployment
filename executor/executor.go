@@ -1,14 +1,14 @@
 // File: executor.go
-// Directory Path: /EagleDeploy_CLI/executor
+// Directory Path: /EagleDeployment/executor
 // Purpose: Executes tasks remotely using SSH and integrates with inventory management.
 
 package executor
 
 import (
-	"EagleDeploy_CLI/Telemetry"
-	"EagleDeploy_CLI/inventory"
-	"EagleDeploy_CLI/sshutils"
-	"EagleDeploy_CLI/tasks"
+	"EagleDeployment/Telemetry"
+	"EagleDeployment/inventory"
+	"EagleDeployment/sshutils"
+	"EagleDeployment/tasks"
 	"fmt"
 	"log"
 	"sync"
@@ -31,7 +31,7 @@ import (
 //   - sshutils.ConnectSSH for remote access
 //   - sshutils.RunSSHCommand for command execution
 func ExecuteRemote(task tasks.Task, port int) error {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 
 	t.LogInfo("Execution", "Starting task execution", map[string]interface{}{
 		"task_name": task.Name,
@@ -113,7 +113,7 @@ func ExecuteRemote(task tasks.Task, port int) error {
 //   - Resolves hostnames to IPs using inventory
 //   - Buffers results in channel for ordered logging
 func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 
 	t.LogInfo("Execution", "Starting concurrent task execution", map[string]interface{}{
 		"tasks_count": len(taskList),

@@ -1,21 +1,18 @@
 package menu
 
 import (
+	"EagleDeployment/Telemetry" // Updated module name
 	"fmt"
 	"os"
 	"strings"
-
-	"EagleDeploy_CLI/Telemetry" // Fixed import path
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
-// Define listHeight constant
-const (
-	listHeight = 14
-)
+// Define the height of the list
+const listHeight = 20
 
 type menuItem struct {
 	title, desc string
@@ -27,7 +24,7 @@ func (i menuItem) FilterValue() string { return i.title }
 
 type model struct {
 	list      list.Model
-	telemetry *Telemetry.Telemetry
+	telemetry *telemetry.Telemetry
 }
 
 func newModel() model {
@@ -53,7 +50,7 @@ func newModel() model {
 	l.Styles.PaginationStyle = l.Styles.PaginationStyle.MarginLeft(2)
 	l.Styles.HelpStyle = l.Styles.HelpStyle.MarginLeft(2).Padding(1, 0, 0, 0)
 
-	return model{list: l, telemetry: Telemetry.GetInstance()}
+	return model{list: l, telemetry: telemetry.GetInstance()}
 }
 
 func (m model) Init() tea.Cmd {
@@ -85,19 +82,19 @@ func (m model) View() string {
 	return "\n" + m.list.View()
 }
 
-func handleMenuSelection(selection string, telemetry *Telemetry.Telemetry) {
+func handleMenuSelection(selection string, telemetry *telemetry.Telemetry) {
 	switch selection {
 	case "Set Log Level":
 		level := getInput("Enter log level (ERROR, WARNING, INFO, DEBUG): ")
 		switch strings.ToUpper(level) {
 		case "ERROR":
-			telemetry.SetLevel(Telemetry.LevelError)
+			telemetry.SetLevel(0) // Use direct value for LevelError
 		case "WARNING":
-			telemetry.SetLevel(Telemetry.LevelWarning)
+			telemetry.SetLevel(1) // Use direct value for LevelWarning
 		case "INFO":
-			telemetry.SetLevel(Telemetry.LevelInfo)
+			telemetry.SetLevel(2) // Use direct value for LevelInfo
 		case "DEBUG":
-			telemetry.SetLevel(Telemetry.LevelDebug)
+			telemetry.SetLevel(3) // Use direct value for LevelDebug
 		default:
 			fmt.Println("Invalid log level")
 		}
@@ -124,8 +121,13 @@ func handleMenuSelection(selection string, telemetry *Telemetry.Telemetry) {
 		level := getInput("Enter log level to filter (leave blank for all): ")
 		category := getInput("Enter category to filter (leave blank for all): ")
 		message := getInput("Enter message to filter (leave blank for all): ")
-		getInput("Enter limit of entries to display: ")
-		entries := telemetry.FilterLogs(level, category, message, 10)
+		limitInput := getInput("Enter limit of entries to display: ")
+
+		// Parse the limit value
+		var limit int = 10
+		fmt.Sscanf(limitInput, "%d", &limit)
+
+		entries := telemetry.FilterLogs(level, category, message, limit)
 		for _, entry := range entries {
 			fmt.Printf("%+v\n", entry)
 		}

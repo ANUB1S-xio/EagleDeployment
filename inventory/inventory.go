@@ -1,13 +1,13 @@
 // File: inventory.go
-// Directory: EagleDeploy_CLI/inventory
+// Directory: EagleDeployment/inventory
 // Purpose: Manages inventory data, host discovery, and inventory operations.
 
 package inventory
 
 import (
-	"EagleDeploy_CLI/Telemetry"
-	"EagleDeploy_CLI/config"
-	"EagleDeploy_CLI/osdetect"
+	"EagleDeployment/config"
+	"EagleDeployment/osdetect"
+	"EagleDeployment/Telemetry"
 	"bytes"
 	"fmt"
 	"io/ioutil"
@@ -61,7 +61,7 @@ func LoadInventory() (*Inventory, error) {
 
 // SaveInventory writes the updated inventory back to inventory.yaml
 func SaveInventory(inv *Inventory) {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	data, err := yaml.Marshal(inv)
 	if err != nil {
 		log.Printf("Failed to marshal inventory: %v", err)
@@ -222,7 +222,7 @@ func nextIP(ip net.IP) net.IP {
 
 // AddHost prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
 func AddHost(ipRange string) {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	t.LogInfo("Inventory", "Adding hosts from IP range", map[string]interface{}{
 		"ip_range": ipRange,
 	})
@@ -402,7 +402,7 @@ func ListHosts() {
 
 // UpdateHost updates the details of a host in the inventory
 func UpdateHost(index int, newHost Host) {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	inv, err := LoadInventory()
 	if err != nil {
 		fmt.Println("Error loading inventory:", err)
@@ -439,7 +439,7 @@ func UpdateHost(index int, newHost Host) {
 
 // DeleteHost removes a host from the inventory
 func DeleteHost(index int) {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	inv, err := LoadInventory()
 	if err != nil {
 		fmt.Println("Error loading inventory:", err)
@@ -472,7 +472,7 @@ func DeleteHost(index int) {
 
 // EditSSHCreds allows updating the SSH credentials in the inventory.
 func EditSSHCreds() {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	inv, err := LoadInventory()
 	if err != nil {
 		fmt.Println("Error loading inventory:", err)
@@ -589,7 +589,7 @@ func DisplayInventoryMenu() {
 // InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
 // and writes the rendered output to outputPath.
 func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	t.LogInfo("Playbook", "Injecting inventory into playbook", map[string]interface{}{
 		"template_path": templatePath,
 		"output_path":   outputPath,

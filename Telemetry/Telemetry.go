@@ -1,6 +1,6 @@
 // File: telemetry/telemetry.go
 
-package Telemetry
+package telemetry
 
 import (
 	"encoding/json"

@@ -1,17 +1,17 @@
 // File: main.go
-// Directory Path: /EagleDeploy_CLI/
+// Directory Path: /EagleDeployment/
 // Purpose: Main entry point for the EagleDeploy CLI, handling menu navigation and execution of YAML playbooks.
 
 package main
 
 import (
-	"EagleDeploy_CLI/Telemetry"
-	"EagleDeploy_CLI/config"
-	"EagleDeploy_CLI/executor"
-	"EagleDeploy_CLI/inventory"
-	"EagleDeploy_CLI/menu"
-	"EagleDeploy_CLI/tasks"
-	"EagleDeploy_CLI/web"
+	"EagleDeployment/config"
+	"EagleDeployment/executor"
+	"EagleDeployment/inventory"
+	"EagleDeployment/menu"
+	"EagleDeployment/tasks"
+	"EagleDeployment/Telemetry"
+	"EagleDeployment/web"
 	"fmt"
 	"log"
 	"os"
@@ -30,6 +30,7 @@ import (
 // Dependencies:
 //   - [`os.Stat`](os/os.go) for directory checking
 //   - [`os.ReadDir`](os/os.go) for file listing
+
 func listPlaybooks() []string {
 	playbooksDir := "./playbooks" // Default directory for playbooks
 
@@ -69,7 +70,7 @@ func listPlaybooks() []string {
 //   - [`config.LoadConfig`](config/config.go)
 //   - [`executor.ExecuteConcurrently`](executor/executor.go)
 func executeYAML(playbookPath string, targetHosts []string) {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 
 	t.LogInfo("Playbook", "Starting playbook execution", map[string]interface{}{
 		"playbook_path":      playbookPath,
@@ -152,7 +153,7 @@ func displayMenu() int {
 
 // Add this function to toggle Telemetry levels
 func toggleTelemetryLevel() {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 
 	fmt.Println("\nSelect Telemetry Level:")
 	fmt.Println("1. Error only")
@@ -166,16 +167,16 @@ func toggleTelemetryLevel() {
 
 	switch choice {
 	case 1:
-		t.SetLevel(Telemetry.LevelError)
+		t.SetLevel(telemetry.LevelError)
 		fmt.Println("Telemetry set to Error level")
 	case 2:
-		t.SetLevel(Telemetry.LevelWarning)
+		t.SetLevel(telemetry.LevelWarning)
 		fmt.Println("Telemetry set to Warning level")
 	case 3:
-		t.SetLevel(Telemetry.LevelInfo)
+		t.SetLevel(telemetry.LevelInfo)
 		fmt.Println("Telemetry set to Info level")
 	case 4:
-		t.SetLevel(Telemetry.LevelDebug)
+		t.SetLevel(telemetry.LevelDebug)
 		fmt.Println("Telemetry set to Debug level")
 	default:
 		fmt.Println("Invalid choice. Telemetry level unchanged.")
@@ -188,7 +189,7 @@ func toggleTelemetryLevel() {
 // Returns: None
 // Called By: main() when user selects the "View Logs" option
 func viewLogs() {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 
 	// Create a submenu for log viewing options
 	for {
@@ -220,10 +221,10 @@ func viewLogs() {
 // Function: filterAndViewLogs
 // Purpose: Allow filtering and viewing log entries
 // Parameters:
-//   - t: *Telemetry.Telemetry - Telemetry instance
+//   - t: *telemetry.Telemetry - Telemetry instance
 //
 // Returns: None
-func filterAndViewLogs(t *Telemetry.Telemetry) {
+func filterAndViewLogs(t *telemetry.Telemetry) {
 	var levelFilter, categoryFilter, messageFilter string
 	var limit int = 50
 
@@ -348,10 +349,10 @@ func filterAndViewLogs(t *Telemetry.Telemetry) {
 // Function: configureTelemetryLevel
 // Purpose: Configure the Telemetry logging level
 // Parameters:
-//   - t: *Telemetry.Telemetry - Telemetry instance
+//   - t: *telemetry.Telemetry - Telemetry instance
 //
 // Returns: None
-func configureTelemetryLevel(t *Telemetry.Telemetry) {
+func configureTelemetryLevel(t *telemetry.Telemetry) {
 	fmt.Println("\nSelect Telemetry Level:")
 	fmt.Println("1. Error only")
 	fmt.Println("2. Error + Warning")
@@ -367,16 +368,16 @@ func configureTelemetryLevel(t *Telemetry.Telemetry) {
 
 	switch choice {
 	case 1:
-		t.SetLevel(Telemetry.LevelError)
+		t.SetLevel(telemetry.LevelError)
 		fmt.Println("Telemetry set to Error level")
 	case 2:
-		t.SetLevel(Telemetry.LevelWarning)
+		t.SetLevel(telemetry.LevelWarning)
 		fmt.Println("Telemetry set to Warning level")
 	case 3:
-		t.SetLevel(Telemetry.LevelInfo)
+		t.SetLevel(telemetry.LevelInfo)
 		fmt.Println("Telemetry set to Info level")
 	case 4:
-		t.SetLevel(Telemetry.LevelDebug)
+		t.SetLevel(telemetry.LevelDebug)
 		fmt.Println("Telemetry set to Debug level")
 	default:
 		fmt.Println("Invalid choice. Telemetry level unchanged.")
@@ -386,10 +387,10 @@ func configureTelemetryLevel(t *Telemetry.Telemetry) {
 // Function: confirmAndClearLogs
 // Purpose: Confirm and clear all logs
 // Parameters:
-//   - t: *Telemetry.Telemetry - Telemetry instance
+//   - t: *telemetry.Telemetry - Telemetry instance
 //
 // Returns: None
-func confirmAndClearLogs(t *Telemetry.Telemetry) {
+func confirmAndClearLogs(t *telemetry.Telemetry) {
 	fmt.Print("\nAre you sure you want to clear all logs? (y/n): ")
 	var confirm string
 	fmt.Scanln(&confirm)
@@ -419,7 +420,7 @@ func confirmAndClearLogs(t *Telemetry.Telemetry) {
 //   - All core package functions
 func main() {
 	// Initialize Telemetry
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	defer t.Close()
 
 	t.LogInfo("App", "EagleDeploy starting", nil)

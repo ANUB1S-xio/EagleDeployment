@@ -1,11 +1,11 @@
 // File: os-detect.go
-// Directory: EagleDeploy_CLI/osdetect
+// Directory: EagleDeployment/osdetect
 // Purpose: Detects OS type of hosts using SSH and TCP fingerprinting
 
 package osdetect
 
 import (
-	"EagleDeploy_CLI/sshutils"
+	"EagleDeployment/sshutils"
 	"fmt"
 	"net"
 	"strings"

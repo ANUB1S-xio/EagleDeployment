@@ -1,10 +1,11 @@
 package web
 
 import (
-	"EagleDeploy_CLI/Telemetry"
 	"fmt"
 	"net"
 	"net/http"
+
+	"EagleDeployment/Telemetry"
 )
 
 // Function: findPort
@@ -31,7 +32,7 @@ func findPort() (int, error) {
 
 // StartWebServer with telemetry
 func StartWebServer() {
-	t := Telemetry.GetInstance()
+	t := telemetry.GetInstance()
 	port := 8742 // Default port
 
 	// Check default port availability
