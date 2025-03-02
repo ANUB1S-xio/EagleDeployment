@@ -1,59 +1,74 @@
 name: "Basic_Add_Users"
-version: "2.1"
+version: "2.3"
+
 hosts:
   - "10.42.56.106"
   - "10.42.56.103"
   - "10.42.56.98"
-  - "10.42.56.99"
   - "10.42.56.110"
   - "10.42.56.115"
+  - "10.42.56.99"
+
 vars:
-  user_name: "demouser"      # Use the passed username from inventory file
-  user_password: "DemoPass0982"   # Use the passed password from inventory file
+  user_name: "demouser11"
+  user_password: "DemoPass0982"
+
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS | lower in ["linux", "ubuntu"]
-    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows}]"
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
+    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.99 node-2-ubuntu Linux - Ubuntu}]"
     loop_control:
       loop_var: item
     command: |
-      echo '@dminPass123' | sudo -S useradd -m -s /bin/bash "demouser" 2>/dev/null
-
-  - name: "Add user on Fedora systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
-    when: item.OS | lower contains "fedora"
-    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows}]"
-    loop_control:
-      loop_var: item
-    command: |
-      echo '@dminPass123' | sudo -S useradd -m -s /bin/bash "demouser" 2>/dev/null
-
-  - name: "Add user on Windows systems"
-    ssh_user: "eagleadmin"
-    ssh_password: "@dminPass123"
-    port: 22
-    when: item.OS | lower contains "windows"
-    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows}]"
-    loop_control:
-      loop_var: item
-    command: |
-      net user "demouser" "DemoPass0982" /add
+      if [ "$(id -u 2>/dev/null)" -ne 0 ]; then
+        echo '@dminPass123' | sudo -S useradd -m -s /bin/bash "demouser11"
+      else
+        useradd -m -s /bin/bash "demouser11"
+      fi
+    register: user_creation_result
 
   - name: "Set password for user on Linux systems"
     ssh_user: "eagleadmin"
     ssh_password: "@dminPass123"
     port: 22
-    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
-    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.99 node-2-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows}]"
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
+    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.99 node-2-ubuntu Linux - Ubuntu}]"
     loop_control:
       loop_var: item
     command: |
-      echo '@dminPass123' | sudo -S bash -c "id demouser && echo 'demouser:DemoPass0982' | sudo chpasswd" 2>/dev/null
+      if getent passwd "demouser11" > /dev/null 2>&1; then
+        echo 'demouser11:DemoPass0982' | sudo -S chpasswd
+      else
+        echo "User does not exist, skipping password set"
+      fi
+    depends_on:
+      - "Add user on Linux systems"
+
+  - name: "Add user on Windows systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "@dminPass123"
+    port: 22
+    when:  
+      - item.OS | lower contains "windows"
+      - item.OS | lower not contains "linux"
+      - item.OS | lower not contains "ubuntu"
+      - item.OS | lower not contains "fedora"
+      - item.OS | lower not contains "debian"
+    loop: "[{10.42.56.106 node-3-fedora Linux} {10.42.56.103 node-6-fedora Linux} {10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.99 node-2-ubuntu Linux - Ubuntu}]"
+    loop_control:
+      loop_var: item
+    command: |
+      cmd.exe /c "net user \"demouser11\" \"DemoPass0982\" /add"
+    register: windows_user_creation_result
 
 settings:
   port: 22

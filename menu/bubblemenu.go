@@ -18,14 +18,6 @@ var (
 			Foreground(lipgloss.Color("#00ff99")).
 			Padding(1, 0, 0, 0)
 
-	programNameStyle = lipgloss.NewStyle().
-				Bold(true).
-				Foreground(lipgloss.Color("#00ffff")).
-				Background(lipgloss.Color("#333333")).
-				PaddingLeft(4).
-				PaddingRight(4).
-				MarginBottom(1)
-
 	itemStyle = lipgloss.NewStyle().
 			Padding(0, 0, 0, 2)
 
@@ -85,8 +77,8 @@ func InitialMainMenu() MainMenuModel {
 	return MainMenuModel{
 		choices: []string{
 			"Execute a Playbook",
-			"Manage Inventory", // Restored this option
-			"Enable/Disable Detailed Logging",
+			"Manage Inventory",
+			"View Logs", // Changed from "Enable/Disable Detailed Logging"
 		},
 		cursor:      0,
 		selected:    -1,

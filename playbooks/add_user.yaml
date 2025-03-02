@@ -1,56 +1,71 @@
 name: "Basic_Add_Users"
-version: "2.1"
+version: "2.3"
+
 hosts:
 {{- range .Hosts }}
   - "{{ .IP }}"
 {{- end }}
+
 vars:
-  user_name: "{{ .Vars.UserName }}"      # Use the passed username from inventory file
-  user_password: "{{ .Vars.UserPassword }}"   # Use the passed password from inventory file
+  user_name: "{{ .Vars.UserName }}"
+  user_password: "{{ .Vars.UserPassword }}"
+
 tasks:
   - name: "Add user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
     ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: item.OS | lower in ["linux", "ubuntu"]
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
     command: |
-      echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}" 2>/dev/null
-
-  - name: "Add user on Fedora systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when: item.OS | lower contains "fedora"
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}" 2>/dev/null
-
-  - name: "Add user on Windows systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when: item.OS | lower contains "windows"
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      net user "{{ .Vars.UserName }}" "{{ .Vars.UserPassword }}" /add
+      if [ "$(id -u 2>/dev/null)" -ne 0 ]; then
+        echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      else
+        useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      fi
+    register: user_creation_result
 
   - name: "Set password for user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
     ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
     command: |
-      echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S bash -c "id {{ .Vars.UserName }} && echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | sudo chpasswd" 2>/dev/null
+      if getent passwd "{{ .Vars.UserName }}" > /dev/null 2>&1; then
+        echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | sudo -S chpasswd
+      else
+        echo "User does not exist, skipping password set"
+      fi
+    depends_on:
+      - "Add user on Linux systems"
+
+  - name: "Add user on Windows systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
+    when:  
+      - item.OS | lower contains "windows"
+      - item.OS | lower not contains "linux"
+      - item.OS | lower not contains "ubuntu"
+      - item.OS | lower not contains "fedora"
+      - item.OS | lower not contains "debian"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: |
+      cmd.exe /c "net user \"{{ .Vars.UserName }}\" \"{{ .Vars.UserPassword }}\" /add"
+    register: windows_user_creation_result
 
 settings:
   port: 22

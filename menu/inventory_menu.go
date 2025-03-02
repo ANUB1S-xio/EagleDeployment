@@ -5,7 +5,7 @@ package menu
 import (
 	"fmt"
 
-	"EagleDeploy_CLI/inventory"
+	"EagleDeployment/inventory"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
