@@ -5,6 +5,7 @@
 package inventory
 
 import (
+	"EagleDeploy_CLI/Telemetry"
 	"EagleDeploy_CLI/config"
 	"EagleDeploy_CLI/osdetect"
 	"bytes"
@@ -60,15 +61,27 @@ func LoadInventory() (*Inventory, error) {
 
 // SaveInventory writes the updated inventory back to inventory.yaml
 func SaveInventory(inv *Inventory) {
+	t := Telemetry.GetInstance()
 	data, err := yaml.Marshal(inv)
 	if err != nil {
 		log.Printf("Failed to marshal inventory: %v", err)
+		t.LogError("Inventory", "Failed to marshal inventory", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return
 	}
 	err = os.WriteFile("./inventory/inventory.yaml", data, 0644)
 	if err != nil {
 		log.Printf("Failed to write inventory.yaml: %v", err)
+		t.LogError("Inventory", "Failed to write inventory.yaml", map[string]interface{}{
+			"error": err.Error(),
+		})
+		return
 	}
+	t.LogInfo("Inventory", "Saved inventory to disk", map[string]interface{}{
+		"hosts_count": len(inv.Hosts),
+		"users_count": len(inv.Users),
+	})
 }
 
 // GetHosts returns the list of hosts from the inventory
@@ -209,9 +222,18 @@ func nextIP(ip net.IP) net.IP {
 
 // AddHost prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
 func AddHost(ipRange string) {
+	t := Telemetry.GetInstance()
+	t.LogInfo("Inventory", "Adding hosts from IP range", map[string]interface{}{
+		"ip_range": ipRange,
+	})
+
 	ips, err := parseIPRange(ipRange)
 	if err != nil {
 		fmt.Printf("Error parsing IP range: %v\n", err)
+		t.LogError("Inventory", "Failed to parse IP range", map[string]interface{}{
+			"ip_range": ipRange,
+			"error":    err.Error(),
+		})
 		return
 	}
 
@@ -279,8 +301,17 @@ func AddHost(ipRange string) {
 			inv.Hosts = append(inv.Hosts, host)
 			existingHosts[host.IP] = true
 			fmt.Printf("Added host: %s (Hostname: %s)\n", host.IP, host.Hostname)
+
+			t.LogInfo("Inventory", "Added host to inventory", map[string]interface{}{
+				"ip":       host.IP,
+				"hostname": host.Hostname,
+				"os":       host.OS,
+			})
 		} else {
 			fmt.Printf("Host %s already exists in the inventory. Skipping.\n", host.IP)
+			t.LogDebug("Inventory", "Skipped existing host", map[string]interface{}{
+				"ip": host.IP,
+			})
 		}
 	}
 
@@ -371,31 +402,69 @@ func ListHosts() {
 
 // UpdateHost updates the details of a host in the inventory
 func UpdateHost(index int, newHost Host) {
+	t := Telemetry.GetInstance()
 	inv, err := LoadInventory()
 	if err != nil {
 		fmt.Println("Error loading inventory:", err)
+		t.LogError("Inventory", "Error loading inventory for update", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return
 	}
 	if index < 0 || index >= len(inv.Hosts) {
 		fmt.Println("Invalid host index")
+		t.LogWarning("Inventory", "Invalid host index for update", map[string]interface{}{
+			"index":       index,
+			"hosts_count": len(inv.Hosts),
+		})
 		return
 	}
+
+	oldHost := inv.Hosts[index]
 	inv.Hosts[index] = newHost
+
+	t.LogInfo("Inventory", "Updated host in inventory", map[string]interface{}{
+		"index":        index,
+		"old_ip":       oldHost.IP,
+		"old_hostname": oldHost.Hostname,
+		"old_os":       oldHost.OS,
+		"new_ip":       newHost.IP,
+		"new_hostname": newHost.Hostname,
+		"new_os":       newHost.OS,
+	})
+
 	SaveInventory(inv)
 	fmt.Println("Host updated successfully")
 }
 
 // DeleteHost removes a host from the inventory
 func DeleteHost(index int) {
+	t := Telemetry.GetInstance()
 	inv, err := LoadInventory()
 	if err != nil {
 		fmt.Println("Error loading inventory:", err)
+		t.LogError("Inventory", "Error loading inventory for deletion", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return
 	}
 	if index < 0 || index >= len(inv.Hosts) {
 		fmt.Println("Invalid host index")
+		t.LogWarning("Inventory", "Invalid host index for deletion", map[string]interface{}{
+			"index":       index,
+			"hosts_count": len(inv.Hosts),
+		})
 		return
 	}
+
+	deletedHost := inv.Hosts[index]
+	t.LogInfo("Inventory", "Deleted host from inventory", map[string]interface{}{
+		"index":    index,
+		"ip":       deletedHost.IP,
+		"hostname": deletedHost.Hostname,
+		"os":       deletedHost.OS,
+	})
+
 	inv.Hosts = append(inv.Hosts[:index], inv.Hosts[index+1:]...)
 	SaveInventory(inv)
 	fmt.Println("Host deleted successfully")
@@ -403,9 +472,13 @@ func DeleteHost(index int) {
 
 // EditSSHCreds allows updating the SSH credentials in the inventory.
 func EditSSHCreds() {
+	t := Telemetry.GetInstance()
 	inv, err := LoadInventory()
 	if err != nil {
 		fmt.Println("Error loading inventory:", err)
+		t.LogError("Inventory", "Error loading inventory for SSH credential update", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return
 	}
 	var newUser, newPass string
@@ -418,6 +491,11 @@ func EditSSHCreds() {
 		SSHUser: newUser,
 		SSHPass: newPass,
 	}
+
+	t.LogInfo("Inventory", "Updated SSH credentials", map[string]interface{}{
+		"username": newUser,
+	})
+
 	SaveInventory(inv)
 	fmt.Println("SSH credentials updated successfully.")
 }
@@ -511,8 +589,17 @@ func DisplayInventoryMenu() {
 // InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
 // and writes the rendered output to outputPath.
 func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
+	t := Telemetry.GetInstance()
+	t.LogInfo("Playbook", "Injecting inventory into playbook", map[string]interface{}{
+		"template_path": templatePath,
+		"output_path":   outputPath,
+	})
+
 	inv, err := LoadInventory()
 	if err != nil {
+		t.LogError("Playbook", "Failed to load inventory for playbook", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return fmt.Errorf("failed to load inventory: %v", err)
 	}
 
@@ -595,22 +682,43 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 
 	tmplBytes, err := ioutil.ReadFile(templatePath)
 	if err != nil {
+		t.LogError("Playbook", "Failed to read playbook template", map[string]interface{}{
+			"error":         err.Error(),
+			"template_path": templatePath,
+		})
 		return fmt.Errorf("failed to read playbook template: %v", err)
 	}
 
 	tmpl, err := template.New("playbook").Funcs(funcMap).Parse(string(tmplBytes))
 	if err != nil {
+		t.LogError("Playbook", "Failed to parse playbook template", map[string]interface{}{
+			"error":         err.Error(),
+			"template_path": templatePath,
+		})
 		return fmt.Errorf("failed to parse playbook template: %v", err)
 	}
 
 	var rendered bytes.Buffer
 	if err := tmpl.Execute(&rendered, data); err != nil {
+		t.LogError("Playbook", "Failed to execute template", map[string]interface{}{
+			"error":         err.Error(),
+			"template_path": templatePath,
+		})
 		return fmt.Errorf("failed to execute template: %v", err)
 	}
 
 	if err := os.WriteFile(outputPath, rendered.Bytes(), 0644); err != nil {
+		t.LogError("Playbook", "Failed to write rendered playbook", map[string]interface{}{
+			"error":       err.Error(),
+			"output_path": outputPath,
+		})
 		return fmt.Errorf("failed to write rendered playbook: %v", err)
 	}
 
+	t.LogInfo("Playbook", "Successfully injected inventory into playbook", map[string]interface{}{
+		"template_path": templatePath,
+		"output_path":   outputPath,
+		"hosts_count":   len(inv.Hosts),
+	})
 	return nil
 }

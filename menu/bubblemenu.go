@@ -85,8 +85,8 @@ func InitialMainMenu() MainMenuModel {
 	return MainMenuModel{
 		choices: []string{
 			"Execute a Playbook",
-			"Manage Inventory", // Restored this option
-			"Enable/Disable Detailed Logging",
+			"Manage Inventory",
+			"View Logs", // Changed from "Enable/Disable Detailed Logging"
 		},
 		cursor:      0,
 		selected:    -1,

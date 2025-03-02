@@ -1,6 +1,7 @@
 package web
 
 import (
+	"EagleDeploy_CLI/Telemetry"
 	"fmt"
 	"net"
 	"net/http"
@@ -28,67 +29,79 @@ func findPort() (int, error) {
 	return addr.Port, nil
 }
 
-// Function: StartWebServer
-// Purpose: Initializes and runs the web interface server
-// Parameters: None
-// Returns: None
-// Called By:
-//   - main() during application startup
-//
-// Dependencies:
-//   - findPort() for dynamic port allocation
-//   - http package for web server functionality
-//   - web/templates/* for HTML content
-//   - web/static/* for static assets
-//
-// Notes:
-//   - Default port: 8742
-//   - Binds only to localhost for security
-//   - Serves static files and HTML templates
-//   - No HTTPS as it's for internal admin use only
+// StartWebServer with telemetry
 func StartWebServer() {
+	t := Telemetry.GetInstance()
 	port := 8742 // Default port
 
 	// Check default port availability
 	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
-		fmt.Println("The chosen port (8742) is taken, attempting dynamic port signing...")
+		t.LogWarning("Web", "Default port unavailable, trying dynamic port", map[string]interface{}{
+			"default_port": port,
+			"error":        err.Error(),
+		})
+
 		port, err = findPort() // Get available port
 		if err != nil {
+			t.LogError("Web", "Failed to find available port", map[string]interface{}{
+				"error": err.Error(),
+			})
 			fmt.Printf("Failed to find an available port: %v\n", err)
 			return
 		}
+
+		t.LogInfo("Web", "Using dynamic port", map[string]interface{}{
+			"port": port,
+		})
 	} else {
 		listener.Close() // Close it since it was just a check
+		t.LogInfo("Web", "Using default port", map[string]interface{}{
+			"port": port,
+		})
 	}
 
 	// Display assigned port
 	fmt.Printf("EagleDeployment GUI running at http://127.0.0.1:%d\n", port)
 
-	// Serve React frontend
-	//fs := http.FileServer(http.Dir("web/frontend/build"))
-	//http.Handle("/", fs)
-	// Serve static files
-	// Serve static files (CSS, JS, images)
+	// Configure HTTP handlers
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	// Serve the homepage at "/"
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// Log each HTTP request
+	logRequest := func(handler http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			t.LogInfo("Web", "HTTP request", map[string]interface{}{
+				"method": r.Method,
+				"path":   r.URL.Path,
+				"remote": r.RemoteAddr,
+			})
+			handler(w, r)
+		}
+	}
+
+	// Apply logging middleware
+	http.HandleFunc("/", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/index.html")
-	})
+	}))
 
-	// Serve login and dashboard pages at their respective paths
-	http.HandleFunc("/login.html", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/login.html", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/login.html")
-	})
+	}))
 
-	http.HandleFunc("/dashboard.html", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/dashboard.html", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/dashboard.html")
+	}))
+
+	// Start HTTP server
+	t.LogInfo("Web", "Starting web server", map[string]interface{}{
+		"address": fmt.Sprintf("127.0.0.1:%d", port),
 	})
 
-	// Start HTTP server on localhost (ED internally used (by admin), no need for secure http or CA Certificates)
 	err = http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", port), nil)
 	if err != nil {
+		t.LogError("Web", "Web server failed", map[string]interface{}{
+			"error": err.Error(),
+		})
 		fmt.Printf("Web Interface failed to start: %v\n", err)
 	}
 }
