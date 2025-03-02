@@ -9,6 +9,7 @@ import (
 	"EagleDeploy_CLI/executor"
 	"EagleDeploy_CLI/inventory"
 	"EagleDeploy_CLI/menu"
+	"EagleDeploy_CLI/inventory"
 	"EagleDeploy_CLI/tasks"
 	"EagleDeploy_CLI/web"
 	"fmt"
@@ -88,15 +89,13 @@ func executeYAML(playbookPath string, targetHosts []string) {
 		hosts = targetHosts
 	}
 
-	// Get port setting from the playbook settings
-	portStr := playbook.Settings["port"]
-	if portStr == "" {
+	// Get port setting from the playbook
+	port := playbook.Settings["port"]
+	if port == 0 {
 		log.Fatalf("Port is not specified in the playbook settings.")
 	}
-	port, err := strconv.Atoi(portStr)
-	if err != nil {
-		log.Fatalf("Invalid port value: %v", err)
-	}
+
+	fmt.Printf("Executing Playbook: %s (Version: %s) on Hosts: %v\n", playbook.Name, playbook.Version, hosts)
 
 	// Execute tasks concurrently using the executor package
 	executor.ExecuteConcurrently(playbook.Tasks, hosts, port)
@@ -121,11 +120,11 @@ func displayMenu() int {
 //   - [`web.StartWebServer`](web/web.go)
 //   - All core package functions
 func main() {
+	fmt.Println()
 	var targetHosts []string
 
 	// channel to monitor server lifecycle
 	serverShutdown := make(chan bool, 1)
-
 	go func() {
 		web.StartWebServer()   // server start
 		serverShutdown <- true // notify after server stops
@@ -133,22 +132,53 @@ func main() {
 
 	// signal handling
 	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) //terminate signal
+	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM) // terminate signal
+
+	//wait for web server to start first
+	time.Sleep(1 * time.Second)
 
 	go func() {
 		for {
 			choice := displayMenu()
 			switch choice {
-			case 0: // Execute a Playbook
-				playbookName, selected := menu.RunPlaybookMenu()
-				if selected {
-					selectedPlaybook := "./playbooks/" + playbookName
-					fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
-					executeYAML(selectedPlaybook, targetHosts)
+			case 1: // Execute a Playbook
+				playbooks := listPlaybooks()
+				if len(playbooks) == 0 {
+					fmt.Println("No playbooks found in the 'playbooks' directory.")
+					break
 				}
 
-			case 1: // Manage Inventory (was option 2)
-				menu.RunInventoryMenu()
+				fmt.Println("Available Playbooks:")
+				for i, playbook := range playbooks {
+					fmt.Printf("%d. %s\n", i+1, playbook)
+				}
+
+				fmt.Print("Select a playbook to execute by number: ")
+				var choice int
+				fmt.Scanln(&choice)
+
+				if choice < 1 || choice > len(playbooks) {
+					fmt.Println("Invalid choice. Returning to the menu.")
+					break
+				}
+
+				selectedPlaybook := "./playbooks/" + playbooks[choice-1]
+				fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
+				executeYAML(selectedPlaybook, targetHosts)
+
+			case 2: // List YAML Playbooks
+				playbooks := listPlaybooks()
+				if len(playbooks) == 0 {
+					fmt.Println("No playbooks found in the 'playbooks' directory.")
+				} else {
+					fmt.Println("Available Playbooks:")
+					for _, playbook := range playbooks {
+						fmt.Printf("- %s\n", playbook)
+					}
+				}
+
+			case 3: // Manage Inventory
+				fmt.Println("Managing inventory (not yet implemented).")
 
 			case 2: // Enable/Disable Detailed Logging (was option 3)
 				fmt.Print("Enable detailed logging? (y/n): ")
@@ -176,8 +206,7 @@ func main() {
 
 	select {
 	case <-serverShutdown:
-		fmt.Println("")
-		fmt.Println("Server stopped...shutting down...")
+		fmt.Println("\nServer stopped...shutting down...")
 	case <-signalChan:
 		fmt.Println("Termination signal received...")
 	}
