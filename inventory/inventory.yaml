@@ -1,26 +1,9 @@
-Hosts:
-- IP: 10.42.56.106
-  Hostname: node-3-fedora
-  OS: Linux
-- IP: 10.42.56.103
-  Hostname: node-6-fedora
-  OS: Linux
-- IP: 10.42.56.98
-  Hostname: node-1-ubuntu
-  OS: Linux - Ubuntu
-- IP: 10.42.56.110
-  Hostname: node-4-win11
-  OS: Windows
-- IP: 10.42.56.115
-  Hostname: node-5-win11
-  OS: Windows
-- IP: 10.42.56.99
-  Hostname: node-2-ubuntu
-  OS: Linux - Ubuntu
+Hosts: #use ip range for Demo: 10.42.56.90-120
+
 SSH_CRED:
   ssh_user: ""
   ssh_pass: ""
 Users:
-- username: demouser11
+- username: demouser
   password: DemoPass0982
   group: users

@@ -1,11 +1,13 @@
 // File: os-detect.go
 // Directory: EagleDeployment/osdetect
+// Directory: EagleDeploy_CLI/osdetect
 // Purpose: Detects OS type of hosts using SSH and TCP fingerprinting
 
 package osdetect
 
 import (
 	"EagleDeployment/sshutils"
+	"EagleDeploy_CLI/sshutils"
 	"fmt"
 	"net"
 	"strings"
@@ -118,6 +120,7 @@ func detectOSFromTCP(host string) (string, error) {
 
 	for _, port := range ports {
 		conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, fmt.Sprintf("%d", port)), timeout)
+		conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", host, port), timeout)
 		if err != nil {
 			continue
 		}

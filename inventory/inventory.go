@@ -1,5 +1,6 @@
 // File: inventory.go
 // Directory: EagleDeployment/inventory
+// Directory: EagleDeploy_CLI/inventory
 // Purpose: Manages inventory data, host discovery, and inventory operations.
 
 package inventory
@@ -8,6 +9,8 @@ import (
 	"EagleDeployment/config"
 	"EagleDeployment/osdetect"
 	"EagleDeployment/Telemetry"
+	"EagleDeploy_CLI/config"
+	"EagleDeploy_CLI/osdetect"
 	"bytes"
 	"fmt"
 	"io/ioutil"
@@ -68,6 +71,9 @@ func SaveInventory(inv *Inventory) {
 		t.LogError("Inventory", "Failed to marshal inventory", map[string]interface{}{
 			"error": err.Error(),
 		})
+	data, err := yaml.Marshal(inv)
+	if err != nil {
+		log.Printf("Failed to marshal inventory: %v", err)
 		return
 	}
 	err = os.WriteFile("./inventory/inventory.yaml", data, 0644)
@@ -82,6 +88,7 @@ func SaveInventory(inv *Inventory) {
 		"hosts_count": len(inv.Hosts),
 		"users_count": len(inv.Users),
 	})
+	}
 }
 
 // GetHosts returns the list of hosts from the inventory
@@ -234,6 +241,9 @@ func AddHost(ipRange string) {
 			"ip_range": ipRange,
 			"error":    err.Error(),
 		})
+	ips, err := parseIPRange(ipRange)
+	if err != nil {
+		fmt.Printf("Error parsing IP range: %v\n", err)
 		return
 	}
 
@@ -312,6 +322,8 @@ func AddHost(ipRange string) {
 			t.LogDebug("Inventory", "Skipped existing host", map[string]interface{}{
 				"ip": host.IP,
 			})
+		} else {
+			fmt.Printf("Host %s already exists in the inventory. Skipping.\n", host.IP)
 		}
 	}
 
@@ -409,6 +421,9 @@ func UpdateHost(index int, newHost Host) {
 		t.LogError("Inventory", "Error loading inventory for update", map[string]interface{}{
 			"error": err.Error(),
 		})
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
 		return
 	}
 	if index < 0 || index >= len(inv.Hosts) {
@@ -433,6 +448,9 @@ func UpdateHost(index int, newHost Host) {
 		"new_os":       newHost.OS,
 	})
 
+		return
+	}
+	inv.Hosts[index] = newHost
 	SaveInventory(inv)
 	fmt.Println("Host updated successfully")
 }
@@ -446,6 +464,9 @@ func DeleteHost(index int) {
 		t.LogError("Inventory", "Error loading inventory for deletion", map[string]interface{}{
 			"error": err.Error(),
 		})
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
 		return
 	}
 	if index < 0 || index >= len(inv.Hosts) {
@@ -465,6 +486,8 @@ func DeleteHost(index int) {
 		"os":       deletedHost.OS,
 	})
 
+		return
+	}
 	inv.Hosts = append(inv.Hosts[:index], inv.Hosts[index+1:]...)
 	SaveInventory(inv)
 	fmt.Println("Host deleted successfully")
@@ -479,6 +502,9 @@ func EditSSHCreds() {
 		t.LogError("Inventory", "Error loading inventory for SSH credential update", map[string]interface{}{
 			"error": err.Error(),
 		})
+	inv, err := LoadInventory()
+	if err != nil {
+		fmt.Println("Error loading inventory:", err)
 		return
 	}
 	var newUser, newPass string
@@ -600,6 +626,8 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		t.LogError("Playbook", "Failed to load inventory for playbook", map[string]interface{}{
 			"error": err.Error(),
 		})
+	inv, err := LoadInventory()
+	if err != nil {
 		return fmt.Errorf("failed to load inventory: %v", err)
 	}
 
@@ -720,5 +748,8 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		"output_path":   outputPath,
 		"hosts_count":   len(inv.Hosts),
 	})
+		return fmt.Errorf("failed to write rendered playbook: %v", err)
+	}
+
 	return nil
 }
