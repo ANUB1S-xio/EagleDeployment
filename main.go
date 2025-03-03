@@ -5,18 +5,13 @@
 package main
 
 import (
+	telemetry "EagleDeployment/Telemetry"
 	"EagleDeployment/config"
 	"EagleDeployment/executor"
 	"EagleDeployment/inventory"
 	"EagleDeployment/menu"
 	"EagleDeployment/tasks"
-	"EagleDeployment/Telemetry"
 	"EagleDeployment/web"
-	"EagleDeploy_CLI/config"
-	"EagleDeploy_CLI/executor"
-	"EagleDeploy_CLI/inventory"
-	"EagleDeploy_CLI/tasks"
-	"EagleDeploy_CLI/web"
 	"fmt"
 	"log"
 	"os"

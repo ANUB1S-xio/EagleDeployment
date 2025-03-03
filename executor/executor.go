@@ -1,7 +1,7 @@
 // File: executor.go
 // Directory Path: /EagleDeployment/executor
 // Purpose: Executes tasks remotely using SSH and integrates with inventory management.
-// Directory Path: /EagleDeploy_CLI/executor
+// Directory Path: /EagleDeployment/executor
 // Purpose: Executes tasks defined in YAML playbooks via SSH concurrently, remotely, or locally.
 
 package executor
@@ -11,10 +11,10 @@ import (
 	"EagleDeployment/inventory"
 	"EagleDeployment/sshutils"
 	"EagleDeployment/tasks"
-	"EagleDeploy_CLI/config"
-	"EagleDeploy_CLI/inventory"
-	"EagleDeploy_CLI/sshutils"
-	"EagleDeploy_CLI/tasks"
+	"EagleDeployment/config"
+	"EagleDeployment/inventory"
+	"EagleDeployment/sshutils"
+	"EagleDeployment/tasks"
 	"fmt"
 	"log"
 	"sync"

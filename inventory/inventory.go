@@ -1,6 +1,6 @@
 // File: inventory.go
 // Directory: EagleDeployment/inventory
-// Directory: EagleDeploy_CLI/inventory
+// Directory: EagleDeployment/inventory
 // Purpose: Manages inventory data, host discovery, and inventory operations.
 
 package inventory
@@ -9,8 +9,8 @@ import (
 	"EagleDeployment/config"
 	"EagleDeployment/osdetect"
 	"EagleDeployment/Telemetry"
-	"EagleDeploy_CLI/config"
-	"EagleDeploy_CLI/osdetect"
+	"EagleDeployment/config"
+	"EagleDeployment/osdetect"
 	"bytes"
 	"fmt"
 	"io/ioutil"

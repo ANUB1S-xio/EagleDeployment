@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"EagleDeploy_CLI/executor" // executor package
+	"EagleDeployment/executor" // executor package
 )
 
 // Function: findPort

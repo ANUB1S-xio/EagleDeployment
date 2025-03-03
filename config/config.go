@@ -1,5 +1,5 @@
 // File: config.go
-// Directory Path: /EagleDeploy_CLI/config
+// Directory Path: /EagleDeployment/config
 // Purpose: Provides configuration file loading and parsing functionality
 
 package config
