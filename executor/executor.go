@@ -12,11 +12,10 @@ import (
 	"EagleDeployment/sshutils"
 	"EagleDeployment/tasks"
 	"EagleDeployment/config"
-	"EagleDeployment/inventory"
-	"EagleDeployment/sshutils"
-	"EagleDeployment/tasks"
+
 	"fmt"
 	"log"
+	"strconv"
 	"sync"
 )
 
@@ -66,50 +65,7 @@ func ExecuteRemote(task tasks.Task, port int) error {
 			"error": err.Error(),
 		})
 		return fmt.Errorf("connection failed to %s: %v", task.Host, err)
-// ExecuteRemote executes a task on a remote machine using SSH.
-func ExecuteRemote(task tasks.Task, port int) error {
-	username := task.SSHUser
-	password := task.SSHPassword
-
-	if username == "" || password == "" {
-		return fmt.Errorf("SSH username or password missing for task '%s'", task.Name)
 	}
-
-	client, err := sshutils.ConnectSSH(task.Host, username, password, port)
-	if err != nil {
-		log.Printf("Failed SSH connection to %s:%d: %v", task.Host, port, err)
-		return err
-	}
-	defer sshutils.CloseSSHConnection(client)
-
-	t.LogDebug("Execution", "SSH connection established", map[string]interface{}{
-		"host": task.Host,
-	})
-
-	// Execute the command (without printing output)
-	output, err := sshutils.RunSSHCommand(client, task.Command)
-	if err != nil {
-		t.LogError("Execution", "Task execution failed", map[string]interface{}{
-			"task_name": task.Name,
-			"host":      task.Host,
-			"command":   task.Command,
-			"error":     err.Error(),
-		})
-		return fmt.Errorf("task '%s' failed: %v", task.Name, err)
-	}
-
-	// Log successful execution
-	t.LogInfo("Execution", "Task executed successfully", map[string]interface{}{
-		"task_name":     task.Name,
-		"host":          task.Host,
-		"command":       task.Command,
-		"output_length": len(output),
-	})
-
-	// Only print task status
-	log.Printf("Task '%s' executed successfully on host '%s'", task.Name, task.Host)
-	return nil
-}
 
 // Function: ExecuteConcurrently
 // Purpose: Manages parallel task execution across multiple hosts
@@ -238,14 +194,15 @@ func ExecuteYAML(playbookPath string, targetHosts []string) {
 	if len(targetHosts) > 0 {
 		hosts = targetHosts
 	}
-
-	// port is already an int, no need for strconv
-	port := playbook.Settings["port"]
-	if port == 0 {
-		log.Fatalf("Playbook settings missing or invalid port")
+	// Convert port from string to int
+	portStr := playbook.Settings["port"]
+	port, err := strconv.Atoi(portStr)
+	if err != nil || port == 0 {
+		log.Fatalf("Playbook settings missing or invalid port: %v", err)
 		return
 	}
 
 	fmt.Printf("Executing Playbook: '%s' on Hosts: %v\n", playbook.Name, hosts)
+	ExecuteConcurrently(playbook.Tasks, hosts, port)
 	ExecuteConcurrently(playbook.Tasks, hosts, port)
 }

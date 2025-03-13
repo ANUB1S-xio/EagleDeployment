@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-
-	"EagleDeployment/Telemetry"
 	"os"
+	"path/filepath"
 	"strings"
 
+	telemetry "EagleDeployment/Telemetry"
 	"EagleDeployment/executor" // executor package
 )
 
@@ -38,6 +38,43 @@ func StartWebServer() {
 	t := telemetry.GetInstance()
 	port := 8742 // Default port
 
+	// Check if templates directory exists
+	templatesDir := "web/templates"
+	if _, err := os.Stat(templatesDir); os.IsNotExist(err) {
+		absPath, _ := filepath.Abs(templatesDir)
+		t.LogError("Web", "Templates directory not found", map[string]interface{}{
+			"path":  absPath,
+			"error": err.Error(),
+		})
+		fmt.Printf("ERROR: Templates directory not found: %s\n", absPath)
+		return
+	} else {
+		// List template files for debugging
+		files, _ := os.ReadDir(templatesDir)
+		fileNames := []string{}
+		for _, file := range files {
+			fileNames = append(fileNames, file.Name())
+		}
+		t.LogInfo("Web", "Found template files", map[string]interface{}{
+			"files": fileNames,
+		})
+		fmt.Printf("Found template files: %v\n", fileNames)
+	}
+
+	// Check if static directory exists
+	staticDir := "web/static"
+	if _, err := os.Stat(staticDir); os.IsNotExist(err) {
+		absPath, _ := filepath.Abs(staticDir)
+		t.LogError("Web", "Static directory not found", map[string]interface{}{
+			"path":  absPath,
+			"error": err.Error(),
+		})
+		fmt.Printf("ERROR: Static directory not found: %s\n", absPath)
+		return
+	} else {
+		fmt.Printf("Found static directory: %s\n", staticDir)
+	}
+
 	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
 		t.LogWarning("Web", "Default port unavailable, trying dynamic port", map[string]interface{}{
@@ -51,10 +88,6 @@ func StartWebServer() {
 				"error": err.Error(),
 			})
 			fmt.Printf("Failed to find an available port: %v\n", err)
-		fmt.Println("Port 8742 occupied, dynamically assigning port...")
-		port, err = findPort()
-		if err != nil {
-			fmt.Printf("Failed to assign port: %v\n", err)
 			return
 		}
 
@@ -66,15 +99,10 @@ func StartWebServer() {
 		t.LogInfo("Web", "Using default port", map[string]interface{}{
 			"port": port,
 		})
-		listener.Close()
 	}
-
 	fmt.Printf("EagleDeployment GUI running at http://127.0.0.1:%d\n", port)
 
-	// Configure HTTP handlers
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
-
-	// Log each HTTP request
+	// Configure HTTP handlers with logging middleware
 	logRequest := func(handler http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			t.LogInfo("Web", "HTTP request", map[string]interface{}{
@@ -82,53 +110,45 @@ func StartWebServer() {
 				"path":   r.URL.Path,
 				"remote": r.RemoteAddr,
 			})
+			fmt.Printf("HTTP Request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
 			handler(w, r)
 		}
 	}
 
-	// Apply logging middleware
+	// Root handler - Redirect to dashboard
 	http.HandleFunc("/", logRequest(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/index.html")
+		if r.URL.Path == "/" {
+			http.Redirect(w, r, "/dashboard", http.StatusFound)
+		} else {
+			http.NotFound(w, r)
+		}
 	}))
-
-	http.HandleFunc("/login.html", logRequest(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/login.html")
-	}))
-
-	http.HandleFunc("/dashboard.html", logRequest(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/dashboard.html")
-	}))
-
-	// Start HTTP server
-	t.LogInfo("Web", "Starting web server", map[string]interface{}{
-		"address": fmt.Sprintf("127.0.0.1:%d", port),
-	})
 
 	// Serve static assets (CSS, JS, Images)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	// Login Page (default)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/templates/login.html")
-	})
-
 	// Dashboard Page
-	http.HandleFunc("/dashboard", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/dashboard", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/dashboard.html")
-	})
+	}))
 
 	// Execute Playbook Page
-	http.HandleFunc("/execute", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/execute", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/execute.html")
-	})
+	}))
 
 	// List YAML Playbooks Page
-	http.HandleFunc("/list", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/list", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/list.html")
-	})
+	}))
+
+	// Login Page
+	http.HandleFunc("/login", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/login.html")
+	}))
 
 	// API Endpoint to Execute YAML Playbooks (Backend Integration)
-	http.HandleFunc("/api/execute", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/execute", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 			return
@@ -148,10 +168,10 @@ func StartWebServer() {
 
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "Executing playbook: %s", playbookName)
-	})
+	}))
 
 	// API Endpoint to List YAML Playbooks
-	http.HandleFunc("/api/list_playbooks", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/list_playbooks", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		playbooks := listPlaybooks()
 		if playbooks == nil {
 			http.Error(w, "No playbooks found", http.StatusNotFound)
@@ -160,15 +180,19 @@ func StartWebServer() {
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(playbooks)
-	})
+	}))
 
 	// Start HTTP server
+	t.LogInfo("Web", "Starting web server", map[string]interface{}{
+		"address": fmt.Sprintf("127.0.0.1:%d", port),
+	})
+	fmt.Printf("Starting HTTP server on http://127.0.0.1:%d\n", port)
 	err = http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", port), nil)
 	if err != nil {
 		t.LogError("Web", "Web server failed", map[string]interface{}{
 			"error": err.Error(),
 		})
-		fmt.Printf("Web Interface failed to start: %v\n", err)
+		fmt.Printf("ERROR: Web Interface failed to start: %v\n", err)
 	}
 }
 

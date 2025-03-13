@@ -126,8 +126,8 @@ func executeYAML(playbookPath string, targetHosts []string) {
 		})
 		log.Fatalf("Invalid port value: %v", err)
 	}
-	// Port is already an integer
-	port := playbook.Settings["port"]
+
+	// Remove the redundant declaration and use assignment instead
 	if port == 0 {
 		log.Fatalf("Port is not specified or invalid in the playbook settings.")
 	}
@@ -212,9 +212,9 @@ func viewLogs() {
 		case 1:
 			filterAndViewLogs(t)
 		case 2:
-			configureTelemetryLevel(t)
+			configureTelemetryLevel() // Use the configureTelemetryLevel function here
 		case 3:
-			confirmAndClearLogs(t)
+			confirmAndClearLogs() // Remove the unused parameter t
 		case 0:
 			return
 		default:
@@ -353,11 +353,11 @@ func filterAndViewLogs(t *telemetry.Telemetry) {
 
 // Function: configureTelemetryLevel
 // Purpose: Configure the Telemetry logging level
-// Parameters:
-//   - t: *telemetry.Telemetry - Telemetry instance
-//
+// Parameters: None
 // Returns: None
-func configureTelemetryLevel(t *telemetry.Telemetry) {
+func configureTelemetryLevel() {
+	t := telemetry.GetInstance()
+
 	fmt.Println("\nSelect Telemetry Level:")
 	fmt.Println("1. Error only")
 	fmt.Println("2. Error + Warning")
@@ -391,11 +391,9 @@ func configureTelemetryLevel(t *telemetry.Telemetry) {
 
 // Function: confirmAndClearLogs
 // Purpose: Confirm and clear all logs
-// Parameters:
-//   - t: *telemetry.Telemetry - Telemetry instance
-//
+// Parameters: None
 // Returns: None
-func confirmAndClearLogs(t *telemetry.Telemetry) {
+func confirmAndClearLogs() {
 	fmt.Print("\nAre you sure you want to clear all logs? (y/n): ")
 	var confirm string
 	fmt.Scanln(&confirm)
@@ -405,12 +403,12 @@ func confirmAndClearLogs(t *telemetry.Telemetry) {
 		fmt.Println("Log clearing functionality not yet implemented.")
 		// TODO: Implement ClearLogs method in the Telemetry package
 		/*
-			err := t.ClearLogs()
-			if err != nil {
-				fmt.Printf("Failed to clear logs: %v\n", err)
-			} else {
-				fmt.Println("Logs cleared successfully.")
-			}
+		   err := t.ClearLogs()
+		   if err != nil {
+		       fmt.Printf("Failed to clear logs: %v\n", err)
+		   } else {
+		       fmt.Println("Logs cleared successfully.")
+		   }
 		*/
 	}
 }
@@ -475,17 +473,7 @@ func main() {
 				t.LogInfo("Settings", "Opening log viewer", nil)
 				viewLogs()
 
-			case 3: // View Logs
-				t.LogInfo("Logs", "Viewing logs", nil)
-				viewLogs()
-
-			case -1: // User pressed q or Ctrl+C to exit
-				t.LogInfo("App", "User initiated exit", nil)
-				selectedPlaybook := "./playbooks/" + playbooks[choice-1]
-				fmt.Printf("Executing Playbook: %s\n", selectedPlaybook)
-				executeYAML(selectedPlaybook, targetHosts)
-
-			case 2: // List YAML Playbooks
+			case 3: // List YAML Playbooks
 				playbooks := listPlaybooks()
 				if len(playbooks) == 0 {
 					fmt.Println("No playbooks found in the 'playbooks' directory.")
@@ -496,20 +484,8 @@ func main() {
 					}
 				}
 
-			case 3: // Manage Inventory
-				inventory.DisplayInventoryMenu()
-
 			case 4: // Enable/Disable Detailed Logging
-				fmt.Print("Enable detailed logging? (y/n): ")
-				var response string
-				fmt.Scanln(&response)
-				if strings.ToLower(response) == "y" {
-					fmt.Println("Detailed logging enabled.")
-				} else if strings.ToLower(response) == "n" {
-					fmt.Println("Detailed logging disabled.")
-				} else {
-					fmt.Println("Invalid input. Logging state unchanged.")
-				}
+				toggleTelemetryLevel() // Use the toggleTelemetryLevel function here
 
 			case 5: // Rollback Changes
 				fmt.Println("Rolling back changes (not yet implemented).")
@@ -521,7 +497,8 @@ func main() {
 				fmt.Println("-hosts <comma-separated-hosts>: Specify hosts to target (only with -e).")
 				fmt.Println("-h: Display this help page.")
 
-			case 0: // Exit
+			case -1: // User pressed q or Ctrl+C to exit
+				t.LogInfo("App", "User initiated exit", nil)
 				fmt.Println("Exiting EagleDeploy.")
 				serverShutdown <- true
 				return
@@ -539,9 +516,7 @@ func main() {
 	select {
 	case <-serverShutdown:
 		t.LogInfo("App", "Server shutdown detected", nil)
-		fmt.Println("")
 		fmt.Println("Server stopped...shutting down...")
-		fmt.Println("\nServer stopped...shutting down...")
 	case <-signalChan:
 		t.LogInfo("App", "Termination signal received", nil)
 		fmt.Println("Termination signal received...")

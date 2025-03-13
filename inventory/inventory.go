@@ -1,16 +1,12 @@
 // File: inventory.go
 // Directory: EagleDeployment/inventory
-// Directory: EagleDeployment/inventory
 // Purpose: Manages inventory data, host discovery, and inventory operations.
 
 package inventory
 
 import (
-	"EagleDeployment/config"
 	"EagleDeployment/osdetect"
 	"EagleDeployment/Telemetry"
-	"EagleDeployment/config"
-	"EagleDeployment/osdetect"
 	"bytes"
 	"fmt"
 	"io/ioutil"
@@ -29,37 +25,45 @@ import (
 
 // Inventory represents the structure of inventory.yaml
 type Inventory struct {
-	Hosts   []Host  `yaml:"Hosts"`
-	SSHCred SSHCred `yaml:"SSH_CRED"`
-	Users   []User  `yaml:"Users"`
+	Hosts   []Host  `yaml:"hosts"`
+	SSHCred SSHCred `yaml:"ssh_cred"`
 }
 
+// Host represents a host in the inventory
 type Host struct {
-	IP       string `yaml:"IP"`
-	Hostname string `yaml:"Hostname"`
-	OS       string `yaml:"OS"`
+	IP       string `yaml:"ip"`
+	Hostname string `yaml:"hostname"`
+	OS       string `yaml:"os"`
+	SSHUser  string `yaml:"ssh_user"`
+	SSHPass  string `yaml:"ssh_pass"`
 }
 
+// SSHCred represents SSH credentials
 type SSHCred struct {
 	SSHUser string `yaml:"ssh_user"`
 	SSHPass string `yaml:"ssh_pass"`
 }
 
+// User represents a user in the system
 type User struct {
 	Username string `yaml:"username"`
-	Password string `yaml:"password"`
 	Group    string `yaml:"group"`
 }
 
 // LoadInventory loads inventory.yaml and unmarshals it into the Inventory struct
 func LoadInventory() (*Inventory, error) {
-	var inventory Inventory
-	err := config.LoadConfig("./inventory/inventory.yaml", &inventory)
+	data, err := ioutil.ReadFile("inventory.yaml")
 	if err != nil {
-		log.Printf("Failed to load inventory.yaml: %v", err)
 		return nil, err
 	}
-	return &inventory, nil
+
+	var inv Inventory
+	err = yaml.Unmarshal(data, &inv)
+	if err != nil {
+		return nil, err
+	}
+
+	return &inv, nil
 }
 
 // SaveInventory writes the updated inventory back to inventory.yaml
@@ -71,12 +75,10 @@ func SaveInventory(inv *Inventory) {
 		t.LogError("Inventory", "Failed to marshal inventory", map[string]interface{}{
 			"error": err.Error(),
 		})
-	data, err := yaml.Marshal(inv)
-	if err != nil {
-		log.Printf("Failed to marshal inventory: %v", err)
 		return
 	}
-	err = os.WriteFile("./inventory/inventory.yaml", data, 0644)
+
+	err = ioutil.WriteFile("./inventory/inventory.yaml", data, 0644)
 	if err != nil {
 		log.Printf("Failed to write inventory.yaml: %v", err)
 		t.LogError("Inventory", "Failed to write inventory.yaml", map[string]interface{}{
@@ -84,72 +86,51 @@ func SaveInventory(inv *Inventory) {
 		})
 		return
 	}
+
 	t.LogInfo("Inventory", "Saved inventory to disk", map[string]interface{}{
 		"hosts_count": len(inv.Hosts),
-		"users_count": len(inv.Users),
 	})
-	}
-}
-
-// GetHosts returns the list of hosts from the inventory
-func GetHosts() map[string]Host {
-	inv, err := LoadInventory()
-	if err != nil {
-		log.Printf("Error retrieving hosts: %v", err)
-		return nil
-	}
-	hostsMap := make(map[string]Host)
-	for _, host := range inv.Hosts {
-		hostsMap[host.IP] = host
-	}
-	return hostsMap
 }
 
 // GetSSHCreds returns SSH credentials from environment variables or inventory.yaml
 func GetSSHCreds() (string, string) {
-	// Add debug logging
-	log.Printf("Reading SSH credentials from environment variables")
+	sshUser := os.Getenv("SSH_USER")
+	sshPass := os.Getenv("SSH_PASS")
 
-	sshUser := os.Getenv("EAGLE_SSH_USER")
-	sshPass := os.Getenv("EAGLE_SSH_PASS")
+	if sshUser == "" || sshPass == "" {
+		inv, err := LoadInventory()
+		if err != nil {
+			log.Fatalf("Failed to load inventory: %v", err)
+		}
 
-	if sshUser != "" && sshPass != "" {
-		log.Printf("Found SSH credentials in environment variables for user: %s", sshUser)
-		return sshUser, sshPass
+		if len(inv.Hosts) > 0 {
+			sshUser = inv.SSHCred.SSHUser
+			sshPass = inv.SSHCred.SSHPass
+		}
 	}
 
-	// Log fallback to inventory.yaml
-	log.Printf("No environment variables found, falling back to inventory.yaml")
-
-	inv, err := LoadInventory()
-	if err != nil {
-		log.Printf("Error retrieving SSH credentials from inventory: %v", err)
-		return "", ""
-	}
-
-	if inv.SSHCred.SSHUser != "" && inv.SSHCred.SSHPass != "" {
-		log.Printf("Found SSH credentials in inventory.yaml for user: %s", inv.SSHCred.SSHUser)
-		return inv.SSHCred.SSHUser, inv.SSHCred.SSHPass
-	}
-
-	log.Printf("No SSH credentials found in either environment or inventory")
-	return "", ""
+	return sshUser, sshPass
 }
 
-// GetUsers returns the list of users from inventory.yaml
-func GetUsers() []User {
+// GetHosts returns the list of hosts from inventory.yaml
+func GetHosts() map[string]Host {
 	inv, err := LoadInventory()
 	if err != nil {
-		log.Printf("Error retrieving users: %v", err)
-		return nil
+		log.Fatalf("Failed to load inventory: %v", err)
 	}
-	return inv.Users
+
+	hostMap := make(map[string]Host)
+	for _, host := range inv.Hosts {
+		hostMap[host.Hostname] = host
+	}
+
+	return hostMap
 }
 
 // detectHostname attempts to resolve the hostname via DNS
 func detectHostname(ip string) string {
 	hostnames, err := net.LookupAddr(ip)
-	if err == nil && len(hostnames) > 0 {
+	if (err == nil) && (len(hostnames) > 0) {
 		return strings.TrimSuffix(hostnames[0], ".")
 	}
 	return ""
@@ -241,15 +222,16 @@ func AddHost(ipRange string) {
 			"ip_range": ipRange,
 			"error":    err.Error(),
 		})
-	ips, err := parseIPRange(ipRange)
-	if err != nil {
-		fmt.Printf("Error parsing IP range: %v\n", err)
 		return
 	}
 
 	inv, err := LoadInventory()
 	if err != nil {
-		inv = &Inventory{}
+		fmt.Printf("Error loading inventory: %v\n", err)
+		t.LogError("Inventory", "Failed to load inventory", map[string]interface{}{
+			"error": err.Error(),
+		})
+		return
 	}
 
 	existingHosts := make(map[string]bool)
@@ -322,77 +304,6 @@ func AddHost(ipRange string) {
 			t.LogDebug("Inventory", "Skipped existing host", map[string]interface{}{
 				"ip": host.IP,
 			})
-		} else {
-			fmt.Printf("Host %s already exists in the inventory. Skipping.\n", host.IP)
-		}
-	}
-
-	SaveInventory(inv)
-}
-
-// scanAndAddIP prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
-func scanAndAddIP() {
-	fmt.Print("Enter IP Address or Range: ")
-	var ipRange string
-	fmt.Scanln(&ipRange)
-
-	ips, err := parseIPRange(ipRange)
-	if err != nil {
-		fmt.Printf("Error parsing IP range: %v\n", err)
-		return
-	}
-
-	inv, err := LoadInventory()
-	if err != nil {
-		inv = &Inventory{}
-	}
-
-	existingHosts := make(map[string]bool)
-	for _, host := range inv.Hosts {
-		existingHosts[host.IP] = true
-	}
-
-	var mu sync.Mutex
-	var g errgroup.Group
-	var aliveHosts []Host
-
-	sshUser, sshPass := GetSSHCreds()
-
-	for _, ip := range ips {
-		ip := ip // capture range variable
-		g.Go(func() error {
-			if checkHostAlive(ip) {
-				hostname := detectHostname(ip)
-				// Call osdetect.DetectOS to get the OS type
-				osType, err := osdetect.DetectOS(ip, sshUser, sshPass, 22)
-				if err != nil {
-					log.Printf("Error detecting OS for %s: %v", ip, err)
-					osType = "Unknown"
-				}
-				newHost := Host{IP: ip, Hostname: hostname, OS: osType}
-				mu.Lock()
-				aliveHosts = append(aliveHosts, newHost)
-				mu.Unlock()
-				fmt.Printf("Host %s is alive. Detected OS: %s\n", ip, osType)
-			} else {
-				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
-			}
-			return nil
-		})
-	}
-
-	if err := g.Wait(); err != nil {
-		fmt.Printf("Error checking hosts: %v\n", err)
-	}
-
-	// Add alive hosts to inventory if they are not duplicates
-	for _, host := range aliveHosts {
-		if !existingHosts[host.IP] {
-			inv.Hosts = append(inv.Hosts, host)
-			existingHosts[host.IP] = true
-			fmt.Printf("Added host: %s (Hostname: %s)\n", host.IP, host.Hostname)
-		} else {
-			fmt.Printf("Host %s already exists in the inventory. Skipping.\n", host.IP)
 		}
 	}
 
@@ -421,20 +332,8 @@ func UpdateHost(index int, newHost Host) {
 		t.LogError("Inventory", "Error loading inventory for update", map[string]interface{}{
 			"error": err.Error(),
 		})
-	inv, err := LoadInventory()
-	if err != nil {
-		fmt.Println("Error loading inventory:", err)
 		return
 	}
-	if index < 0 || index >= len(inv.Hosts) {
-		fmt.Println("Invalid host index")
-		t.LogWarning("Inventory", "Invalid host index for update", map[string]interface{}{
-			"index":       index,
-			"hosts_count": len(inv.Hosts),
-		})
-		return
-	}
-
 	oldHost := inv.Hosts[index]
 	inv.Hosts[index] = newHost
 
@@ -448,14 +347,10 @@ func UpdateHost(index int, newHost Host) {
 		"new_os":       newHost.OS,
 	})
 
-		return
-	}
-	inv.Hosts[index] = newHost
 	SaveInventory(inv)
-	fmt.Println("Host updated successfully")
 }
 
-// DeleteHost removes a host from the inventory
+// DeleteHost removes a host from the inventory by index
 func DeleteHost(index int) {
 	t := telemetry.GetInstance()
 	inv, err := LoadInventory()
@@ -464,9 +359,6 @@ func DeleteHost(index int) {
 		t.LogError("Inventory", "Error loading inventory for deletion", map[string]interface{}{
 			"error": err.Error(),
 		})
-	inv, err := LoadInventory()
-	if err != nil {
-		fmt.Println("Error loading inventory:", err)
 		return
 	}
 	if index < 0 || index >= len(inv.Hosts) {
@@ -479,18 +371,16 @@ func DeleteHost(index int) {
 	}
 
 	deletedHost := inv.Hosts[index]
+	inv.Hosts = append(inv.Hosts[:index], inv.Hosts[index+1:]...)
+	SaveInventory(inv)
+	fmt.Println("Host deleted successfully")
+
 	t.LogInfo("Inventory", "Deleted host from inventory", map[string]interface{}{
 		"index":    index,
 		"ip":       deletedHost.IP,
 		"hostname": deletedHost.Hostname,
 		"os":       deletedHost.OS,
 	})
-
-		return
-	}
-	inv.Hosts = append(inv.Hosts[:index], inv.Hosts[index+1:]...)
-	SaveInventory(inv)
-	fmt.Println("Host deleted successfully")
 }
 
 // EditSSHCreds allows updating the SSH credentials in the inventory.
@@ -502,11 +392,9 @@ func EditSSHCreds() {
 		t.LogError("Inventory", "Error loading inventory for SSH credential update", map[string]interface{}{
 			"error": err.Error(),
 		})
-	inv, err := LoadInventory()
-	if err != nil {
-		fmt.Println("Error loading inventory:", err)
 		return
 	}
+
 	var newUser, newPass string
 	fmt.Print("Enter new SSH username: ")
 	fmt.Scanln(&newUser)
@@ -518,15 +406,15 @@ func EditSSHCreds() {
 		SSHPass: newPass,
 	}
 
-	t.LogInfo("Inventory", "Updated SSH credentials", map[string]interface{}{
-		"username": newUser,
-	})
-
 	SaveInventory(inv)
-	fmt.Println("SSH credentials updated successfully.")
+	fmt.Println("SSH credentials updated successfully")
+
+	t.LogInfo("Inventory", "Updated SSH credentials in inventory", map[string]interface{}{
+		"ssh_user": newUser,
+	})
 }
 
-// ManageInventory allows modifying hosts, users, and SSH credentials
+// ManageInventory provides an interactive menu for managing the current inventory
 func ManageInventory() {
 	for {
 		fmt.Println("\nManage Current Inventory:")
@@ -612,6 +500,19 @@ func DisplayInventoryMenu() {
 	}
 }
 
+// GetUsers returns a list of users
+func GetUsers() []User {
+	// Placeholder implementation
+	return []User{
+		{Username: "admin", Group: "admins"},
+		{Username: "user1", Group: "users"},
+	}
+}
+
+func scanAndAddIP() {
+	panic("unimplemented")
+}
+
 // InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
 // and writes the rendered output to outputPath.
 func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
@@ -626,79 +527,7 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		t.LogError("Playbook", "Failed to load inventory for playbook", map[string]interface{}{
 			"error": err.Error(),
 		})
-	inv, err := LoadInventory()
-	if err != nil {
 		return fmt.Errorf("failed to load inventory: %v", err)
-	}
-
-	sshUser, sshPass := GetSSHCreds()
-
-	// Initialize user credentials
-	var userName, userPass string
-
-	// Check inventory for users first
-	if len(inv.Users) > 0 {
-		// Use the first user from inventory
-		if inv.Users[0].Username != "" && inv.Users[0].Password != "" {
-			userName = inv.Users[0].Username
-			userPass = inv.Users[0].Password
-			log.Printf("Using existing user from inventory: %s", userName)
-		} else {
-			log.Printf("Invalid user in inventory, prompting for new credentials")
-		}
-	}
-
-	// Prompt for credentials if we don't have valid ones
-	if userName == "" || userPass == "" {
-		// Prompt for user credentials
-		fmt.Print("Enter username for new user: ")
-		fmt.Scanln(&userName)
-		fmt.Print("Enter password for new user: ")
-		fmt.Scanln(&userPass)
-
-		if userName != "" && userPass != "" {
-			// Create new user in inventory
-			newUser := User{
-				Username: userName,
-				Password: userPass,
-				Group:    "users",
-			}
-
-			// Clear existing users if any
-			inv.Users = []User{newUser}
-			SaveInventory(inv)
-			log.Printf("Created new user: %s", userName)
-		} else {
-			return fmt.Errorf("username and password cannot be empty")
-		}
-	}
-
-	// Final verification of credentials
-	if userName == "" || userPass == "" {
-		return fmt.Errorf("failed to get user credentials - please enter valid credentials")
-	}
-
-	// Prepare template data
-	data := struct {
-		Hosts   []Host
-		SSHCred SSHCred
-		Vars    struct {
-			UserName     string
-			UserPassword string
-		}
-	}{
-		Hosts: inv.Hosts,
-		SSHCred: SSHCred{
-			SSHUser: sshUser,
-			SSHPass: sshPass,
-		},
-		Vars: struct {
-			UserName     string
-			UserPassword string
-		}{
-			UserName:     userName,
-			UserPassword: userPass,
-		},
 	}
 
 	// Create template with custom functions
@@ -727,7 +556,7 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 	}
 
 	var rendered bytes.Buffer
-	if err := tmpl.Execute(&rendered, data); err != nil {
+	if err := tmpl.Execute(&rendered, inv); err != nil {
 		t.LogError("Playbook", "Failed to execute template", map[string]interface{}{
 			"error":         err.Error(),
 			"template_path": templatePath,
@@ -748,8 +577,6 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		"output_path":   outputPath,
 		"hosts_count":   len(inv.Hosts),
 	})
-		return fmt.Errorf("failed to write rendered playbook: %v", err)
-	}
 
 	return nil
 }
