@@ -8,10 +8,31 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
+	"time"
 
 	telemetry "EagleDeployment/Telemetry"
 	"EagleDeployment/executor" // executor package
 )
+
+// Store the current port for other parts of the application to access
+var (
+	currentPort   int
+	portMutex     sync.RWMutex
+	serverRunning bool
+)
+
+// GetServerPort returns the current server port
+func GetServerPort() int {
+	portMutex.RLock()
+	defer portMutex.RUnlock()
+	return currentPort
+}
+
+// IsServerRunning returns whether the server is currently running
+func IsServerRunning() bool {
+	return serverRunning
+}
 
 // Function: findPort
 // Purpose: Dynamically finds an available TCP port on localhost
@@ -24,7 +45,15 @@ import (
 // Dependencies:
 //   - net.Listen for TCP port binding
 func findPort() (int, error) {
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	// Try the default port first (8742)
+	listener, err := net.Listen("tcp", "127.0.0.1:8742")
+	if err == nil {
+		listener.Close()
+		return 8742, nil
+	}
+
+	// If default port is unavailable, get a random one
+	listener, err = net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		return 0, err
 	}
@@ -36,7 +65,33 @@ func findPort() (int, error) {
 // StartWebServer with telemetry
 func StartWebServer() {
 	t := telemetry.GetInstance()
-	port := 8742 // Default port
+
+	// Find an available port dynamically
+	var err error
+	port, err := findPort()
+	if err != nil {
+		t.LogError("Web", "Failed to find available port", map[string]interface{}{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	// Update the current port for external access
+	portMutex.Lock()
+	currentPort = port
+	portMutex.Unlock()
+
+	// Create a file indicating which port we're using for other processes
+	// Write this EARLY so other processes can find it
+	portFile := "web/port.txt"
+	os.MkdirAll(filepath.Dir(portFile), 0755) // Ensure the directory exists
+	err = os.WriteFile(portFile, []byte(fmt.Sprintf("%d", port)), 0644)
+	if err != nil {
+		t.LogError("Web", "Failed to write port file", map[string]interface{}{
+			"error": err.Error(),
+		})
+		// Continue anyway, it's not critical
+	}
 
 	// Check if templates directory exists
 	templatesDir := "web/templates"
@@ -46,19 +101,15 @@ func StartWebServer() {
 			"path":  absPath,
 			"error": err.Error(),
 		})
-		fmt.Printf("ERROR: Templates directory not found: %s\n", absPath)
 		return
 	} else {
-		// List template files for debugging
-		files, _ := os.ReadDir(templatesDir)
-		fileNames := []string{}
-		for _, file := range files {
-			fileNames = append(fileNames, file.Name())
+		_, err = os.ReadDir(templatesDir)
+		if err != nil {
+			t.LogError("Web", "Failed to read templates directory", map[string]interface{}{
+				"error": err.Error(),
+			})
+			return
 		}
-		t.LogInfo("Web", "Found template files", map[string]interface{}{
-			"files": fileNames,
-		})
-		fmt.Printf("Found template files: %v\n", fileNames)
 	}
 
 	// Check if static directory exists
@@ -69,38 +120,12 @@ func StartWebServer() {
 			"path":  absPath,
 			"error": err.Error(),
 		})
-		fmt.Printf("ERROR: Static directory not found: %s\n", absPath)
 		return
-	} else {
-		fmt.Printf("Found static directory: %s\n", staticDir)
 	}
 
-	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
-	if err != nil {
-		t.LogWarning("Web", "Default port unavailable, trying dynamic port", map[string]interface{}{
-			"default_port": port,
-			"error":        err.Error(),
-		})
-
-		port, err = findPort() // Get available port
-		if err != nil {
-			t.LogError("Web", "Failed to find available port", map[string]interface{}{
-				"error": err.Error(),
-			})
-			fmt.Printf("Failed to find an available port: %v\n", err)
-			return
-		}
-
-		t.LogInfo("Web", "Using dynamic port", map[string]interface{}{
-			"port": port,
-		})
-	} else {
-		listener.Close() // Close it since it was just a check
-		t.LogInfo("Web", "Using default port", map[string]interface{}{
-			"port": port,
-		})
-	}
+	fmt.Printf("\n====================================\n")
 	fmt.Printf("EagleDeployment GUI running at http://127.0.0.1:%d\n", port)
+	fmt.Printf("====================================\n\n")
 
 	// Configure HTTP handlers with logging middleware
 	logRequest := func(handler http.HandlerFunc) http.HandlerFunc {
@@ -108,9 +133,7 @@ func StartWebServer() {
 			t.LogInfo("Web", "HTTP request", map[string]interface{}{
 				"method": r.Method,
 				"path":   r.URL.Path,
-				"remote": r.RemoteAddr,
 			})
-			fmt.Printf("HTTP Request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
 			handler(w, r)
 		}
 	}
@@ -123,6 +146,30 @@ func StartWebServer() {
 			http.NotFound(w, r)
 		}
 	}))
+
+	// Health check endpoint for server status verification - make this very simple and robust
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		// Skip logging to make health checks lighter
+		// Add CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		// Handle preflight OPTIONS request
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		response := map[string]interface{}{
+			"status": "ok",
+			"port":   port,
+			"time":   time.Now().Format(time.RFC3339),
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(response)
+	})
 
 	// Serve static assets (CSS, JS, Images)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
@@ -182,18 +229,22 @@ func StartWebServer() {
 		json.NewEncoder(w).Encode(playbooks)
 	}))
 
+	// Mark server as running before starting
+	serverRunning = true
+
 	// Start HTTP server
 	t.LogInfo("Web", "Starting web server", map[string]interface{}{
 		"address": fmt.Sprintf("127.0.0.1:%d", port),
 	})
-	fmt.Printf("Starting HTTP server on http://127.0.0.1:%d\n", port)
 	err = http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", port), nil)
 	if err != nil {
 		t.LogError("Web", "Web server failed", map[string]interface{}{
 			"error": err.Error(),
 		})
-		fmt.Printf("ERROR: Web Interface failed to start: %v\n", err)
 	}
+
+	// Mark server as stopped when it exits
+	serverRunning = false
 }
 
 // Helper Function to List YAML Playbooks
