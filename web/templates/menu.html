@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eagle Nexus - Menu</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/menu.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Eagle<span>Nexus</span></div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/menu.html">Menu</a></li>
+                <li><a href="/dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+        <div class="auth-container">
+            <input type="text" placeholder="Search">
+            <button id="signInButton">Sign In</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="info">
+                <div class="Exec_Playbook">
+                    <h2>Execute a Playbook</h2>
+                    <p>Run predefined automation scripts.</p>
+                    <button onclick="location.href='/dashboard.html'">Execute</button>
+
+                </div>
+
+                <div class="manage_inventory">
+                    <h2>Manage Inventory</h2>
+                    <p>View and edit your deployment inventory.</p>
+                    <button onclick="location.href='/inventory.html'">Manage</button>
+                </div>
+
+                <div class="logs">
+                    <h2>View Logs</h2>
+                    <p>Check deployment and system logs.</p>
+                    <button onclick="location.href='/logs.html'">View Logs</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('signInButton').addEventListener('click', function() {
+            window.location.href = '/login.html';
+        });
+    </script>
+</body>
+</html>

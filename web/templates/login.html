@@ -11,30 +11,38 @@
     <div class="login-container">
         <h2>ADMIN LOGIN</h2>
         <form id="loginForm">
-            <input type="text" name="username" placeholder="Enter your username" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
             <button type="submit">LOGIN</button>
         </form>
         <div class="oauth-login">
             <button onclick="window.location.href='/auth/github'">Sign in with GitHub</button>
             <button onclick="window.location.href='/auth/google'">Sign in with Google</button>
         </div>
+        <p id="error-message" style="color: red; display: none;">Invalid username or password</p>
     </div>
 
     <script>
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
             event.preventDefault();
-            fetch("/auth/login", {
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch("/api/login", {
                 method: "POST",
-                body: new FormData(this)
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      window.location.href = "/dashboard.html";
-                  } else {
-                      alert("Invalid credentials");
-                  }
-              });
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+                window.location.href = "/menu.html";  // Redirects to menu.html
+            } else {
+                document.getElementById("error-message").style.display = "block";  // Show error message
+                document.getElementById("error-message").innerText = data.message;
+            }
         });
     </script>
 </body>

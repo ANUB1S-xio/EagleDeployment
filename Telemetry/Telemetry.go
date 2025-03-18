@@ -1,5 +1,3 @@
-// File: telemetry/telemetry.go
-
 package telemetry
 
 import (

@@ -1,0 +1,71 @@
+/* General container styling */
+.menu-container {
+    max-width: 900px;
+    /* Ensures the menu does not stretch too wide */
+    margin: auto;
+    /* Centers the menu */
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Title styling */
+.menu-container h1 {
+    font-size: 28px;
+    color: #00ff99;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+/* Centering the menu options */
+.menu-options {
+    display: flex;
+    flex-direction: row;
+    /* Changed from column to row */
+    justify-content: center;
+    /* Centers buttons horizontally */
+    align-items: center;
+    /* Ensures they align properly */
+    gap: px;
+    /* Adjusts spacing between buttons */
+    flex-wrap: wrap;
+    /* Allows wrapping for small screens */
+}
+
+/* Button styling */
+.menu-options button {
+    background: #00ff99;
+    border: none;
+    padding: 15px 30px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 220px;
+    /* Adjusted width for better centering */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 0px 10px rgba(0, 255, 153, 0.8);
+    text-align: center;
+}
+
+/* Hover effects */
+.menu-options button:hover {
+    background: #00cc77;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
+}
+
+.info div {
+    width: auto !important;
+    /* Removes width restriction */
+    max-width: 300px !important;
+    /* Adjust as needed */
+    margin: 10px !important;
+    /* Adds space between items */
+    padding: 25px !important;
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a) !important;
+    border-radius: 15px !important;
+    box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.4) !important;
+    text-align: center !important;
+    color: white !important;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Users</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Eagle<span>Nexus</span></div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard.html">Dashboard</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>List of Users</h1>
+        <ul id="userList"></ul>
+    </main>
+
+    <script>
+        fetch('/api/list_users')
+            .then(response => response.json())
+            .then(users => {
+                const userList = document.getElementById('userList');
+                users.forEach(user => {
+                    let li = document.createElement('li');
+                    li.textContent = user;
+                    userList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error loading users:', error));
+    </script>
+</body>
+</html>
