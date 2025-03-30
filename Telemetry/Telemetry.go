@@ -55,18 +55,28 @@ func GetInstance() *Telemetry {
 
 // New creates a new telemetry logger
 func New() (*Telemetry, error) {
-	// Define the log file name
+	// Define the log directory and file name relative to the project root
+	logDir := "./logs"
 	logFileName := "eagledeployment.log"
+	logFilePath := fmt.Sprintf("%s/%s", logDir, logFileName)
 
-	// Open or create the log file in the project's root directory
-	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	// Ensure the log directory exists
+	if _, err := os.Stat(logDir); os.IsNotExist(err) {
+		err := os.MkdirAll(logDir, 0755)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create log directory: %v", err)
+		}
+	}
+
+	// Open or create the log file in the specified directory
+	file, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open log file: %v", err)
 	}
 
 	// Verify that the file was created successfully
-	if _, err := os.Stat(logFileName); os.IsNotExist(err) {
-		return nil, fmt.Errorf("failed to create log file: %s", logFileName)
+	if _, err := os.Stat(logFilePath); os.IsNotExist(err) {
+		return nil, fmt.Errorf("failed to create log file: %s", logFilePath)
 	}
 
 	// Initialize the Telemetry instance
@@ -137,10 +147,8 @@ func (t *Telemetry) log(level, category, message string, payload map[string]inte
 		t.printToConsole(event)
 	}
 
-	// Flush buffer if full
-	if len(t.buffer) >= t.maxBufferSize {
-		t.flushBuffer()
-	}
+	// Flush buffer to write logs to the file immediately
+	t.flushBuffer()
 }
 
 // isLevelEnabled checks if the given log level is enabled

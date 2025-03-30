@@ -2,7 +2,11 @@ package menu
 
 import (
 	telemetry "EagleDeployment/Telemetry"
+	"bufio"
+	"encoding/json"
 	"fmt"
+	"os"
+	"sort"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/list"
@@ -39,15 +43,16 @@ type logItem struct {
 
 // Title returns the title of the log item (used in the list)
 func (i logItem) Title() string {
-	return fmt.Sprintf("[%s] %s", i.entry.Type, i.entry.Payload["message"])
+	return fmt.Sprintf("[%s] %s | %s",
+		i.entry.Timestamp.Format("2006-01-02 15:04:05"),
+		i.entry.Type,
+		i.entry.Payload["message"],
+	)
 }
 
-// Description returns the description of the log item (used in the list)
+// Description returns an empty string since we want single-line logs
 func (i logItem) Description() string {
-	return fmt.Sprintf("Category: %s | Timestamp: %s",
-		i.entry.Payload["category"],
-		i.entry.Timestamp.Format("2006-01-02 15:04:05"),
-	)
+	return ""
 }
 
 // FilterValue returns the value used for filtering the log item (not used here)
@@ -63,8 +68,9 @@ func newModel(entries []telemetry.Event) model {
 	}
 
 	// Create a new list
-	const defaultWidth = 50
-	l := list.New(items, list.NewDefaultDelegate(), defaultWidth, 15)
+	const defaultWidth = 80
+	const defaultHeight = 25 // 25 logs per page
+	l := list.New(items, list.NewDefaultDelegate(), defaultWidth, defaultHeight)
 	l.Title = "Filtered Logs"
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(false)
@@ -109,32 +115,62 @@ func ToggleTelemetryLevel() {
 
 // ViewLogs displays and filters logs from Telemetry
 func ViewLogs() {
-	t := telemetry.GetInstance()
+	// Define the log file path
+	logFilePath := "./logs/eagledeployment.log"
 
-	// Create a submenu for log viewing options
-	for {
-		fmt.Println("\nLog Management:")
-		fmt.Println("1. View Logs")
-		fmt.Println("2. Configure Telemetry Level")
-		fmt.Println("3. Clear Logs")
-		fmt.Println("0. Return to Main Menu")
+	// Open the log file
+	file, err := os.Open(logFilePath)
+	if err != nil {
+		fmt.Printf("Failed to open log file: %v\n", err)
+		return
+	}
+	defer file.Close()
 
-		var choice int
-		fmt.Print("\nEnter choice: ")
-		fmt.Scanln(&choice)
-
-		switch choice {
-		case 1:
-			FilterAndViewLogs(t)
-		case 2:
-			ToggleTelemetryLevel()
-		case 3:
-			ConfirmAndClearLogs(t)
-		case 0:
-			return
-		default:
-			fmt.Println("Invalid choice.")
+	// Read the log file line by line
+	var entries []telemetry.Event
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		// Parse the JSON log entry
+		var event telemetry.Event
+		err := json.Unmarshal([]byte(scanner.Text()), &event)
+		if err != nil {
+			fmt.Printf("Failed to parse log entry: %v\n", err)
+			continue
 		}
+		entries = append(entries, event)
+	}
+
+	// Check for errors during scanning
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("Error reading log file: %v\n", err)
+		return
+	}
+
+	if len(entries) == 0 {
+		fmt.Println("No log entries found.")
+		return
+	}
+
+	// Ask the user for sorting preference
+	fmt.Println("\nSort logs by:")
+	fmt.Println("1. Newest first")
+	fmt.Println("2. Oldest first")
+	fmt.Print("\nEnter choice: ")
+	var sortChoice int
+	fmt.Scanln(&sortChoice)
+
+	newestFirst := true
+	if sortChoice == 2 {
+		newestFirst = false
+	}
+
+	// Sort the logs
+	entries = sortLogs(entries, newestFirst)
+
+	// Use Bubble Tea to display the logs with pagination
+	p := tea.NewProgram(newModel(entries))
+	if err := p.Start(); err != nil {
+		fmt.Printf("Error running program: %v\n", err)
 	}
 }
 
@@ -169,6 +205,22 @@ func FilterAndViewLogs(t *telemetry.Telemetry) {
 		return
 	}
 
+	// Ask the user for sorting preference
+	fmt.Println("\nSort logs by:")
+	fmt.Println("1. Newest first")
+	fmt.Println("2. Oldest first")
+	fmt.Print("\nEnter choice: ")
+	var sortChoice int
+	fmt.Scanln(&sortChoice)
+
+	newestFirst := true
+	if sortChoice == 2 {
+		newestFirst = false
+	}
+
+	// Sort the logs
+	entries = sortLogs(entries, newestFirst)
+
 	// Use Bubble Tea to display the logs
 	p := tea.NewProgram(newModel(entries))
 	if err := p.Start(); err != nil {
@@ -189,5 +241,60 @@ func ConfirmAndClearLogs(t *telemetry.Telemetry) {
 		} else {
 			fmt.Println("Logs cleared successfully.")
 		}
+	}
+}
+
+// sortLogs sorts the telemetry events based on the timestamp
+func sortLogs(entries []telemetry.Event, newestFirst bool) []telemetry.Event {
+	if newestFirst {
+		sort.Slice(entries, func(i, j int) bool {
+			return entries[i].Timestamp.After(entries[j].Timestamp)
+		})
+	} else {
+		sort.Slice(entries, func(i, j int) bool {
+			return entries[i].Timestamp.Before(entries[j].Timestamp)
+		})
+	}
+	return entries
+}
+
+// DisplayLogFileContents reads and displays the contents of the log file
+func DisplayLogFileContents() {
+	// Define the log file path
+	logFilePath := "./logs/eagledeployment.log"
+
+	// Open the log file
+	file, err := os.Open(logFilePath)
+	if err != nil {
+		fmt.Printf("Failed to open log file: %v\n", err)
+		return
+	}
+	defer file.Close()
+
+	// Read the log file line by line
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		// Parse the JSON log entry
+		var event telemetry.Event
+		err := json.Unmarshal([]byte(scanner.Text()), &event)
+		if err != nil {
+			fmt.Printf("Failed to parse log entry: %v\n", err)
+			continue
+		}
+
+		// Display the log entry
+		fmt.Printf("[%s] %s | %s\n",
+			event.Timestamp.Format("2006-01-02 15:04:05"),
+			event.Type,
+			event.Payload["message"],
+		)
+
+		// Add a solid line separator
+		fmt.Println(strings.Repeat("-", 80))
+	}
+
+	// Check for errors during scanning
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("Error reading log file: %v\n", err)
 	}
 }

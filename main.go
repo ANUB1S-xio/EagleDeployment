@@ -141,7 +141,10 @@ func displayMenu() int {
 // Purpose: Entry point for CLI application
 func main() {
 	// Initialize Telemetry
-	t := telemetry.GetInstance()
+	t, err := telemetry.New()
+	if err != nil {
+		log.Fatalf("Failed to initialize telemetry: %v", err)
+	}
 	defer t.Close()
 
 	t.LogInfo("App", "EagleDeploy starting", nil)

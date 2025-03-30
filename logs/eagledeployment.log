@@ -1,0 +1,36 @@
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2203421-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.220881-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2218988-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2218988-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2290659-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64680"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:16:05.2909577-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:43.0954037-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:43.0954037-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0176583-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0176583-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0191838-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0191838-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0269415-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64707"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:54.1842793-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:00.5228998-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:00.5228998-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1606809-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1606809-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1622089-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1622089-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1704363-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64770"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:12.4030832-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:42.979889-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64773"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:46.42025-05:00","payload":{"category":"App","data":null,"message":"User initiated exit"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:46.42025-05:00","payload":{"category":"App","data":null,"message":"Server shutdown detected"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:46.4208401-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.2989322-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.2989322-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.300489-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.300489-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.3078024-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64776"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:10.1073028-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:27.2942425-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64778"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:30.2586107-05:00","payload":{"category":"App","data":null,"message":"User initiated exit"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:30.2591629-05:00","payload":{"category":"App","data":null,"message":"Server shutdown detected"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:30.2596982-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
