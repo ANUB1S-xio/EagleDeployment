@@ -34,3 +34,20 @@
 {"type":"INFO","timestamp":"2025-03-30T10:27:30.2586107-05:00","payload":{"category":"App","data":null,"message":"User initiated exit"}}
 {"type":"INFO","timestamp":"2025-03-30T10:27:30.2591629-05:00","payload":{"category":"App","data":null,"message":"Server shutdown detected"}}
 {"type":"INFO","timestamp":"2025-03-30T10:27:30.2596982-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6787814-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6787814-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6803247-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6803247-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.7014808-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64956"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:07.095628-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/","remote":"127.0.0.1:64961"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:07.3751151-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/favicon.ico","remote":"127.0.0.1:64961"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2877953-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2877953-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"WARNING","timestamp":"2025-03-30T10:46:15.2888504-05:00","payload":{"category":"Web","data":{"default_port":8742,"error":"listen tcp 127.0.0.1:8742: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."},"message":"Default port unavailable, trying dynamic port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2888504-05:00","payload":{"category":"Web","data":{"port":64967},"message":"Using dynamic port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2893547-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:64967"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2961122-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64969"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:17.247261-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:17.247261-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:21.7256748-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:21.7256748-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}

@@ -142,7 +142,17 @@ func (m MainMenuModel) View() string {
 		Foreground(lipgloss.Color("#00ffff")).
 		Render(programNameArt)
 
-	// Add server status indicator below the program name
+	// Dynamically fetch the server address
+	serverAddress := "http://localhost:8742" // Replace with dynamic fetching if needed
+
+	// Add the website link below the ASCII art
+	websiteLink := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#00ff99")).
+		Underline(true).
+		Render(fmt.Sprintf("Visit: %s", serverAddress))
+	s += "\n" + websiteLink
+
+	// Add server status indicator below the website link
 	statusLabel := serverStatusLabelStyle.Render("Server Status: ")
 	if m.serverAlive {
 		statusIndicator := activeServerStyle.Render("● ONLINE")
@@ -152,9 +162,11 @@ func (m MainMenuModel) View() string {
 		s += "\n" + statusLabel + statusIndicator
 	}
 
+	// Add the main menu title
 	s += "\n\n" + titleStyle.Render("Main Menu")
 	s += "\n\n"
 
+	// Add the menu choices
 	for i, choice := range m.choices {
 		if m.cursor == i {
 			s += selectedItemStyle.Render(fmt.Sprintf("> %d. %s", i+1, choice)) + "\n"
@@ -163,6 +175,7 @@ func (m MainMenuModel) View() string {
 		}
 	}
 
+	// Add instructions
 	s += "\n" + infoStyle.Render("Select an option using up/down arrows, then press Enter.")
 	s += "\n" + infoStyle.Render("Press 'r' to refresh server status.")
 	s += "\n" + quitStyle.Render("Press q or Ctrl+C to quit.")
