@@ -5,7 +5,7 @@
 package executor
 
 import (
-	"EagleDeployment/Telemetry"
+	telemetry"EagleDeployment/Telemetry"
 	"EagleDeployment/inventory"
 	"EagleDeployment/sshutils"
 	"EagleDeployment/tasks"
