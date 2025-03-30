@@ -1,7 +1,4 @@
 Hosts:
-- IP: 10.42.56.98
-  Hostname: node-1-ubuntu
-  OS: Linux - Ubuntu
 - IP: 10.42.56.110
   Hostname: node-4-win11
   OS: Windows

@@ -4,7 +4,76 @@ import (
 	telemetry "EagleDeployment/Telemetry"
 	"fmt"
 	"strings"
+
+	"github.com/charmbracelet/bubbles/list"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
+
+// Define the model type to resolve the compile error.
+type model struct {
+	list list.Model
+}
+
+// Init is the initial command for the Bubble Tea program
+func (m model) Init() tea.Cmd {
+	return nil
+}
+
+// Update handles messages and updates the model's state
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+	m.list, cmd = m.list.Update(msg)
+	return m, cmd
+}
+
+// View renders the UI for the Bubble Tea program
+func (m model) View() string {
+	return m.list.View()
+}
+
+// logItem represents a single log entry in the list
+type logItem struct {
+	entry telemetry.Event
+}
+
+// Title returns the title of the log item (used in the list)
+func (i logItem) Title() string {
+	return fmt.Sprintf("[%s] %s", i.entry.Type, i.entry.Payload["message"])
+}
+
+// Description returns the description of the log item (used in the list)
+func (i logItem) Description() string {
+	return fmt.Sprintf("Category: %s | Timestamp: %s",
+		i.entry.Payload["category"],
+		i.entry.Timestamp.Format("2006-01-02 15:04:05"),
+	)
+}
+
+// FilterValue returns the value used for filtering the log item (not used here)
+func (i logItem) FilterValue() string {
+	return i.entry.Payload["message"].(string)
+}
+
+func newModel(entries []telemetry.Event) model {
+	// Convert telemetry events to list items
+	items := make([]list.Item, len(entries))
+	for i, entry := range entries {
+		items[i] = logItem{entry: entry}
+	}
+
+	// Create a new list
+	const defaultWidth = 50
+	l := list.New(items, list.NewDefaultDelegate(), defaultWidth, 15)
+	l.Title = "Filtered Logs"
+	l.SetShowStatusBar(false)
+	l.SetFilteringEnabled(false)
+	l.Styles.Title = lipgloss.NewStyle().MarginLeft(2)
+	l.Styles.PaginationStyle = l.Styles.PaginationStyle.MarginLeft(2)
+	l.Styles.HelpStyle = l.Styles.HelpStyle.MarginLeft(2).Padding(1, 0, 0, 0)
+
+	return model{list: l}
+}
 
 // ToggleTelemetryLevel allows the user to configure the telemetry logging level
 func ToggleTelemetryLevel() {
@@ -100,101 +169,10 @@ func FilterAndViewLogs(t *telemetry.Telemetry) {
 		return
 	}
 
-	// Display logs with paging
-	pageSize := 10
-	totalPages := (len(entries) + pageSize - 1) / pageSize
-	currentPage := 1
-
-	for {
-		// Calculate page boundaries
-		start := (currentPage - 1) * pageSize
-		end := start + pageSize
-		if end > len(entries) {
-			end = len(entries)
-		}
-
-		// Clear screen
-		fmt.Print("\033[H\033[2J")
-
-		// Show filter info
-		fmt.Println("Applied filters:")
-		if levelFilter != "" {
-			fmt.Printf("- Level: %s\n", levelFilter)
-		}
-		if categoryFilter != "" {
-			fmt.Printf("- Category: %s\n", categoryFilter)
-		}
-		if messageFilter != "" {
-			fmt.Printf("- Message contains: %s\n", messageFilter)
-		}
-
-		fmt.Printf("\nShowing entries %d-%d of %d (Page %d/%d)\n\n",
-			start+1, end, len(entries), currentPage, totalPages)
-
-		// Display entries
-		for i := start; i < end; i++ {
-			entry := entries[i]
-			event := entry
-
-			// Extract level, message, category, and data
-			level := event.Type
-			message := event.Payload["message"]
-			category := event.Payload["category"]
-			data := event.Payload
-
-			// Format level with color
-			levelColor := "\033[0m" // Reset
-			switch level {
-			case "ERROR":
-				levelColor = "\033[31m" // Red
-			case "WARNING":
-				levelColor = "\033[33m" // Yellow
-			case "INFO":
-				levelColor = "\033[36m" // Cyan
-			case "DEBUG":
-				levelColor = "\033[35m" // Magenta
-			}
-
-			// Display entry
-			fmt.Printf("[%s] %s%s\033[0m: %s (%s)\n",
-				event.Timestamp.Format("2006-01-02 15:04:05"),
-				levelColor,
-				level,
-				message,
-				category,
-			)
-
-			// Show additional data if present
-			if len(data) > 0 {
-				fmt.Println("  Data:")
-				for k, v := range data {
-					fmt.Printf("    %s: %v\n", k, v)
-				}
-			}
-
-			// Add separator between entries
-			fmt.Println(strings.Repeat("-", 80))
-		}
-
-		// Navigation instructions
-		fmt.Println("\nNavigation: [n]ext page, [p]revious page, [f]ilter again, [q]uit")
-		var input string
-		fmt.Scanln(&input)
-
-		switch strings.ToLower(input) {
-		case "n":
-			if currentPage < totalPages {
-				currentPage++
-			}
-		case "p":
-			if currentPage > 1 {
-				currentPage--
-			}
-		case "f":
-			return
-		case "q":
-			return
-		}
+	// Use Bubble Tea to display the logs
+	p := tea.NewProgram(newModel(entries))
+	if err := p.Start(); err != nil {
+		fmt.Printf("Error running program: %v\n", err)
 	}
 }
 
