@@ -229,6 +229,9 @@ func StartWebServer() {
 		json.NewEncoder(w).Encode(playbooks)
 	}))
 
+	// Serve raw YAML playbooks for viewing/editing in list.html
+	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
+	
 	// Mark server as running before starting
 	serverRunning = true
 
@@ -242,9 +245,6 @@ func StartWebServer() {
 			"error": err.Error(),
 		})
 	}
-
-	// Serve raw YAML playbooks for viewing/editing in list.html
-	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
 
 	// Mark server as stopped when it exits
 	serverRunning = false
