@@ -251,8 +251,9 @@ func StartWebServer() {
 		http.ServeFile(w, r, path)
 	})
 
+	// Serve raw YAML playbooks for viewing/editing in list.html
+	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
 
-	
 	// Mark server as stopped when it exits
 	serverRunning = false
 }
