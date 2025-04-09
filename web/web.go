@@ -231,7 +231,36 @@ func StartWebServer() {
 
 	// Serve raw YAML playbooks for viewing/editing in list.html
 	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
-	
+
+	// API Endpoint to Save YAML Playbooks 
+	http.HandleFunc("/api/save_playbook", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Decode JSON from request
+		var payload struct {
+			Filename string `json:"filename"`
+			Content  string `json:"content"`
+		}
+
+		if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+			http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+			return
+		}
+
+		// Write to file
+		path := fmt.Sprintf("./playbooks/%s", payload.Filename)
+		if err := os.WriteFile(path, []byte(payload.Content), 0644); err != nil {
+			http.Error(w, "Failed to save playbook", http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, "Playbook saved successfully.")
+	}))
+
 	// Mark server as running before starting
 	serverRunning = true
 
