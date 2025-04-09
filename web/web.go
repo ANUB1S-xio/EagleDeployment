@@ -243,14 +243,6 @@ func StartWebServer() {
 		})
 	}
 
-	// Serve raw YAML file content from /playbooks/
-	http.HandleFunc("/playbooks/", func(w http.ResponseWriter, r *http.Request) {
-		playbook := strings.TrimPrefix(r.URL.Path, "/playbooks/")
-		path := fmt.Sprintf("./playbooks/%s", playbook)
-
-		http.ServeFile(w, r, path)
-	})
-
 	// Serve raw YAML playbooks for viewing/editing in list.html
 	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
 
