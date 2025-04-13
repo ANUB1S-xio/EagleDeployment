@@ -5,8 +5,8 @@
 package inventory
 
 import (
+	telemetry "EagleDeployment/Telemetry"
 	"EagleDeployment/osdetect"
-	"EagleDeployment/Telemetry"
 	"bytes"
 	"fmt"
 	"io/ioutil"
@@ -22,6 +22,9 @@ import (
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v2"
 )
+
+// Path constant for the inventory file
+const InventoryFile = "./inventory/inventory.yaml"
 
 // Inventory represents the structure of inventory.yaml
 type Inventory struct {
@@ -52,7 +55,7 @@ type User struct {
 
 // LoadInventory loads inventory.yaml and unmarshals it into the Inventory struct
 func LoadInventory() (*Inventory, error) {
-	data, err := ioutil.ReadFile("inventory.yaml")
+	data, err := ioutil.ReadFile(InventoryFile)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +81,7 @@ func SaveInventory(inv *Inventory) {
 		return
 	}
 
-	err = ioutil.WriteFile("./inventory/inventory.yaml", data, 0644)
+	err = ioutil.WriteFile(InventoryFile, data, 0644)
 	if err != nil {
 		log.Printf("Failed to write inventory.yaml: %v", err)
 		t.LogError("Inventory", "Failed to write inventory.yaml", map[string]interface{}{

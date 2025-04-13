@@ -18467,7 +18467,209 @@
         }
       },
       "time_written": "2025-03-12T20:03:28.8650881-05:00"
+    },
+    {
+      "event": {
+        "id": "206bee35-779f-4f04-9dcf-71cd20b0975a",
+        "timestamp": "2025-04-13T09:02:07.751256-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 78,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T09:02:07.751256-05:00"
+    },
+    {
+      "event": {
+        "id": "6799b225-ca53-4047-9674-f34bb1214be7",
+        "timestamp": "2025-04-13T09:02:07.7517725-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T09:02:07.7517725-05:00"
+    },
+    {
+      "event": {
+        "id": "076036c3-b975-4061-be7a-353fd6ee565b",
+        "timestamp": "2025-04-13T09:02:07.7517725-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T09:02:07.7517725-05:00"
+    },
+    {
+      "event": {
+        "id": "d640e01e-fc42-4afb-abfa-3a0b937e6879",
+        "timestamp": "2025-04-13T09:02:07.7538516-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 268,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T09:02:07.7538516-05:00"
+    },
+    {
+      "event": {
+        "id": "1eb55682-893a-4dd0-9887-efec53afa5fe",
+        "timestamp": "2025-04-13T10:26:08.0357836-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Opening inventory menu",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 469,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T10:26:08.0357836-05:00"
+    },
+    {
+      "event": {
+        "id": "61b6a532-a01a-4885-b815-315d37a2eb78",
+        "timestamp": "2025-04-13T10:26:15.9229394-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "10.42.56.96"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 214,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T10:26:15.9229394-05:00"
+    },
+    {
+      "event": {
+        "id": "59bdbcd1-28c2-45de-8469-280a8949cdd5",
+        "timestamp": "2025-04-13T10:26:15.9244011-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to load inventory",
+        "data": {
+          "error": "open inventory.yaml: The system cannot find the file specified."
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 231,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T10:26:15.9244011-05:00"
+    },
+    {
+      "event": {
+        "id": "7fa30f7c-6bc7-47fd-a7ca-173fa1f715b7",
+        "timestamp": "2025-04-13T10:36:03.0537568-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Termination signal received",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 521,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T10:36:03.0537568-05:00"
+    },
+    {
+      "event": {
+        "id": "d26ba4ac-e58c-4509-a548-de208a05f744",
+        "timestamp": "2025-04-13T10:36:03.0542862-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T10:36:03.0542862-05:00"
+    },
+    {
+      "event": {
+        "id": "0460897c-cd81-44d7-9922-f677a56162ee",
+        "timestamp": "2025-04-13T10:36:03.0542862-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "96820d73-ae19-4143-b77b-12fbb77e1a68",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-04-13T10:36:03.0542862-05:00"
     }
   ],
-  "last_sync": "2025-03-12T20:03:28.8650881-05:00"
+  "last_sync": "2025-04-13T10:36:03.0542862-05:00"
 }

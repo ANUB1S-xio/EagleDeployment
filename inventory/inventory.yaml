@@ -1,9 +1,9 @@
-Hosts: #use ip range for Demo: 10.42.56.90-120
-
-SSH_CRED:
+hosts:
+- ip: 10.42.56.96
+  hostname: ""
+  os: Linux - Ubuntu
   ssh_user: ""
   ssh_pass: ""
-Users:
-- username: demouser
-  password: DemoPass0982
-  group: users
+ssh_cred:
+  ssh_user: ""
+  ssh_pass: ""
