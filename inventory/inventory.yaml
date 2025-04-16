@@ -1,17 +1,14 @@
 Hosts:
-- IP: 10.42.56.110
-  Hostname: node-4-win11
-  OS: Windows
-- IP: 10.42.56.115
-  Hostname: node-5-win11
-  OS: Windows
-- IP: 10.42.56.99
-  Hostname: node-2-ubuntu
+- IP: 10.42.56.96
+  Hostname: ""
   OS: Linux - Ubuntu
+- IP: 10.42.56.93
+  Hostname: ""
+  OS: Linux
 SSH_CRED:
   ssh_user: ""
   ssh_pass: ""
 Users:
-- username: demouser11
+- username: demouser13
   password: DemoPass0982
   group: users

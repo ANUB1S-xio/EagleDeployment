@@ -1,32 +1,73 @@
-name: "List_Users_Playbook"
-version: "1.1"
-hosts:
-  - "10.42.56.98"
-  - "10.42.56.110"
-  - "10.42.56.115"
-  - "10.42.56.99"
-tasks:
-  - name: "List users on Linux systems"
-    ssh_user: ""
-    ssh_password: ""
-    port: 22
-    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
-    loop: "[{10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.99 node-2-ubuntu Linux - Ubuntu}]"
-    loop_control:
-      loop_var: item
-    command: |
-      awk -F: '$3 >= 1000 && $3 != 65534 {print $1}' /etc/passwd
+name: "Basic_Add_Users"
+version: "2.3"
 
-  - name: "List users on Windows systems"
-    ssh_user: ""
-    ssh_password: ""
+hosts:
+  - "10.42.56.92"
+  - "10.42.56.96"
+  - "10.42.56.93"
+
+vars:
+  user_name: "demouser13"
+  user_password: "DemoPass0982"
+
+tasks:
+  - name: "Add user on Windows systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "AdminPass123"
     port: 22
-    when: item.OS | lower contains "windows"
-    loop: "[{10.42.56.98 node-1-ubuntu Linux - Ubuntu} {10.42.56.110 node-4-win11 Windows} {10.42.56.115 node-5-win11 Windows} {10.42.56.99 node-2-ubuntu Linux - Ubuntu}]"
+    when:  
+      - item.OS | lower contains "windows"
+      - item.OS | lower not contains "linux"
+      - item.OS | lower not contains "ubuntu"
+      - item.OS | lower not contains "fedora"
+      - item.OS | lower not contains "debian"
+    loop: "[{10.42.56.92 Node-2 Windows} {10.42.56.96  Linux - Ubuntu} {10.42.56.93  Linux}]"
     loop_control:
       loop_var: item
     command: |
-      net user | findstr /V "command completed successfully The following users"
+      powershell.exe -Command "New-LocalUser -Name 'demouser13' -Password (ConvertTo-SecureString 'DemoPass0982' -AsPlainText -Force) -AccountNeverExpires"
+    register: windows_user_creation_result
+    ignore_errors: true
+
+  - name: "Add user on Linux systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "AdminPass123"
+    port: 22
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
+    loop: "[{10.42.56.92 Node-2 Windows} {10.42.56.96  Linux - Ubuntu} {10.42.56.93  Linux}]"
+    loop_control:
+      loop_var: item
+    command: |
+      if [ "$(whoami)" != "root" ]; then
+        echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash "demouser13"
+      else
+        useradd -m -s /bin/bash "demouser13"
+      fi
+    register: user_creation_result
+    ignore_errors: true
+
+  - name: "Set password for user on Linux systems"
+    ssh_user: "eagleadmin"
+    ssh_password: "AdminPass123"
+    port: 22
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
+    loop: "[{10.42.56.92 Node-2 Windows} {10.42.56.96  Linux - Ubuntu} {10.42.56.93  Linux}]"
+    loop_control:
+      loop_var: item
+    command: |
+      if getent passwd "demouser13" > /dev/null 2>&1; then
+        echo 'demouser13:DemoPass0982' | sudo -S chpasswd
+      else
+        echo "User does not exist, skipping password set"
+      fi
+    depends_on:
+      - "Add user on Linux systems"
 
 settings:
   port: 22

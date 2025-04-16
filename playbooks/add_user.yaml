@@ -11,6 +11,24 @@ vars:
   user_password: "{{ .Vars.UserPassword }}"
 
 tasks:
+  - name: "Add user on Windows systems"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
+    when:  
+      - item.OS | lower contains "windows"
+      - item.OS | lower not contains "linux"
+      - item.OS | lower not contains "ubuntu"
+      - item.OS | lower not contains "fedora"
+      - item.OS | lower not contains "debian"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    command: |
+      powershell.exe -Command "New-LocalUser -Name '{{ .Vars.UserName }}' -Password (ConvertTo-SecureString '{{ .Vars.UserPassword }}' -AsPlainText -Force) -AccountNeverExpires"
+    register: windows_user_creation_result
+    ignore_errors: true
+
   - name: "Add user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
     ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
@@ -23,12 +41,13 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      if [ "$(id -u 2>/dev/null)" -ne 0 ]; then
+      if [ "$(whoami)" != "root" ]; then
         echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
       else
         useradd -m -s /bin/bash "{{ .Vars.UserName }}"
       fi
     register: user_creation_result
+    ignore_errors: true
 
   - name: "Set password for user on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
@@ -49,23 +68,6 @@ tasks:
       fi
     depends_on:
       - "Add user on Linux systems"
-
-  - name: "Add user on Windows systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when:  
-      - item.OS | lower contains "windows"
-      - item.OS | lower not contains "linux"
-      - item.OS | lower not contains "ubuntu"
-      - item.OS | lower not contains "fedora"
-      - item.OS | lower not contains "debian"
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      cmd.exe /c "net user \"{{ .Vars.UserName }}\" \"{{ .Vars.UserPassword }}\" /add"
-    register: windows_user_creation_result
 
 settings:
   port: 22
