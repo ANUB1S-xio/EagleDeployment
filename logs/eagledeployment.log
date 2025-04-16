@@ -1,0 +1,114 @@
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2203421-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.220881-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2218988-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2218988-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:15:55.2290659-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64680"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:16:05.2909577-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:43.0954037-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:43.0954037-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0176583-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0176583-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0191838-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0191838-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:48.0269415-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64707"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:18:54.1842793-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:00.5228998-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:00.5228998-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1606809-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1606809-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1622089-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1622089-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:09.1704363-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64770"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:12.4030832-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:42.979889-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64773"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:46.42025-05:00","payload":{"category":"App","data":null,"message":"User initiated exit"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:46.42025-05:00","payload":{"category":"App","data":null,"message":"Server shutdown detected"}}
+{"type":"INFO","timestamp":"2025-03-30T10:26:46.4208401-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.2989322-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.2989322-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.300489-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.300489-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:08.3078024-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64776"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:10.1073028-05:00","payload":{"category":"Logs","data":null,"message":"Viewing logs"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:27.2942425-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64778"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:30.2586107-05:00","payload":{"category":"App","data":null,"message":"User initiated exit"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:30.2591629-05:00","payload":{"category":"App","data":null,"message":"Server shutdown detected"}}
+{"type":"INFO","timestamp":"2025-03-30T10:27:30.2596982-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6787814-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6787814-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6803247-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.6803247-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:03.7014808-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64956"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:07.095628-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/","remote":"127.0.0.1:64961"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:07.3751151-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/favicon.ico","remote":"127.0.0.1:64961"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2877953-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2877953-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"WARNING","timestamp":"2025-03-30T10:46:15.2888504-05:00","payload":{"category":"Web","data":{"default_port":8742,"error":"listen tcp 127.0.0.1:8742: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."},"message":"Default port unavailable, trying dynamic port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2888504-05:00","payload":{"category":"Web","data":{"port":64967},"message":"Using dynamic port"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2893547-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:64967"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:15.2961122-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:64969"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:17.247261-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:17.247261-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:21.7256748-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-03-30T10:46:21.7256748-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-04-16T14:33:02.1773639-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-04-16T14:33:02.1773639-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-04-16T14:33:02.1789265-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-04-16T14:33:02.1789265-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-04-16T14:33:02.187856-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:56888"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:39:42.7364242-05:00","payload":{"category":"Inventory","data":null,"message":"Opening inventory menu"}}
+{"type":"INFO","timestamp":"2025-04-16T14:39:53.4950635-05:00","payload":{"category":"Inventory","data":{"ip_range":"10.42.56.90-100"},"message":"Adding hosts from IP range"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:27.5022526-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:27.5022526-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:30.2493169-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:30.2498165-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:30.2508172-05:00","payload":{"category":"Web","data":{"port":8742},"message":"Using default port"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:30.2513175-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:8742"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-04-16T14:40:30.2588171-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:57104"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:42:39.2315993-05:00","payload":{"category":"Inventory","data":null,"message":"Opening inventory menu"}}
+{"type":"INFO","timestamp":"2025-04-16T14:42:49.0144836-05:00","payload":{"category":"Inventory","data":{"ip_range":"10.42.56.90-100"},"message":"Adding hosts from IP range"}}
+{"type":"INFO","timestamp":"2025-04-16T14:42:56.3525196-05:00","payload":{"category":"Inventory","data":{"hostname":"Node-2","ip":"10.42.56.92","os":"Windows"},"message":"Added host to inventory"}}
+{"type":"INFO","timestamp":"2025-04-16T14:42:56.3525196-05:00","payload":{"category":"Inventory","data":{"hostname":"","ip":"10.42.56.96","os":"Linux - Ubuntu"},"message":"Added host to inventory"}}
+{"type":"INFO","timestamp":"2025-04-16T14:42:56.3525196-05:00","payload":{"category":"Inventory","data":{"hostname":"","ip":"10.42.56.93","os":"Linux"},"message":"Added host to inventory"}}
+{"type":"INFO","timestamp":"2025-04-16T14:42:56.3530199-05:00","payload":{"category":"Inventory","data":{"hosts_count":3,"users_count":0},"message":"Saved inventory to disk"}}
+{"type":"WARNING","timestamp":"2025-04-16T14:43:22.7822156-05:00","payload":{"category":"Inventory","data":{"hosts_count":3,"index":-1},"message":"Invalid host index for deletion"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:26.0686233-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:57170"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:31.4460607-05:00","payload":{"category":"Playbook","data":{"path":"./playbooks/add_user.yaml","playbook":"add_user.yaml"},"message":"Executing playbook"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:31.4460607-05:00","payload":{"category":"Playbook","data":{"playbook_path":"./playbooks/add_user.yaml","target_hosts_count":0},"message":"Starting playbook execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:31.4460607-05:00","payload":{"category":"Playbook","data":{"output_path":"./playbooks/processed_add_user.yaml","template_path":"./playbooks/add_user.yaml"},"message":"Injecting inventory into playbook"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9502336-05:00","payload":{"category":"Inventory","data":{"hosts_count":3,"users_count":1},"message":"Saved inventory to disk"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9808045-05:00","payload":{"category":"Playbook","data":{"hosts_count":3,"output_path":"./playbooks/processed_add_user.yaml","template_path":"./playbooks/add_user.yaml"},"message":"Successfully injected inventory into playbook"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Playbook","data":{"hosts":["10.42.56.92","10.42.56.96","10.42.56.93"]},"message":"Using hosts from playbook"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Playbook","data":{"hosts_count":3,"port":22,"tasks_count":3},"message":"Executing tasks concurrently"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"hosts_count":3,"port":22,"tasks_count":3},"message":"Starting concurrent task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.93","port":22,"task_name":"Add user on Linux systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.92","port":22,"task_name":"Set password for user on Linux systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.96","port":22,"task_name":"Set password for user on Linux systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.93","port":22,"task_name":"Set password for user on Linux systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.92","port":22,"task_name":"Add user on Windows systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.96","port":22,"task_name":"Add user on Windows systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.93","port":22,"task_name":"Add user on Windows systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.9876819-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.92","port":22,"task_name":"Add user on Linux systems"},"message":"Starting task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:40.988364-05:00","payload":{"category":"Execution","data":{"host":"10.42.56.96","port":22,"task_name":"Add user on Linux systems"},"message":"Starting task execution"}}
+{"type":"ERROR","timestamp":"2025-04-16T14:43:41.4259153-05:00","payload":{"category":"Execution","data":{"command":"if [ \"$(id -u 2\u003e/dev/null)\" -ne 0 ]; then\n  echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash \"steve\"\nelse\n  useradd -m -s /bin/bash \"steve\"\nfi\n","error":"failed to run command: Process exited with status 1\n\"$(id -u 2\u003e/dev/null)\" was unexpected at this time.\r\n","host":"10.42.56.92","task_name":"Add user on Linux systems"},"message":"Task execution failed"}}
+{"type":"ERROR","timestamp":"2025-04-16T14:43:41.4279202-05:00","payload":{"category":"Execution","data":{"command":"cmd.exe /c \"net user \\\"steve\\\" \\\"stevie1\\\" /add\"\n","error":"failed to run command: Process exited with status 127\nbash: cmd.exe: command not found\n","host":"10.42.56.93","task_name":"Add user on Windows systems"},"message":"Task execution failed"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.4294229-05:00","payload":{"category":"Execution","data":{"command":"if getent passwd \"steve\" \u003e /dev/null 2\u003e\u00261; then\n  echo 'steve:stevie1' | sudo -S chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n","host":"10.42.56.93","output_length":43,"task_name":"Set password for user on Linux systems"},"message":"Task executed successfully"}}
+{"type":"ERROR","timestamp":"2025-04-16T14:43:41.4356397-05:00","payload":{"category":"Execution","data":{"command":"if getent passwd \"steve\" \u003e /dev/null 2\u003e\u00261; then\n  echo 'steve:stevie1' | sudo -S chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n","error":"failed to run command: Process exited with status 1\npasswd was unexpected at this time.\r\n","host":"10.42.56.92","task_name":"Set password for user on Linux systems"},"message":"Task execution failed"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.4597475-05:00","payload":{"category":"Execution","data":{"command":"if getent passwd \"steve\" \u003e /dev/null 2\u003e\u00261; then\n  echo 'steve:stevie1' | sudo -S chpasswd\nelse\n  echo \"User does not exist, skipping password set\"\nfi\n","host":"10.42.56.96","output_length":43,"task_name":"Set password for user on Linux systems"},"message":"Task executed successfully"}}
+{"type":"ERROR","timestamp":"2025-04-16T14:43:41.4597475-05:00","payload":{"category":"Execution","data":{"command":"cmd.exe /c \"net user \\\"steve\\\" \\\"stevie1\\\" /add\"\n","error":"failed to run command: Process exited with status 127\nbash: line 1: cmd.exe: command not found\n","host":"10.42.56.96","task_name":"Add user on Windows systems"},"message":"Task execution failed"}}
+{"type":"ERROR","timestamp":"2025-04-16T14:43:41.461259-05:00","payload":{"category":"Execution","data":{"command":"cmd.exe /c \"net user \\\"steve\\\" \\\"stevie1\\\" /add\"\n","error":"failed to run command: Process exited with status 1\nThe syntax of this command is:\r\n\r\nNET USER\r\n[username [password | *] [options]] [/DOMAIN]\r\n         username {password | *} /ADD [options] [/DOMAIN]\r\n         username [/DELETE] [/DOMAIN]\r\n         username [/TIMES:{times | ALL}]\r\n         username [/ACTIVE: {YES | NO}]\r\n\r\n","host":"10.42.56.92","task_name":"Add user on Windows systems"},"message":"Task execution failed"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.5786651-05:00","payload":{"category":"Execution","data":{"command":"if [ \"$(id -u 2\u003e/dev/null)\" -ne 0 ]; then\n  echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash \"steve\"\nelse\n  useradd -m -s /bin/bash \"steve\"\nfi\n","host":"10.42.56.93","output_length":32,"task_name":"Add user on Linux systems"},"message":"Task executed successfully"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.5949324-05:00","payload":{"category":"Execution","data":{"command":"if [ \"$(id -u 2\u003e/dev/null)\" -ne 0 ]; then\n  echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash \"steve\"\nelse\n  useradd -m -s /bin/bash \"steve\"\nfi\n","host":"10.42.56.96","output_length":32,"task_name":"Add user on Linux systems"},"message":"Task executed successfully"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.5949324-05:00","payload":{"category":"Execution","data":{"successful_tasks":4,"total_tasks":9},"message":"Completed concurrent task execution"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.5949324-05:00","payload":{"category":"Playbook","data":{"playbook_path":"./playbooks/add_user.yaml"},"message":"Playbook execution completed"}}
+{"type":"INFO","timestamp":"2025-04-16T14:43:41.6025486-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:57183"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:22.1049145-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy starting"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:22.1054833-05:00","payload":{"category":"Web","data":null,"message":"Starting web server"}}
+{"type":"WARNING","timestamp":"2025-04-16T14:47:22.1079855-05:00","payload":{"category":"Web","data":{"default_port":8742,"error":"listen tcp 127.0.0.1:8742: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."},"message":"Default port unavailable, trying dynamic port"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:22.1079855-05:00","payload":{"category":"Web","data":{"port":57285},"message":"Using dynamic port"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:22.1079855-05:00","payload":{"category":"Web","data":{"address":"127.0.0.1:57285"},"message":"Starting web server"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:22.1154852-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/health","remote":"127.0.0.1:57287"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:32.0089017-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/","remote":"127.0.0.1:57293"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:32.2527812-05:00","payload":{"category":"Web","data":{"method":"GET","path":"/favicon.ico","remote":"127.0.0.1:57293"},"message":"HTTP request"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:45.2262099-05:00","payload":{"category":"App","data":null,"message":"Termination signal received"}}
+{"type":"INFO","timestamp":"2025-04-16T14:47:45.2262099-05:00","payload":{"category":"App","data":null,"message":"EagleDeploy shutting down"}}
