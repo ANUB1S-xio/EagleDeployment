@@ -7,14 +7,15 @@
 package executor
 
 import (
-	"EagleDeployment/Telemetry"
+	telemetry "EagleDeployment/Telemetry"
+	"EagleDeployment/config"
 	"EagleDeployment/inventory"
 	"EagleDeployment/sshutils"
 	"EagleDeployment/tasks"
-	"EagleDeployment/config"
 
 	"fmt"
 	"log"
+	"reflect"
 	"strconv"
 	"sync"
 )
@@ -67,26 +68,26 @@ func ExecuteRemote(task tasks.Task, port int) error {
 		return fmt.Errorf("connection failed to %s: %v", task.Host, err)
 	}
 
-// Function: ExecuteConcurrently
-// Purpose: Manages parallel task execution across multiple hosts
-// Parameters:
-//   - taskList: []tasks.Task - List of tasks to execute
-//   - hosts: []string - Target host addresses
-//   - port: int - SSH port number
-//
-// Returns: None
-// Called By:
-//   - main.executeYAML during playbook execution
-//
-// Dependencies:
-//   - inventory.GetHosts for host resolution
-//   - sync.WaitGroup for concurrency control
-//   - ExecuteRemote for individual task execution
-//
-// Notes:
-//   - Uses goroutines for parallel execution
-//   - Resolves hostnames to IPs using inventory
-//   - Buffers results in channel for ordered logging
+	// Function: ExecuteConcurrently
+	// Purpose: Manages parallel task execution across multiple hosts
+	// Parameters:
+	//   - taskList: []tasks.Task - List of tasks to execute
+	//   - hosts: []string - Target host addresses
+	//   - port: int - SSH port number
+	//
+	// Returns: None
+	// Called By:
+	//   - main.executeYAML during playbook execution
+	//
+	// Dependencies:
+	//   - inventory.GetHosts for host resolution
+	//   - sync.WaitGroup for concurrency control
+	//   - ExecuteRemote for individual task execution
+	//
+	// Notes:
+	//   - Uses goroutines for parallel execution
+	//   - Resolves hostnames to IPs using inventory
+	//   - Buffers results in channel for ordered logging
 	output, err := sshutils.RunSSHCommand(client, task.Command)
 	if err != nil {
 		log.Printf("Failed executing '%s' on host %s: %v", task.Name, task.Host, err)
@@ -122,27 +123,56 @@ func ExecuteConcurrently(taskList []tasks.Task, hosts []string, port int) {
 
 	var wg sync.WaitGroup
 	results := make(chan string, len(taskList)*len(hosts))
-	hostMap := inventory.GetHosts() // Get hosts from inventory.yaml
+	hostMap := inventory.GetHosts()
 
-	// Iterate over tasks and execute them on hosts
+	// Debug print to verify host mapping
+	log.Printf("[DEBUG] hostMap keys: %v", reflect.ValueOf(hostMap).MapKeys())
+	log.Printf("[DEBUG] incoming host list from playbook: %v", hosts)
+
 	for _, task := range taskList {
 		for _, host := range hosts {
-			wg.Add(1)
-			go func(t tasks.Task, h string) {
-				defer wg.Done()
+			var hostData inventory.Host
+			found := false
 
-				// Resolve hostname to IP if necessary
-				if hostData, exists := hostMap[h]; exists {
-					t.Host = hostData.IP
+			// Match host either by IP or Hostname
+			for _, h := range hostMap {
+				if h.IP == host || h.Hostname == host {
+					hostData = h
+					task.Host = h.IP
+					found = true
+					break
 				}
+			}
 
+			if !found {
+				log.Printf("[WARN] Host '%s' not found in inventory, skipping task '%s'", host, task.Name)
+				continue
+			}
+
+			// Inject SSH creds from host or fallback to global
+			if hostData.SSHUser != "" {
+				task.SSHUser = hostData.SSHUser
+			} else {
+				task.SSHUser, _ = inventory.GetSSHCreds()
+			}
+
+			if hostData.SSHPass != "" {
+				task.SSHPassword = hostData.SSHPass
+			} else {
+				_, task.SSHPassword = inventory.GetSSHCreds()
+			}
+
+			// Launch task in goroutine with closure safety
+			wg.Add(1)
+			go func(t tasks.Task) {
+				defer wg.Done()
 				err := ExecuteRemote(t, port)
 				if err != nil {
 					log.Printf("Task '%s' failed on host '%s': %v", t.Name, t.Host, err)
 				} else {
 					results <- fmt.Sprintf("Task '%s' executed successfully on host '%s'", t.Name, t.Host)
 				}
-			}(task, host)
+			}(task)
 		}
 	}
 

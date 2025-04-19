@@ -558,11 +558,24 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		return fmt.Errorf("failed to parse playbook template: %v", err)
 	}
 
+
+	// 
 	var rendered bytes.Buffer
-	if err := tmpl.Execute(&rendered, inv); err != nil {
+
+	data := map[string]interface{}{
+		"Hosts": inv.Hosts,
+		"SSHCred": inv.SSHCred,
+		"Vars": map[string]string{
+			"UserName":    "",
+			"UserPassword": "",
+		},
+	}
+	
+	if err := tmpl.Execute(&rendered, data); err != nil {
 		t.LogError("Playbook", "Failed to execute template", map[string]interface{}{
 			"error":         err.Error(),
 			"template_path": templatePath,
+			"context_keys":  "Hosts, SSHCred, Vars (UserName/UserPassword)",
 		})
 		return fmt.Errorf("failed to execute template: %v", err)
 	}

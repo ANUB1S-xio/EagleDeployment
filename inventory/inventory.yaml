@@ -1,9 +1,9 @@
 hosts:
-- ip: 10.42.56.96
-  hostname: ""
-  os: Linux - Ubuntu
+- ip: 192.168.1.173
+  hostname: kali.attlocal.net
+  os: Linux
   ssh_user: ""
   ssh_pass: ""
 ssh_cred:
-  ssh_user: ""
-  ssh_pass: ""
+  ssh_user: test-user
+  ssh_pass: test123!
