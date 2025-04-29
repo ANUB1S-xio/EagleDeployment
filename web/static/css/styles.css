@@ -151,12 +151,13 @@ button:hover {
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 Columns */
+    grid-template-columns: repeat(2, 1fr); /* 3 Columns */
     grid-template-rows: repeat(2, auto); /* 2 Rows */
     gap: 20px; /* Spacing between items */
     width: 80%;
     max-width: 1200px;
     margin: 0 auto;
+    justify-content: space-around;
 }
 
 /* Dashboard Item (Individual Cards) */
