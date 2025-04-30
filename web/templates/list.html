@@ -98,24 +98,36 @@
         .then(msg => alert(msg));
     });
 
-        // Save changes
-    document.getElementById("confirmBtn").addEventListener("click", function () {
-        const selectedFile = document.getElementById("yamlSelect").value;
-        const content = document.getElementById("yamlContent").value;
+        // Create a new YAML playbook file
+    document.getElementById("createPlaybookBtn").addEventListener("click", function () {
+        const filename = document.getElementById("newPlaybookName").value.trim();
 
-        fetch("/api/save_playbook", {
+        if (!filename.endsWith(".yaml") && !filename.endsWith(".yml")) {
+            alert("Please enter a valid YAML filename ending in .yaml or .yml");
+            return;
+        }
+
+        fetch("/api/create_playbook", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                filename: selectedFile,
-                content: content
-            }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ filename: filename }),
         })
-        .then(res => res.text())
-        .then(msg => alert(msg));
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to create playbook.");
+            return res.text();
+        })
+        .then(msg => {
+            alert(msg);
+            const select = document.getElementById("yamlSelect");
+            const option = document.createElement("option");
+            option.value = filename;
+            option.textContent = filename;
+            select.appendChild(option);
+            document.getElementById("newPlaybookName").value = "";
+        })
+        .catch(err => alert(err.message));
     });
+
 
     </script>
 
