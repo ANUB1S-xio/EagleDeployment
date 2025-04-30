@@ -97,6 +97,26 @@
         .then(res => res.text())
         .then(msg => alert(msg));
     });
+
+        // Save changes
+    document.getElementById("confirmBtn").addEventListener("click", function () {
+        const selectedFile = document.getElementById("yamlSelect").value;
+        const content = document.getElementById("yamlContent").value;
+
+        fetch("/api/save_playbook", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                filename: selectedFile,
+                content: content
+            }),
+        })
+        .then(res => res.text())
+        .then(msg => alert(msg));
+    });
+
     </script>
 
 </body>
