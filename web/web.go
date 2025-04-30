@@ -228,6 +228,37 @@ func StartWebServer() {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(playbooks)
 	}))
+	// API Endpoint to Create a New Playbook
+	http.HandleFunc("/api/create_playbook", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+		var data struct {
+			Filename string `json:"filename"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		// Sanitize filename
+		if data.Filename == "" || strings.Contains(data.Filename, "..") {
+			http.Error(w, "Invalid filename", http.StatusBadRequest)
+			return
+		}
+		path := fmt.Sprintf("./playbooks/%s", data.Filename)
+		if _, err := os.Stat(path); err == nil {
+			http.Error(w, "File already exists", http.StatusConflict)
+			return
+		}
+		err := os.WriteFile(path, []byte("# New playbook\n\n"), 0644)
+		if err != nil {
+			http.Error(w, "Failed to create file", http.StatusInternalServerError)
+			return
+		}
+		fmt.Fprintf(w, "Playbook '%s' created successfully!", data.Filename)
+	}))
+
 
 	// Serve raw YAML playbooks for viewing/editing in list.html
 	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
