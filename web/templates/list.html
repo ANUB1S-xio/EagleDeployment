@@ -33,12 +33,22 @@
                 </div>
 
                 <!-- Right Panel: Dropdown List -->
+                <!-- Right Panel: Dropdown List + Add Playbook -->
                 <div class="select-panel">
+                <!-- Existing Dropdown -->
                     <label for="yamlSelect">Select YAML File:</label>
                     <select id="yamlSelect">
                         <option value="" disabled selected>Select YAML</option>
                     </select>
+
+                    <!-- New Add Playbook Form -->
+                    <div class="add-playbook-container">
+                        <label for="newPlaybookInput">Add Playbook:</label>
+                        <input type="text" id="newPlaybookInput" placeholder="Enter new playbook name" />
+                        <button id="addPlaybookBtn">CONFIRM</button>
+                    </div>
                 </div>
+
                 <div class="add-playbook-panel" style="margin-top: 20px;">
                     <label for="newPlaybookName">Add Playbook:</label>
                     <input type="text" id="newPlaybookName" placeholder="Enter new playbook name (e.g. mytask.yaml)">
