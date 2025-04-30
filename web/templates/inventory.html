@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eagle Nexus - List YAML Files</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/list.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Eagle<span>Nexus</span></div>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
 
+    <main>
+        <section class="dashboard">
+            <h1>List & Edit YAML Files</h1>
+            <div class="list-container">
+                
+                <!-- Left Panel: YAML Edit Window -->
+                <div class="edit-panel">
+                    <textarea id="yamlContent" readonly> # YAML content displays here after selection.</textarea>
+                    <div class="button-group">
+                        <button id="editBtn">Edit</button>
+                        <button id="confirmBtn">Confirm</button>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Dropdown List -->
+                <div class="select-panel">
+                    <label for="yamlSelect">Select YAML File:</label>
+                    <select id="yamlSelect">
+                        <option value="" disabled selected>Select YAML</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+    // Populate dropdown dynamically
+    fetch('/api/list_playbooks')
+        .then(response => response.json())
+        .then(playbooks => {
+            const select = document.getElementById("yamlSelect");
+            playbooks.forEach(file => {
+                const option = document.createElement("option");
+                option.value = file;
+                option.textContent = file;
+                select.appendChild(option);
+            });
+        });
+
+    // Handle selection change
+    document.getElementById("yamlSelect").addEventListener("change", function () {
+        const selectedFile = this.value;
+        fetch(`/playbooks/${selectedFile}`)
+            .then(res => res.text())
+            .then(content => {
+                const textarea = document.getElementById("yamlContent");
+                textarea.value = content;
+                textarea.readOnly = true;
+            });
+    });
+
+    // Enable editing
+    document.getElementById("editBtn").addEventListener("click", function () {
+        document.getElementById("yamlContent").readOnly = false;
+    });
+
+    // Save changes
+    document.getElementById("confirmBtn").addEventListener("click", function () {
+        const selectedFile = document.getElementById("yamlSelect").value;
+        const content = document.getElementById("yamlContent").value;
+
+        fetch("/api/save_playbook", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                filename: selectedFile,
+                content: content
+            }),
+        })
+        .then(res => res.text())
+        .then(msg => alert(msg));
+    });
+    </script>
+
+</body>
+</html>
