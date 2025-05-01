@@ -1,46 +1,66 @@
 name: "Delete_Users_Except_Specific_Ones"
 version: "1.4"
+
 hosts:
-  - "192.168.70.43"
-  - "192.168.70.44"
-  - "192.168.70.46"
+{{- range .Hosts }}
+  - "{{ .IP }}"
+{{- end }}
+
+vars:
+  excluded_users:
+    - hunter
+    - sudo
+    - root
+    - EagleAdmin
+
 tasks:
-  - name: "Detect all non-system users on the system"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+
+  - name: "Detect non-system users"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
+    register: all_users
     command: |
       awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd
-    register: all_users
-    failed_when: all_users is not defined or all_users.stdout_lines is not defined
 
   - name: "Log detected users"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     debug:
-      msg: "Host {{ inventory_hostname }} detected users: {{ all_users.stdout_lines }}"
+      msg: "Detected users on {{ item.IP }}: {{ all_users.outputs[item.IP].stdout_lines }}"
 
-  - name: "Filter users to delete (excluding hunter and sudo)"
+  - name: "Set users to delete"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     set_fact:
-      users_to_delete: "{{ all_users.stdout_lines | difference(['hunter', 'sudo']) }}"
-    when: all_users.stdout_lines is defined
+      users_to_delete: "{{ all_users.outputs[item.IP].stdout_lines | difference .Vars.excluded_users }}"
 
   - name: "Log users to delete"
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     debug:
-      msg: "Host {{ inventory_hostname }} users to delete: {{ users_to_delete }}"
-
-  - name: "Check if there are users to delete"
-    when: users_to_delete | length == 0
-    debug:
-      msg: "No users to delete on {{ inventory_hostname }}. Skipping deletion."
+      msg: "Users to delete on {{ item.IP }}: {{ users_to_delete }}"
 
   - name: "Delete users safely"
-    ssh_user: "hunter"
-    ssh_password: "What a nice day"
+    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
+    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
+    port: 22
     when: users_to_delete | length > 0
+    loop: "{{ .Hosts }}"
+    loop_control:
+      loop_var: item
     with_items: "{{ users_to_delete }}"
     command: |
-      if ! who | grep -qw "admin"; then
-        echo 'What a nice day' | sudo -S userdel -r "admin" || echo "Failed to delete admin"
+      if who | grep -q "{{ item }}"; then
+        echo "Skipping deletion of logged-in user: {{ item }}"
       else
-        echo "User admin is logged in. Skipping deletion."
+        echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S userdel -r "{{ item }}" || echo "Failed to delete {{ item }}"
       fi
 
 settings:

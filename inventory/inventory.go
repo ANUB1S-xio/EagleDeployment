@@ -53,21 +53,29 @@ type User struct {
 	Group    string `yaml:"group"`
 }
 
-// LoadInventory loads inventory.yaml and unmarshals it into the Inventory struct
+// LoadInventory reads the inventory file from disk and parses it into an Inventory struct
 func LoadInventory() (*Inventory, error) {
+<<<<<<< HEAD
 	data, err := ioutil.ReadFile(InventoryFile)
+=======
+	// Updated path to match folder structure
+	data, err := ioutil.ReadFile("inventory/inventory.yaml")
+>>>>>>> 73c5b5f (web interface add user feature)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to load inventory: %v", err)
 	}
 
-	var inv Inventory
-	err = yaml.Unmarshal(data, &inv)
+	var inventory Inventory
+	err = yaml.Unmarshal(data, &inventory)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse inventory: %v", err)
 	}
 
-	return &inv, nil
+	return &inventory, nil
 }
+
+
+
 
 // SaveInventory writes the updated inventory back to inventory.yaml
 func SaveInventory(inv *Inventory) {
@@ -97,8 +105,8 @@ func SaveInventory(inv *Inventory) {
 
 // GetSSHCreds returns SSH credentials from environment variables or inventory.yaml
 func GetSSHCreds() (string, string) {
-	sshUser := os.Getenv("SSH_USER")
-	sshPass := os.Getenv("SSH_PASS")
+	sshUser := os.Getenv("EAGLE_SSH_USER")
+	sshPass := os.Getenv("EAGLE_SSH_PASS")
 
 	if sshUser == "" || sshPass == "" {
 		inv, err := LoadInventory()
@@ -209,6 +217,14 @@ func nextIP(ip net.IP) net.IP {
 		}
 	}
 	return ip
+}
+
+func MapHostsByIP(inv *Inventory) map[string]Host {
+	hostMap := make(map[string]Host)
+	for _, host := range inv.Hosts {
+		hostMap[host.IP] = host
+	}
+	return hostMap
 }
 
 // AddHost prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
@@ -518,6 +534,8 @@ func scanAndAddIP() {
 
 // InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
 // and writes the rendered output to outputPath.
+// InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
+// and writes the rendered output to outputPath.
 func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 	t := telemetry.GetInstance()
 	t.LogInfo("Playbook", "Injecting inventory into playbook", map[string]interface{}{
@@ -558,6 +576,7 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		return fmt.Errorf("failed to parse playbook template: %v", err)
 	}
 
+<<<<<<< HEAD
 
 	// 
 	var rendered bytes.Buffer
@@ -572,6 +591,19 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 	}
 	
 	if err := tmpl.Execute(&rendered, data); err != nil {
+=======
+	// 🔥 Corrected: Create a Vars map matching playbook expectations
+	vars := map[string]interface{}{
+		"Vars": map[string]interface{}{
+			"UserName":     inv.SSHCred.SSHUser,
+			"UserPassword": inv.SSHCred.SSHPass,
+		},
+		"Hosts": inv.Hosts,
+	}
+
+	var rendered bytes.Buffer
+	if err := tmpl.Execute(&rendered, vars); err != nil {
+>>>>>>> 73c5b5f (web interface add user feature)
 		t.LogError("Playbook", "Failed to execute template", map[string]interface{}{
 			"error":         err.Error(),
 			"template_path": templatePath,
@@ -596,3 +628,4 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 
 	return nil
 }
+

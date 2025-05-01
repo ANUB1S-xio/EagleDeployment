@@ -1,15 +1,17 @@
 name: "List_Users_Playbook"
 version: "1.1"
+
 hosts:
-{{- range .Hosts }}
+  {{- range .Hosts }}
   - "{{ .IP }}"
-{{- end }}
+  {{- end }}
+
 tasks:
   - name: "List users on Linux systems"
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
     ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: item.OS | lower in ["linux", "ubuntu", "fedora"]
+    when: (item.OS | lower) == "linux"
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
@@ -20,7 +22,7 @@ tasks:
     ssh_user: "{{ env `EAGLE_SSH_USER` }}"
     ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
     port: 22
-    when: item.OS | lower contains "windows"
+    when: (item.OS | lower) == "windows"
     loop: "{{ .Hosts }}"
     loop_control:
       loop_var: item
