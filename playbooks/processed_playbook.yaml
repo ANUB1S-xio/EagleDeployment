@@ -5,8 +5,8 @@ hosts:
   - "192.168.111.135"
 
 vars:
-  user_name: "VidDemoUser"
-  user_password: "DemoPass1"
+  user_name: "EagleAdmin"
+  user_password: "AdminPass123"
 
 tasks:
   - name: "Add user on Linux systems"
@@ -17,14 +17,14 @@ tasks:
       - item.OS | lower startsWith "linux"
       - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
       - item.OS | lower not contains "windows"
-    loop: "[{192.168.111.135 debian-vm-user Linux VidDemoUser DemoPass1}]"
+    loop: "[{192.168.111.135 debian-vm-user Linux EagleAdmin AdminPass123}]"
     loop_control:
       loop_var: item
     command: |
-      if id "VidDemoUser" &>/dev/null; then
-        echo "User 'VidDemoUser' already exists. Skipping creation."
+      if id "EagleAdmin" &>/dev/null; then
+        echo "User 'EagleAdmin' already exists. Skipping creation."
       else
-        echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash "VidDemoUser"
+        echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash "EagleAdmin"
       fi
     register: user_creation_result
 
@@ -36,14 +36,14 @@ tasks:
       - item.OS | lower startsWith "linux"
       - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
       - item.OS | lower not contains "windows"
-    loop: "[{192.168.111.135 debian-vm-user Linux VidDemoUser DemoPass1}]"
+    loop: "[{192.168.111.135 debian-vm-user Linux EagleAdmin AdminPass123}]"
     loop_control:
       loop_var: item
     command: |
-      if getent passwd "VidDemoUser" > /dev/null 2>&1; then
-        echo 'VidDemoUser:DemoPass1' | echo 'AdminPass123' | sudo -S bash -c 'cat | chpasswd'
+      if getent passwd "EagleAdmin" > /dev/null 2>&1; then
+        echo 'EagleAdmin:AdminPass123' | echo 'AdminPass123' | sudo -S bash -c 'cat | chpasswd'
       else
-        echo "User 'VidDemoUser' not found, skipping password set."
+        echo "User 'EagleAdmin' not found, skipping password set."
       fi
     depends_on:
       - "Add user on Linux systems"

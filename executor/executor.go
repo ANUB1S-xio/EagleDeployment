@@ -12,18 +12,15 @@ import (
 	"EagleDeployment/inventory"
 	"EagleDeployment/sshutils"
 	"EagleDeployment/tasks"
-<<<<<<< HEAD
-=======
-	"EagleDeployment/config"
-	"os"
->>>>>>> 73c5b5f (web interface add user feature)
 
 	"fmt"
 	"log"
+	"os"
 	"reflect"
 	"strconv"
 	"sync"
 )
+
 
 // Function: ExecuteRemote
 // Purpose: Executes a single task on a remote machine via SSH

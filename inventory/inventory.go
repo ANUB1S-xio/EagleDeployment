@@ -15,6 +15,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"context"
 	"sync"
 	"text/template"
 	"time"
@@ -54,24 +55,20 @@ type User struct {
 }
 
 // LoadInventory reads the inventory file from disk and parses it into an Inventory struct
+// LoadInventory reads the inventory file from disk and parses it into an Inventory struct
 func LoadInventory() (*Inventory, error) {
-<<<<<<< HEAD
 	data, err := ioutil.ReadFile(InventoryFile)
-=======
-	// Updated path to match folder structure
-	data, err := ioutil.ReadFile("inventory/inventory.yaml")
->>>>>>> 73c5b5f (web interface add user feature)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load inventory: %v", err)
 	}
 
-	var inventory Inventory
-	err = yaml.Unmarshal(data, &inventory)
+	var inv Inventory
+	err = yaml.Unmarshal(data, &inv)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse inventory: %v", err)
 	}
 
-	return &inventory, nil
+	return &inv, nil
 }
 
 
@@ -269,27 +266,42 @@ func AddHost(ipRange string) {
 		g.Go(func() error {
 			if checkHostAlive(ip) {
 				hostname := detectHostname(ip)
-
-				// Add debug logging for SSH credentials
 				log.Printf("Attempting OS detection for %s with credentials - User: %s", ip, sshUser)
-
-				// Add retry logic for OS detection
+		
 				var osType string
-				for attempts := 1; attempts <= 3; attempts++ {
-					osType, err = osdetect.DetectOS(ip, sshUser, sshPass, 22)
-					if err == nil {
-						break
+				detectCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
+		
+				detectChan := make(chan string, 1)
+				errChan := make(chan error, 1)
+		
+				go func() {
+					// Try up to 3 times
+					var detected string
+					var detErr error
+					for attempts := 1; attempts <= 3; attempts++ {
+						detected, detErr = osdetect.DetectOS(ip, sshUser, sshPass, 22)
+						if detErr == nil {
+							detectChan <- detected
+							return
+						}
+						log.Printf("Attempt %d: Error detecting OS for %s: %v", attempts, ip, detErr)
+						time.Sleep(2 * time.Second)
 					}
-					log.Printf("Attempt %d: Error detecting OS for %s: %v", attempts, ip, err)
-					// Wait briefly before retry
-					time.Sleep(2 * time.Second)
-				}
-
-				if err != nil {
-					log.Printf("All attempts failed to detect OS for %s: %v", ip, err)
+					errChan <- detErr
+				}()
+		
+				select {
+				case <-detectCtx.Done():
+					log.Printf("OS detection for %s timed out", ip)
+					osType = "Unknown"
+				case det := <-detectChan:
+					osType = det
+				case detErr := <-errChan:
+					log.Printf("All attempts failed to detect OS for %s: %v", ip, detErr)
 					osType = "Unknown"
 				}
-
+		
 				newHost := Host{IP: ip, Hostname: hostname, OS: osType}
 				mu.Lock()
 				aliveHosts = append(aliveHosts, newHost)
@@ -299,7 +311,7 @@ func AddHost(ipRange string) {
 				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
 			}
 			return nil
-		})
+		})		
 	}
 
 	if err := g.Wait(); err != nil {
@@ -536,6 +548,8 @@ func scanAndAddIP() {
 // and writes the rendered output to outputPath.
 // InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
 // and writes the rendered output to outputPath.
+// InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
+// and writes the rendered output to outputPath.
 func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 	t := telemetry.GetInstance()
 	t.LogInfo("Playbook", "Injecting inventory into playbook", map[string]interface{}{
@@ -576,23 +590,6 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		return fmt.Errorf("failed to parse playbook template: %v", err)
 	}
 
-<<<<<<< HEAD
-
-	// 
-	var rendered bytes.Buffer
-
-	data := map[string]interface{}{
-		"Hosts": inv.Hosts,
-		"SSHCred": inv.SSHCred,
-		"Vars": map[string]string{
-			"UserName":    "",
-			"UserPassword": "",
-		},
-	}
-	
-	if err := tmpl.Execute(&rendered, data); err != nil {
-=======
-	// 🔥 Corrected: Create a Vars map matching playbook expectations
 	vars := map[string]interface{}{
 		"Vars": map[string]interface{}{
 			"UserName":     inv.SSHCred.SSHUser,
@@ -603,7 +600,6 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 
 	var rendered bytes.Buffer
 	if err := tmpl.Execute(&rendered, vars); err != nil {
->>>>>>> 73c5b5f (web interface add user feature)
 		t.LogError("Playbook", "Failed to execute template", map[string]interface{}{
 			"error":         err.Error(),
 			"template_path": templatePath,
@@ -628,4 +624,3 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 
 	return nil
 }
-

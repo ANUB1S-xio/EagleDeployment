@@ -1,20 +1,4 @@
-hosts:
-<<<<<<< HEAD
-- ip: 192.168.1.173
-  hostname: kali.attlocal.net
-  os: Linux
-  ssh_user: ""
+hosts: []
+ssh_cred:
+  ssh_user: "\e[B\e[B"
   ssh_pass: ""
-ssh_cred:
-  ssh_user: test-user
-  ssh_pass: test123!
-=======
-- ip: 192.168.111.135
-  hostname: debian-vm-user
-  os: Linux
-  ssh_user: VidDemoUser
-  ssh_pass: DemoPass1
-ssh_cred:
-  ssh_user: VidDemoUser
-  ssh_pass: DemoPass1
->>>>>>> 73c5b5f (web interface add user feature)
