@@ -39982,7 +39982,3284 @@
         }
       },
       "time_written": "2025-05-03T13:19:45.613048019-05:00"
+    },
+    {
+      "event": {
+        "id": "9a4c7cf9-8af1-4046-9d39-47fbdeb11bcb",
+        "timestamp": "2025-05-03T13:19:48.904130035-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:48.904130102-05:00"
+    },
+    {
+      "event": {
+        "id": "8cdb0e3b-7e74-4314-ba5b-51ece2dbc19a",
+        "timestamp": "2025-05-03T13:19:48.904163414-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:48.904163464-05:00"
+    },
+    {
+      "event": {
+        "id": "5032192e-55a2-47f7-be9f-0cd86fabc211",
+        "timestamp": "2025-05-03T13:19:48.90423156-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:48.904231604-05:00"
+    },
+    {
+      "event": {
+        "id": "adfc9d0a-f802-4083-91d6-de421004acc8",
+        "timestamp": "2025-05-03T13:19:48.905651603-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 299,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:48.905651687-05:00"
+    },
+    {
+      "event": {
+        "id": "2747abe0-97ea-44d8-a323-236e40e8135e",
+        "timestamp": "2025-05-03T13:19:55.033072929-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:55.033072986-05:00"
+    },
+    {
+      "event": {
+        "id": "9aab5054-b4b6-43e9-8baa-6ccddea31bf8",
+        "timestamp": "2025-05-03T13:19:55.050069201-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func14",
+        "line": 133,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:55.05006926-05:00"
+    },
+    {
+      "event": {
+        "id": "e678cf8c-60df-4c09-8448-dd4e03a11121",
+        "timestamp": "2025-05-03T13:19:58.825105212-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:19:58.825105562-05:00"
+    },
+    {
+      "event": {
+        "id": "f793825f-17d6-4354-a95c-b5aa892b8910",
+        "timestamp": "2025-05-03T13:28:10.499721715-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "User initiated exit",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 501,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:10.49972181-05:00"
+    },
+    {
+      "event": {
+        "id": "608936e1-8be8-4447-b9e8-981dbe7dce1c",
+        "timestamp": "2025-05-03T13:28:10.499746717-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Server shutdown detected",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 518,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:10.499746797-05:00"
+    },
+    {
+      "event": {
+        "id": "e8db28b8-703f-407f-9d37-cf78ec1ecd8b",
+        "timestamp": "2025-05-03T13:28:10.499769526-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:10.499769597-05:00"
+    },
+    {
+      "event": {
+        "id": "672a921b-8fa7-4e5f-b8c9-f2e4da063ce0",
+        "timestamp": "2025-05-03T13:28:10.499782951-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "df9c0443-58af-421f-8924-bf15d3894ca7",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:10.499783029-05:00"
+    },
+    {
+      "event": {
+        "id": "f287026d-eeeb-4878-8c3b-c6c53cc24e40",
+        "timestamp": "2025-05-03T13:28:18.106430608-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:18.106430667-05:00"
+    },
+    {
+      "event": {
+        "id": "0a00430c-75c3-472e-9e43-caea13446f58",
+        "timestamp": "2025-05-03T13:28:18.106460534-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:18.106460585-05:00"
+    },
+    {
+      "event": {
+        "id": "d68561b3-46f1-4984-9885-2257cb2c79f0",
+        "timestamp": "2025-05-03T13:28:18.106524906-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:18.106524976-05:00"
+    },
+    {
+      "event": {
+        "id": "285f13db-7b9d-40b0-9859-fa4e72d7e8f0",
+        "timestamp": "2025-05-03T13:28:18.107786328-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 299,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:18.107786392-05:00"
+    },
+    {
+      "event": {
+        "id": "76db5fc3-dbfa-4a19-abba-79d047dd15fa",
+        "timestamp": "2025-05-03T13:28:22.557087359-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:22.557087424-05:00"
+    },
+    {
+      "event": {
+        "id": "52a52d50-0631-499d-9bf0-0fbb1dc40e60",
+        "timestamp": "2025-05-03T13:28:22.569253705-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func14",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:22.569253759-05:00"
+    },
+    {
+      "event": {
+        "id": "e7ecf664-f138-410d-8069-b6d053fdc024",
+        "timestamp": "2025-05-03T13:28:23.366008727-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:23.366008793-05:00"
+    },
+    {
+      "event": {
+        "id": "8e199b5c-b85e-43d7-a501-eda7e80c39e3",
+        "timestamp": "2025-05-03T13:28:25.839932848-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:28:25.839932902-05:00"
+    },
+    {
+      "event": {
+        "id": "3bb8a155-9351-487b-ad34-36727d50af31",
+        "timestamp": "2025-05-03T13:29:19.764175607-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:29:19.764175682-05:00"
+    },
+    {
+      "event": {
+        "id": "c288c306-a99f-4753-9dcc-9ab8bd080225",
+        "timestamp": "2025-05-03T13:29:20.898236155-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:29:20.898236261-05:00"
+    },
+    {
+      "event": {
+        "id": "cbe6ba1c-5a44-4b68-a29b-82bc04eb3ca2",
+        "timestamp": "2025-05-03T13:30:27.19158324-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:30:27.191583327-05:00"
+    },
+    {
+      "event": {
+        "id": "49a4880b-a091-4f6e-992b-f79751fd5be5",
+        "timestamp": "2025-05-03T13:30:28.315909763-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:30:28.31590984-05:00"
+    },
+    {
+      "event": {
+        "id": "fd17b432-b3f4-4791-a7f3-c2b7926c1e59",
+        "timestamp": "2025-05-03T13:30:33.631419255-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:30:33.631419337-05:00"
+    },
+    {
+      "event": {
+        "id": "df9cf2cd-5a65-4df1-be08-dd98875c4bb9",
+        "timestamp": "2025-05-03T13:31:21.558093074-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:31:21.558093126-05:00"
+    },
+    {
+      "event": {
+        "id": "28c0d156-34ac-43ea-9b26-2e1524971733",
+        "timestamp": "2025-05-03T13:31:22.495104234-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:31:22.49510433-05:00"
+    },
+    {
+      "event": {
+        "id": "3817b570-5c11-4d21-a11e-b61a0a8c889b",
+        "timestamp": "2025-05-03T13:36:50.034742374-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func12",
+        "line": 133,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:50.034742438-05:00"
+    },
+    {
+      "event": {
+        "id": "113e3f4c-5066-43e9-87af-c5357000e9e9",
+        "timestamp": "2025-05-03T13:36:52.990733723-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "User initiated exit",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 501,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:52.990734256-05:00"
+    },
+    {
+      "event": {
+        "id": "6ca6ba1a-7a03-4429-bfa0-6eb53717d330",
+        "timestamp": "2025-05-03T13:36:52.990890294-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Server shutdown detected",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 518,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:52.990890723-05:00"
+    },
+    {
+      "event": {
+        "id": "4d5edd05-9c70-45f3-9523-0e9225b7b95a",
+        "timestamp": "2025-05-03T13:36:52.991001041-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:52.99100145-05:00"
+    },
+    {
+      "event": {
+        "id": "7ca6d561-7ad7-4f2f-a4d8-0ef38cd047aa",
+        "timestamp": "2025-05-03T13:36:52.991058419-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "7074e2d0-5605-4a3c-9e86-977b4a9f7377",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:52.991058888-05:00"
+    },
+    {
+      "event": {
+        "id": "83f657c1-9e6d-477f-a094-6d251ad0647c",
+        "timestamp": "2025-05-03T13:36:54.895428759-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:54.895428855-05:00"
+    },
+    {
+      "event": {
+        "id": "1108d2a5-4127-4b5f-aca7-b0e74201c487",
+        "timestamp": "2025-05-03T13:36:54.895464556-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:54.89546465-05:00"
+    },
+    {
+      "event": {
+        "id": "12b9ace3-a238-49f4-93f5-180a0d739105",
+        "timestamp": "2025-05-03T13:36:54.895592721-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:54.895592772-05:00"
+    },
+    {
+      "event": {
+        "id": "ed1fc8b2-1480-485b-8401-c9c26a824d36",
+        "timestamp": "2025-05-03T13:36:54.897298152-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 304,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:36:54.897298227-05:00"
+    },
+    {
+      "event": {
+        "id": "9af77884-da1a-4c06-85af-528d8289b7a9",
+        "timestamp": "2025-05-03T13:37:02.214497512-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:37:02.214497573-05:00"
+    },
+    {
+      "event": {
+        "id": "7283a23f-4e71-4d8e-a82b-623e0085cb8d",
+        "timestamp": "2025-05-03T13:37:02.244385018-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:37:02.244385075-05:00"
+    },
+    {
+      "event": {
+        "id": "210fa82a-cb00-4fb4-b745-36e615181f02",
+        "timestamp": "2025-05-03T13:37:03.886229361-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:37:03.886229418-05:00"
+    },
+    {
+      "event": {
+        "id": "83bf7add-14a1-4ea7-834f-137bee7e3f41",
+        "timestamp": "2025-05-03T13:37:46.992921814-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:37:46.992921931-05:00"
+    },
+    {
+      "event": {
+        "id": "81825f11-ad47-4883-8f59-a4e92e2837ae",
+        "timestamp": "2025-05-03T13:37:59.238043159-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Opening inventory menu",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 469,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:37:59.238043277-05:00"
+    },
+    {
+      "event": {
+        "id": "e8ccb0e3-0592-44f9-8abf-18510f924250",
+        "timestamp": "2025-05-03T13:38:15.594097671-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "\u001b[B\u001b[B\u001b[B"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:38:15.594097986-05:00"
+    },
+    {
+      "event": {
+        "id": "6d6b0063-76a9-44ec-89b1-bb36c6dcb19b",
+        "timestamp": "2025-05-03T13:38:15.594163132-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": "\u001b[B\u001b[B\u001b[B"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:38:15.59416323-05:00"
+    },
+    {
+      "event": {
+        "id": "fc50ddd1-b0d6-4917-b1f1-d7d784b6ed00",
+        "timestamp": "2025-05-03T13:39:16.291272822-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:39:16.291272872-05:00"
+    },
+    {
+      "event": {
+        "id": "c3653695-7fc8-44a2-b5f2-7328b20eb646",
+        "timestamp": "2025-05-03T13:39:39.796429761-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Opening inventory menu",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 469,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:39:39.796429905-05:00"
+    },
+    {
+      "event": {
+        "id": "54b8b689-6fde-4a1a-aa79-dc7ad7c929da",
+        "timestamp": "2025-05-03T13:43:00.538147851-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:00.538148243-05:00"
+    },
+    {
+      "event": {
+        "id": "a0f9d772-d3fa-4f54-9479-e80d9009de3f",
+        "timestamp": "2025-05-03T13:43:00.538219422-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:00.538219512-05:00"
+    },
+    {
+      "event": {
+        "id": "a7574a13-d062-49d6-bc9f-c0273819f6ca",
+        "timestamp": "2025-05-03T13:43:05.406434621-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:05.406434952-05:00"
+    },
+    {
+      "event": {
+        "id": "0c5f15bc-0043-403b-999c-6ca02e5ca9f3",
+        "timestamp": "2025-05-03T13:43:05.406468665-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:05.406468755-05:00"
+    },
+    {
+      "event": {
+        "id": "f0df9bd9-1d74-4041-a39e-f21911470c98",
+        "timestamp": "2025-05-03T13:43:39.828408499-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "User initiated exit",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 501,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:39.828409602-05:00"
+    },
+    {
+      "event": {
+        "id": "109134a3-35fe-4bd4-85d7-b60a0a67e115",
+        "timestamp": "2025-05-03T13:43:39.828673325-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Server shutdown detected",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 518,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:39.828673626-05:00"
+    },
+    {
+      "event": {
+        "id": "dd69e395-d519-49a5-a8bc-50245de5c0b8",
+        "timestamp": "2025-05-03T13:43:39.828859575-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:39.828859859-05:00"
+    },
+    {
+      "event": {
+        "id": "7c7aaed7-0bc3-4675-a08c-c7b0b1379d7f",
+        "timestamp": "2025-05-03T13:43:39.828904573-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "01b1fa6b-b1c5-4fae-9db3-33f170ec926f",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T13:43:39.828904879-05:00"
+    },
+    {
+      "event": {
+        "id": "dea57adc-e594-4a92-b589-5a39c75c230c",
+        "timestamp": "2025-05-03T14:29:22.99380112-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:22.99380118-05:00"
+    },
+    {
+      "event": {
+        "id": "49b2a413-4dbd-4018-a531-309a84817695",
+        "timestamp": "2025-05-03T14:29:22.993846297-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:22.993846346-05:00"
+    },
+    {
+      "event": {
+        "id": "3ef2fe3a-89ac-48bb-b6a3-a21531dd9b43",
+        "timestamp": "2025-05-03T14:29:22.99395048-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:22.993950539-05:00"
+    },
+    {
+      "event": {
+        "id": "a158c098-7ab4-4951-bef3-8d578ed19503",
+        "timestamp": "2025-05-03T14:29:22.99532803-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 304,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:22.995328111-05:00"
+    },
+    {
+      "event": {
+        "id": "4209e89b-880d-4c98-9630-a118559c15f0",
+        "timestamp": "2025-05-03T14:29:28.772939932-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:28.772940075-05:00"
+    },
+    {
+      "event": {
+        "id": "9f68fe31-ebbc-4ded-80b2-b0529fcfed36",
+        "timestamp": "2025-05-03T14:29:29.021269014-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:29.021269065-05:00"
+    },
+    {
+      "event": {
+        "id": "a1f33286-d9b7-4fdb-8e12-a40d28f055cb",
+        "timestamp": "2025-05-03T14:29:37.827262779-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list_playbooks"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func21",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:37.827262833-05:00"
+    },
+    {
+      "event": {
+        "id": "4a5cbdd3-3398-45f7-afc2-c67ec79020f1",
+        "timestamp": "2025-05-03T14:29:41.850771097-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:29:41.850771171-05:00"
+    },
+    {
+      "event": {
+        "id": "f59cc591-7a21-4bdd-a599-618574a46a91",
+        "timestamp": "2025-05-03T14:32:58.80096445-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:32:58.80096483-05:00"
+    },
+    {
+      "event": {
+        "id": "c67e5cc0-82c8-4249-ab03-3142aaeea3c6",
+        "timestamp": "2025-05-03T14:33:08.451416996-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list_playbooks"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func21",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:33:08.451417048-05:00"
+    },
+    {
+      "event": {
+        "id": "c5dca9a6-dd41-4a27-9f8d-8bbe63010175",
+        "timestamp": "2025-05-03T14:33:13.11743478-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list_playbooks"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func21",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:33:13.117434834-05:00"
+    },
+    {
+      "event": {
+        "id": "f6537003-046a-4374-886c-4a10138bb1da",
+        "timestamp": "2025-05-03T14:36:10.743816571-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:36:10.743816631-05:00"
+    },
+    {
+      "event": {
+        "id": "81e9cec5-6a0d-42c6-80cd-23a1653e6ffd",
+        "timestamp": "2025-05-03T14:38:22.999020648-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Opening inventory menu",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 469,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:38:22.999020994-05:00"
+    },
+    {
+      "event": {
+        "id": "9fc847ce-f911-4ca6-ae95-da824c824b71",
+        "timestamp": "2025-05-03T14:39:30.217987067-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:39:30.217987133-05:00"
+    },
+    {
+      "event": {
+        "id": "0f5a7335-28f2-4ae5-b2b0-d4f1aea15499",
+        "timestamp": "2025-05-03T14:39:41.611720348-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:39:41.611720407-05:00"
+    },
+    {
+      "event": {
+        "id": "aefd2b15-28dd-4aeb-84b2-18982f237795",
+        "timestamp": "2025-05-03T14:39:42.250313193-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:39:42.250313257-05:00"
+    },
+    {
+      "event": {
+        "id": "25a106b3-2792-4952-80f4-65cf7f86a091",
+        "timestamp": "2025-05-03T14:42:11.19251055-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "grid-container"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:11.192510743-05:00"
+    },
+    {
+      "event": {
+        "id": "3bda998a-7e4c-4702-be37-20a6c338e037",
+        "timestamp": "2025-05-03T14:42:11.192601005-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid start IP address",
+          "ip_range": "grid-container"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:11.192601092-05:00"
+    },
+    {
+      "event": {
+        "id": "386c17b9-d15e-4efd-bca2-555e654fa1fc",
+        "timestamp": "2025-05-03T14:42:13.870603323-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:13.870603488-05:00"
+    },
+    {
+      "event": {
+        "id": "a6ef6943-9a31-42f7-b5ce-119b59c8518d",
+        "timestamp": "2025-05-03T14:42:13.870654423-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:13.870654531-05:00"
+    },
+    {
+      "event": {
+        "id": "acb20abd-43fe-4c81-9d90-3ce9728c4bb6",
+        "timestamp": "2025-05-03T14:42:19.815678414-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:19.815678562-05:00"
+    },
+    {
+      "event": {
+        "id": "62ce023b-ffab-490f-9f4f-74c2dc0a06c6",
+        "timestamp": "2025-05-03T14:42:19.815758979-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:19.815759091-05:00"
+    },
+    {
+      "event": {
+        "id": "dab44db1-dc46-4c7e-b201-7f5605e46cd0",
+        "timestamp": "2025-05-03T14:42:20.6164117-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:20.616412042-05:00"
+    },
+    {
+      "event": {
+        "id": "cd57d915-ed87-4bdf-8177-a40c7a5305e5",
+        "timestamp": "2025-05-03T14:42:20.616481511-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:20.616481606-05:00"
+    },
+    {
+      "event": {
+        "id": "40ea4040-b966-49a2-a737-f65443ef2e19",
+        "timestamp": "2025-05-03T14:42:23.741400678-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:23.74140078-05:00"
+    },
+    {
+      "event": {
+        "id": "814044c1-86d7-4fa9-b9a0-e829989eef6d",
+        "timestamp": "2025-05-03T14:42:23.741452191-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:23.741452237-05:00"
+    },
+    {
+      "event": {
+        "id": "652c1614-6377-4fc2-b1e9-7c0693632f85",
+        "timestamp": "2025-05-03T14:42:26.53060142-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:26.530601527-05:00"
+    },
+    {
+      "event": {
+        "id": "241ecb85-5dee-497c-a2fb-0f37d6182c19",
+        "timestamp": "2025-05-03T14:42:26.530635376-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:26.530635428-05:00"
+    },
+    {
+      "event": {
+        "id": "c17e04a4-d0ee-4a1f-a490-9b7874238ba3",
+        "timestamp": "2025-05-03T14:42:27.781514651-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:27.781514792-05:00"
+    },
+    {
+      "event": {
+        "id": "e3bcf8a2-edbb-4801-ba3b-0209b3bdcfa2",
+        "timestamp": "2025-05-03T14:42:27.781570007-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": ""
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:27.7815701-05:00"
+    },
+    {
+      "event": {
+        "id": "e1c69291-3f2a-47ec-b901-759ed1249524",
+        "timestamp": "2025-05-03T14:42:32.532445126-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "padding:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:32.532445506-05:00"
+    },
+    {
+      "event": {
+        "id": "ce10c9d2-81af-4fb0-b896-b9bb28e126f7",
+        "timestamp": "2025-05-03T14:42:32.532543702-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": "padding:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:32.532543905-05:00"
+    },
+    {
+      "event": {
+        "id": "941958f8-7846-4ec1-a5a3-98adcbd2f6af",
+        "timestamp": "2025-05-03T14:42:33.985834852-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "border-radius:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:33.98583529-05:00"
+    },
+    {
+      "event": {
+        "id": "aea1d241-9805-460f-82c2-549f33edb131",
+        "timestamp": "2025-05-03T14:42:33.985866663-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid start IP address",
+          "ip_range": "border-radius:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:33.98586671-05:00"
+    },
+    {
+      "event": {
+        "id": "8ea5b86b-64e1-4fb0-a188-98b76583edee",
+        "timestamp": "2025-05-03T14:42:36.523878488-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "box-shadow:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:36.52387864-05:00"
+    },
+    {
+      "event": {
+        "id": "435122db-c82b-43eb-a85a-426409cd2ef1",
+        "timestamp": "2025-05-03T14:42:36.523902752-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid start IP address",
+          "ip_range": "box-shadow:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:36.523902802-05:00"
+    },
+    {
+      "event": {
+        "id": "51729e67-9691-4cf8-9700-60a1ee68ab61",
+        "timestamp": "2025-05-03T14:42:37.152005182-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "color;"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:37.152005254-05:00"
+    },
+    {
+      "event": {
+        "id": "dcaf8a34-64ee-4f37-880d-bd28a9280a36",
+        "timestamp": "2025-05-03T14:42:37.152067365-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": "color;"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:37.152067419-05:00"
+    },
+    {
+      "event": {
+        "id": "90eb3f35-8f79-4398-8a0e-9da0e4340a84",
+        "timestamp": "2025-05-03T14:42:37.931265668-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "height:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:37.931265807-05:00"
+    },
+    {
+      "event": {
+        "id": "c23dea5b-48ec-4c48-80a6-e52537f1b733",
+        "timestamp": "2025-05-03T14:42:37.931300844-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": "height:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:37.931300901-05:00"
+    },
+    {
+      "event": {
+        "id": "80470423-f05f-480f-a5ec-fa99753b9c1e",
+        "timestamp": "2025-05-03T14:42:38.41220299-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "display:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:38.412203335-05:00"
+    },
+    {
+      "event": {
+        "id": "67950a68-8a1d-4833-802c-57a90312f528",
+        "timestamp": "2025-05-03T14:42:38.412288215-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": "display:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:38.412288341-05:00"
+    },
+    {
+      "event": {
+        "id": "f433a7fa-ef68-482b-8b5a-677ad3f1ac24",
+        "timestamp": "2025-05-03T14:42:38.855739131-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "flex-direction:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:38.855739718-05:00"
+    },
+    {
+      "event": {
+        "id": "8253b84b-3403-4e74-b2cd-6c3231d83de7",
+        "timestamp": "2025-05-03T14:42:38.855790133-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid start IP address",
+          "ip_range": "flex-direction:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:38.855790197-05:00"
+    },
+    {
+      "event": {
+        "id": "0492d6b5-6e2f-4e9c-9dd5-ebc5e1315d4a",
+        "timestamp": "2025-05-03T14:42:39.615227256-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "justify-content:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:39.615227396-05:00"
+    },
+    {
+      "event": {
+        "id": "b621b2a8-4442-46df-8926-0bb8297c962d",
+        "timestamp": "2025-05-03T14:42:39.615265392-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid start IP address",
+          "ip_range": "justify-content:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:39.615265449-05:00"
+    },
+    {
+      "event": {
+        "id": "213c8d54-c46e-4dad-902c-9cc97be71f59",
+        "timestamp": "2025-05-03T14:42:40.034820482-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "min-height:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:40.034820543-05:00"
+    },
+    {
+      "event": {
+        "id": "9c986f0b-5930-43af-82d1-a69dd21dd485",
+        "timestamp": "2025-05-03T14:42:40.034859576-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid start IP address",
+          "ip_range": "min-height:"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:40.034859632-05:00"
+    },
+    {
+      "event": {
+        "id": "4efb6cc0-25c4-4d8c-b1bb-cf9846d9555e",
+        "timestamp": "2025-05-03T14:42:40.117269769-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "}"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:40.117270087-05:00"
+    },
+    {
+      "event": {
+        "id": "0ce06aeb-c36a-4a01-8c70-373b71fefbad",
+        "timestamp": "2025-05-03T14:42:40.117357249-05:00",
+        "level": "ERROR",
+        "category": "Inventory",
+        "message": "Failed to parse IP range",
+        "data": {
+          "error": "invalid IP address format",
+          "ip_range": "}"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 237,
+        "session_id": "903eb398-1ed2-4401-b79b-664db7a91890",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:42:40.117357389-05:00"
+    },
+    {
+      "event": {
+        "id": "b3689db7-5f14-48fd-867b-38bf9393e52f",
+        "timestamp": "2025-05-03T14:43:17.90445038-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:17.90445045-05:00"
+    },
+    {
+      "event": {
+        "id": "45e372a6-88b2-4770-b2d7-28c2f28bf4d7",
+        "timestamp": "2025-05-03T14:43:17.904487518-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:17.90448757-05:00"
+    },
+    {
+      "event": {
+        "id": "2450f826-3a91-47cd-b302-63e7ba1d17d5",
+        "timestamp": "2025-05-03T14:43:17.904549035-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:17.904549096-05:00"
+    },
+    {
+      "event": {
+        "id": "91483024-319e-44ba-b968-90900754905f",
+        "timestamp": "2025-05-03T14:43:17.90613861-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 304,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:17.906138684-05:00"
+    },
+    {
+      "event": {
+        "id": "a2d67faa-2b90-4a6c-8d33-358a75c3da8e",
+        "timestamp": "2025-05-03T14:43:21.905760089-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:21.905760151-05:00"
+    },
+    {
+      "event": {
+        "id": "8be88f25-5adf-4713-a513-57ae27aa782d",
+        "timestamp": "2025-05-03T14:43:21.923904354-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:21.923904418-05:00"
+    },
+    {
+      "event": {
+        "id": "1f38c668-ce7b-46e7-9080-7a0c167c2986",
+        "timestamp": "2025-05-03T14:43:24.206239542-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:24.206239598-05:00"
+    },
+    {
+      "event": {
+        "id": "ede3d038-2c2d-4f4d-a7f5-7a6e1f1ecc6c",
+        "timestamp": "2025-05-03T14:43:33.4224742-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Opening inventory menu",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 469,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:43:33.422474325-05:00"
+    },
+    {
+      "event": {
+        "id": "06e70d8c-aaf8-4205-b275-67b31ddfecd9",
+        "timestamp": "2025-05-03T14:44:13.209134705-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Adding hosts from IP range",
+        "data": {
+          "ip_range": "192.168.111.135"
+        },
+        "source": "inventory.go",
+        "function": "EagleDeployment/inventory.AddHost",
+        "line": 230,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:44:13.209135031-05:00"
+    },
+    {
+      "event": {
+        "id": "e2ad2427-0920-41ff-9897-cebf64959002",
+        "timestamp": "2025-05-03T14:44:30.91629131-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Termination signal received",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 521,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:44:30.916291714-05:00"
+    },
+    {
+      "event": {
+        "id": "b8653a67-a159-4baf-9abb-5feae7976dab",
+        "timestamp": "2025-05-03T14:44:30.916585346-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:44:30.916585679-05:00"
+    },
+    {
+      "event": {
+        "id": "eef12acc-7879-4dab-ab11-280cf0b48243",
+        "timestamp": "2025-05-03T14:44:30.916661935-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "92f95a29-fd47-4480-a146-82554fe28777",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:44:30.916662229-05:00"
+    },
+    {
+      "event": {
+        "id": "713bd1c8-271f-459b-8629-b8cc4504e6da",
+        "timestamp": "2025-05-03T14:45:05.948489748-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:05.948489817-05:00"
+    },
+    {
+      "event": {
+        "id": "f5db911a-e3a8-481a-b5e8-0a92dadddc50",
+        "timestamp": "2025-05-03T14:45:05.948523294-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:05.948523346-05:00"
+    },
+    {
+      "event": {
+        "id": "3da38a9c-1cd9-493e-80d1-a1e596275df5",
+        "timestamp": "2025-05-03T14:45:05.948579525-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:05.948579583-05:00"
+    },
+    {
+      "event": {
+        "id": "1b7c48dd-29eb-4f9f-b57b-87f542142e71",
+        "timestamp": "2025-05-03T14:45:05.950081962-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 304,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:05.950082023-05:00"
+    },
+    {
+      "event": {
+        "id": "35b41cbb-2e24-4ac4-b4c2-e9f5b225b9bb",
+        "timestamp": "2025-05-03T14:45:11.848988113-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:11.848988172-05:00"
+    },
+    {
+      "event": {
+        "id": "1569ba83-fd22-4e62-9158-ab28f9e03893",
+        "timestamp": "2025-05-03T14:45:13.955885938-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:13.955885992-05:00"
+    },
+    {
+      "event": {
+        "id": "564fa87f-bd7e-42aa-acc3-646beba1b73b",
+        "timestamp": "2025-05-03T14:45:26.954686041-05:00",
+        "level": "INFO",
+        "category": "Inventory",
+        "message": "Opening inventory menu",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 469,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:45:26.954686167-05:00"
+    },
+    {
+      "event": {
+        "id": "81832f06-23db-4bc6-9fab-1432aa4f1e44",
+        "timestamp": "2025-05-03T14:52:29.509240661-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:52:29.509240722-05:00"
+    },
+    {
+      "event": {
+        "id": "62b0d702-0c33-4a7f-bab0-b1f962117fd2",
+        "timestamp": "2025-05-03T14:55:23.687143138-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:55:23.687143199-05:00"
+    },
+    {
+      "event": {
+        "id": "76444275-d86b-4078-87b1-52f9ec2e6d84",
+        "timestamp": "2025-05-03T14:57:06.534627013-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:57:06.534627067-05:00"
+    },
+    {
+      "event": {
+        "id": "2eb36a7f-7fc2-4621-bdfe-8859e68e04e0",
+        "timestamp": "2025-05-03T14:58:29.945396993-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T14:58:29.945397046-05:00"
+    },
+    {
+      "event": {
+        "id": "74ea9a2d-7ddd-4d11-8de5-796e49a94b37",
+        "timestamp": "2025-05-03T15:00:25.501431415-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:00:25.501431507-05:00"
+    },
+    {
+      "event": {
+        "id": "641f62ba-9670-4232-bb2d-67fcb047198c",
+        "timestamp": "2025-05-03T15:00:27.706040373-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:00:27.706040429-05:00"
+    },
+    {
+      "event": {
+        "id": "f147dce2-7cfa-4157-a905-d0c0daa1882a",
+        "timestamp": "2025-05-03T15:03:27.874073761-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:03:27.874073814-05:00"
+    },
+    {
+      "event": {
+        "id": "9b68d148-5316-411e-8b04-12c97327db4b",
+        "timestamp": "2025-05-03T15:04:20.717058796-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:04:20.717058862-05:00"
+    },
+    {
+      "event": {
+        "id": "1cd7f219-f626-4093-8327-7b1a7ee6023e",
+        "timestamp": "2025-05-03T15:04:24.5850027-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:04:24.585002767-05:00"
+    },
+    {
+      "event": {
+        "id": "242b581b-8305-4456-bb0e-84dbf71c8c83",
+        "timestamp": "2025-05-03T15:08:50.017246308-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:08:50.017246414-05:00"
+    },
+    {
+      "event": {
+        "id": "f7cc897e-0fcc-48c7-aa16-b5d5cb8a9348",
+        "timestamp": "2025-05-03T15:08:53.907712318-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:08:53.907712458-05:00"
+    },
+    {
+      "event": {
+        "id": "b0f0b717-43da-4475-857e-526c14b6c91b",
+        "timestamp": "2025-05-03T15:16:46.893183061-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:16:46.893183116-05:00"
+    },
+    {
+      "event": {
+        "id": "79ecf3c4-8dd4-4a60-9cbc-3697988e08f2",
+        "timestamp": "2025-05-03T15:16:51.229043239-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:16:51.229043401-05:00"
+    },
+    {
+      "event": {
+        "id": "38875ce7-f74e-4e2e-8b1c-bffc9badaca5",
+        "timestamp": "2025-05-03T15:17:20.300560579-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:17:20.300560811-05:00"
+    },
+    {
+      "event": {
+        "id": "4d5da8b3-a8e6-44c4-85c8-bf1c8ccbb3ef",
+        "timestamp": "2025-05-03T15:18:19.950158042-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func18",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:18:19.950158132-05:00"
+    },
+    {
+      "event": {
+        "id": "432cd9ca-d58e-41fd-9a89-5652b8f5b244",
+        "timestamp": "2025-05-03T15:18:23.418656684-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:18:23.418656919-05:00"
+    },
+    {
+      "event": {
+        "id": "960d5ae9-1218-42bf-b980-e4b1071c556e",
+        "timestamp": "2025-05-03T15:18:46.688827147-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:18:46.688827205-05:00"
+    },
+    {
+      "event": {
+        "id": "cdb1e809-9e64-494e-a2c1-5438583a27ae",
+        "timestamp": "2025-05-03T15:20:57.868816966-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:20:57.86881711-05:00"
+    },
+    {
+      "event": {
+        "id": "c00130ce-818b-4d10-a78d-8beeb5b20192",
+        "timestamp": "2025-05-03T15:21:01.615373093-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:01.615373149-05:00"
+    },
+    {
+      "event": {
+        "id": "99c6ef1e-16fe-4fa3-9f4b-73214e47fb1c",
+        "timestamp": "2025-05-03T15:21:07.434063297-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:07.434063352-05:00"
+    },
+    {
+      "event": {
+        "id": "da7522c4-26af-4420-bec4-7965b56864e6",
+        "timestamp": "2025-05-03T15:21:08.862646375-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:08.862646516-05:00"
+    },
+    {
+      "event": {
+        "id": "e9a79ed0-5b86-4c9b-9928-1e261b604006",
+        "timestamp": "2025-05-03T15:21:09.853214566-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:09.853214711-05:00"
+    },
+    {
+      "event": {
+        "id": "e0babf40-6978-418a-aac4-36c4d54f56a2",
+        "timestamp": "2025-05-03T15:21:11.980245887-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:11.980246044-05:00"
+    },
+    {
+      "event": {
+        "id": "ec390b12-ca12-4cc5-964f-9e57ce68b7eb",
+        "timestamp": "2025-05-03T15:21:17.287967188-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:17.287967444-05:00"
+    },
+    {
+      "event": {
+        "id": "b257b481-58b8-4856-a792-211608a35a8c",
+        "timestamp": "2025-05-03T15:21:23.670975473-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:23.67097553-05:00"
+    },
+    {
+      "event": {
+        "id": "c21202a9-0e63-445b-8c13-277242d7d3d9",
+        "timestamp": "2025-05-03T15:21:25.424767225-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list-hosts"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:21:25.42476728-05:00"
+    },
+    {
+      "event": {
+        "id": "4a96a431-5a3f-4e79-ae42-0d240e997820",
+        "timestamp": "2025-05-03T15:22:26.574649848-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Termination signal received",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 521,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:22:26.574649936-05:00"
+    },
+    {
+      "event": {
+        "id": "af0727e8-73c4-43b5-97ee-a398e546438f",
+        "timestamp": "2025-05-03T15:22:26.574691789-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:22:26.574691843-05:00"
+    },
+    {
+      "event": {
+        "id": "2717d5eb-a5c3-4546-b770-b891a0dd7866",
+        "timestamp": "2025-05-03T15:22:26.574700885-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "78b7f32c-70f7-431a-90f5-246bdd3f0d8c",
+        "host_info": {
+          "hostname": "Debian-VM-Controller",
+          "os": "linux",
+          "arch": "amd64"
+        }
+      },
+      "time_written": "2025-05-03T15:22:26.574700935-05:00"
     }
   ],
-  "last_sync": "2025-05-03T13:19:45.613098939-05:00"
+  "last_sync": "2025-05-03T15:22:26.574707082-05:00"
 }

@@ -189,6 +189,11 @@ func StartWebServer() {
 		http.ServeFile(w, r, "web/templates/list.html")
 	}))
 
+	// List YAML Playbooks Page
+	http.HandleFunc("/inventory", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/inventory.html")
+	}))
+
 	// Login Page
 	http.HandleFunc("/login", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/login.html")
@@ -259,7 +264,23 @@ func StartWebServer() {
 		fmt.Fprintf(w, "Playbook '%s' created successfully!", data.Filename)
 	}))
 
-
+	// http.HandleFunc("/api/list-hosts", logRequest(func(w http.ResponseWriter, r *http.Request) {
+	// 	if r.Method != http.MethodGet {
+	// 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+	// 		return
+	// 	}
+	
+	// 	// Load hosts from inventory
+	// 	inventory, err := executor.LoadInventory() // assuming executor.LoadInventory() is implemented
+	// 	if err != nil {
+	// 		http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+	// 		return
+	// 	}
+	
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(inventory.Hosts)
+	// }))
+	
 	// Serve raw YAML playbooks for viewing/editing in list.html
 	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
 

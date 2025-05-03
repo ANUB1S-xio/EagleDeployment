@@ -1,4 +1,9 @@
-hosts: []
+hosts:
+- ip: 192.168.111.135
+  hostname: debian-vm-user
+  os: Linux
+  ssh_user: EagleAdmin
+  ssh_pass: AdminPass123
 ssh_cred:
-  ssh_user: "\e[B\e[B"
+  ssh_user: ""
   ssh_pass: ""

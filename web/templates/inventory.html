@@ -6,30 +6,149 @@
     <title>Eagle Nexus - Manage Inventory</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
-    <link rel="stylesheet" href="/static/css/list.css"> <!-- Reuse for layout consistency -->
+    <link rel="stylesheet" href="/static/css/list.css">
+    <link rel="stylesheet" href="/static/css/inventory.css">
 </head>
 <body>
-    <header>
-        <div class="logo">Eagle<span>Nexus</span></div>
-        <nav>
-            <ul>
-                <li><a href="/dashboard">Dashboard</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <div class="logo">Eagle<span>Nexus</span></div>
+    <nav>
+        <ul>
+            <li><a href="/dashboard">Dashboard</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <main>
-        <section class="dashboard">
-            <h1>Manage Inventory</h1>
-            <div class="list-container">
-                <!-- You can define inventory sections here -->
-                <div class="inventory-panel">
-                    <p>This page will allow you to view, add, update, and delete hosts from the inventory.</p>
-                    <!-- Placeholder for future functionality -->
-                </div>
+<main>
+    <section class="dashboard">
+        <h1>Manage Inventory</h1>
+        <div class="grid-container">
+
+            <!-- Add Host -->
+            <div class="grid-item">
+                <h2>Add Host</h2>
+                <form method="POST" action="/api/add-host">
+                    <div class="form-group">
+                        <label for="ip">IP Address</label>
+                        <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.135" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostname">Hostname</label>
+                        <input type="text" id="hostname" name="hostname" placeholder="e.g., debian-vm-user" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="os">Operating System</label>
+                        <select id="os" name="os" required>
+                            <option value="" disabled selected>Select OS</option>
+                            <option value="Linux">Linux</option>
+                            <option value="Ubuntu">Ubuntu</option>
+                            <option value="Debian">Debian</option>
+                            <option value="Fedora">Fedora</option>
+                            <option value="Windows">Windows</option>
+                        </select>
+                    </div>
+                    <button type="submit">Add Host</button>
+                </form>
             </div>
-        </section>
-    </main>
 
+            <!-- Manage Current Inventory -->
+            <div class="grid-item wide">
+                <h2>Manage Current Inventory</h2>
+
+                <details>
+                    <summary><strong>List Hosts</strong></summary>
+                    <button type="button" id="loadHostsBtn">Show Hosts</button>
+                    <ul id="hostList"></ul>
+                </details>
+
+                <details>
+                    <summary><strong>Update Host</strong></summary>
+                    <form method="POST" action="/api/update-host">
+                        <div class="form-group">
+                            <label for="update-ip">Host IP</label>
+                            <input type="text" id="update-ip" name="ip" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-hostname">New Hostname</label>
+                            <input type="text" id="update-hostname" name="hostname">
+                        </div>
+                        <div class="form-group">
+                            <label for="update-os">New OS</label>
+                            <input type="text" id="update-os" name="os">
+                        </div>
+                        <button type="submit">Update</button>
+                    </form>
+                </details>
+
+                <details>
+                    <summary><strong>Delete Host</strong></summary>
+                    <form method="POST" action="/api/delete-host">
+                        <div class="form-group">
+                            <label for="delete-ip">Host IP</label>
+                            <input type="text" id="delete-ip" name="ip" required>
+                        </div>
+                        <button type="submit">Delete</button>
+                    </form>
+                </details>
+
+                <details>
+                    <summary><strong>Edit SSH Credentials</strong></summary>
+                    <form method="POST" action="/api/update-ssh">
+                        <div class="form-group">
+                            <label for="ssh-user">New SSH Username</label>
+                            <input type="text" id="ssh-user" name="ssh_user" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ssh-pass">New SSH Password</label>
+                            <input type="password" id="ssh-pass" name="ssh_password" required>
+                        </div>
+                        <button type="submit">Update SSH</button>
+                    </form>
+                </details>
+            </div>
+
+            <!-- Show SSH Info -->
+            <div class="grid-item">
+                <h2>Show SSH Credentials</h2>
+                <form method="GET" action="/api/show-ssh">
+                    <button type="submit">Show</button>
+                </form>
+                <p><strong>SSH User:</strong> {{.SSHUser}}</p>
+                <p><strong>SSH Password:</strong> {{.SSHPassword}}</p>
+            </div>
+
+            <!-- List Users -->
+            <div class="grid-item">
+                <h2>List Users</h2>
+                <ul>
+                    {{range .Users}}
+                        <li><strong>Username:</strong> {{.Username}}, Group: {{.Group}}</li>
+                    {{end}}
+                </ul>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script>
+document.getElementById("loadHostsBtn").addEventListener("click", function () {
+    fetch("/api/list-hosts")
+        .then(res => res.json())
+        .then(hosts => {
+            const list = document.getElementById("hostList");
+            list.innerHTML = "";
+            hosts.forEach(host => {
+                const item = document.createElement("li");
+                item.textContent = `IP: ${host.ip}, Hostname: ${host.hostname}, OS: ${host.os}`;
+                list.appendChild(item);
+            });
+        })
+        .catch(error => {
+            alert("Failed to load hosts.");
+            console.error(error);
+        });
+});
+</script>
 </body>
 </html>
