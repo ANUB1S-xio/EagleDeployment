@@ -107,6 +107,8 @@
 }
 
 .add-playbook-group label {
+    margin-top: 25px;
+    margin-bottom: 10px;
     color: #00ff99;
     font-size: 15px;
     font-family: 'Orbitron', sans-serif;
@@ -114,16 +116,16 @@
 }
 
 .add-playbook-group input {
+        height: 40px;
         width: 100%;
-        padding: 12px;
         background: #222;
         border: 1px solid #333;
         border-radius: 10px;
         color: white;
         font-family: 'Orbitron', sans-serif;
         font-size: 14px;
-        box-shadow: 0px 0px 10px rgba(0, 255, 153, 0.4);
-        text-align: center;  
+        padding: 8px 12px;
+        box-shadow: 0px 0px 8px rgba(0, 255, 153, 0.4);   
 }
 
 .add-playbook-group button {
