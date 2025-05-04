@@ -12,7 +12,8 @@ import (
 	"time"
 
 	telemetry "EagleDeployment/Telemetry"
-	"EagleDeployment/executor" // executor package
+	"EagleDeployment/executor"  // executor package
+	"EagleDeployment/inventory" // inventory package
 )
 
 // Store the current port for other parts of the application to access
@@ -264,27 +265,238 @@ func StartWebServer() {
 		fmt.Fprintf(w, "Playbook '%s' created successfully!", data.Filename)
 	}))
 
-	// http.HandleFunc("/api/list-hosts", logRequest(func(w http.ResponseWriter, r *http.Request) {
-	// 	if r.Method != http.MethodGet {
-	// 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-	// 		return
-	// 	}
-	
-	// 	// Load hosts from inventory
-	// 	inventory, err := executor.LoadInventory() // assuming executor.LoadInventory() is implemented
-	// 	if err != nil {
-	// 		http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
-	// 		return
-	// 	}
-	
-	// 	w.Header().Set("Content-Type", "application/json")
-	// 	json.NewEncoder(w).Encode(inventory.Hosts)
-	// }))
-	
+	// API endpoint to list hosts from inventory
+	http.HandleFunc("/api/list-hosts", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Load hosts from inventory
+		inv, err := inventory.LoadInventory()
+		if err != nil {
+			http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+			t.LogError("Web", "Failed to load inventory", map[string]interface{}{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(inv.Hosts)
+	}))
+
+	// API endpoint to add a host
+	http.HandleFunc("/api/add-host", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+			return
+		}
+
+		ip := r.FormValue("ip")
+		hostname := r.FormValue("hostname")
+		os := r.FormValue("os")
+
+		if ip == "" || hostname == "" || os == "" {
+			http.Error(w, "Missing required fields", http.StatusBadRequest)
+			return
+		}
+
+		// Load current inventory
+		inv, err := inventory.LoadInventory()
+		if err != nil {
+			http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+			return
+		}
+
+		// Check for duplicate IP
+		for _, host := range inv.Hosts {
+			if host.IP == ip {
+				http.Error(w, "Host with this IP already exists", http.StatusConflict)
+				return
+			}
+		}
+
+		// Add new host
+		newHost := inventory.Host{IP: ip, Hostname: hostname, OS: os}
+		inv.Hosts = append(inv.Hosts, newHost)
+
+		// Save inventory
+		inventory.SaveInventory(inv)
+
+		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+	}))
+
+	// API endpoint to update a host
+	http.HandleFunc("/api/update-host", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+			return
+		}
+
+		ip := r.FormValue("ip")
+		hostname := r.FormValue("hostname")
+		os := r.FormValue("os")
+
+		if ip == "" {
+			http.Error(w, "IP address is required", http.StatusBadRequest)
+			return
+		}
+
+		// Load current inventory
+		inv, err := inventory.LoadInventory()
+		if err != nil {
+			http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+			return
+		}
+
+		// Find and update host
+		hostFound := false
+		for i, host := range inv.Hosts {
+			if host.IP == ip {
+				if hostname != "" {
+					inv.Hosts[i].Hostname = hostname
+				}
+				if os != "" {
+					inv.Hosts[i].OS = os
+				}
+				hostFound = true
+				break
+			}
+		}
+
+		if !hostFound {
+			http.Error(w, "Host not found", http.StatusNotFound)
+			return
+		}
+
+		// Save inventory
+		inventory.SaveInventory(inv)
+
+		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+	}))
+
+	// API endpoint to delete a host
+	http.HandleFunc("/api/delete-host", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+			return
+		}
+
+		ip := r.FormValue("ip")
+
+		if ip == "" {
+			http.Error(w, "IP address is required", http.StatusBadRequest)
+			return
+		}
+
+		// Load current inventory
+		inv, err := inventory.LoadInventory()
+		if err != nil {
+			http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+			return
+		}
+
+		// Find and remove host
+		hostFound := false
+		for i, host := range inv.Hosts {
+			if host.IP == ip {
+				// Remove host by slicing
+				inv.Hosts = append(inv.Hosts[:i], inv.Hosts[i+1:]...)
+				hostFound = true
+				break
+			}
+		}
+
+		if !hostFound {
+			http.Error(w, "Host not found", http.StatusNotFound)
+			return
+		}
+
+		// Save inventory
+		inventory.SaveInventory(inv)
+
+		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+	}))
+
+	// API endpoint to update SSH credentials
+	http.HandleFunc("/api/update-ssh", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+			return
+		}
+
+		sshUser := r.FormValue("ssh_user")
+		sshPass := r.FormValue("ssh_password")
+
+		if sshUser == "" || sshPass == "" {
+			http.Error(w, "SSH username and password are required", http.StatusBadRequest)
+			return
+		}
+
+		// Load current inventory
+		inv, err := inventory.LoadInventory()
+		if err != nil {
+			http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+			return
+		}
+
+		// Update SSH credentials
+		inv.SSHCred.SSHUser = sshUser
+		inv.SSHCred.SSHPass = sshPass
+
+		// Save inventory
+		inventory.SaveInventory(inv)
+
+		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+	}))
+
+	// API endpoint to show SSH credentials
+	http.HandleFunc("/api/show-ssh", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Get SSH credentials
+		user, pass := inventory.GetSSHCreds()
+
+		data := struct {
+			SSHUser     string
+			SSHPassword string
+		}{
+			SSHUser:     user,
+			SSHPassword: pass,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(data)
+	}))
+
 	// Serve raw YAML playbooks for viewing/editing in list.html
 	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
 
-	// API Endpoint to Save YAML Playbooks 
+	// API Endpoint to Save YAML Playbooks
 	http.HandleFunc("/api/save_playbook", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)

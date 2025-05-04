@@ -27130,7 +27130,215 @@
         }
       },
       "time_written": "2025-05-04T13:40:50.3959669-05:00"
+    },
+    {
+      "event": {
+        "id": "59940386-a4e6-411f-9779-e35705239bbb",
+        "timestamp": "2025-05-04T14:03:19.7968878-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:19.7968878-05:00"
+    },
+    {
+      "event": {
+        "id": "b9900446-8930-485d-9e7a-99d43c68e2e1",
+        "timestamp": "2025-05-04T14:03:19.7968878-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:19.7968878-05:00"
+    },
+    {
+      "event": {
+        "id": "ce95c4c3-745a-410e-8b44-57a1facf6380",
+        "timestamp": "2025-05-04T14:03:19.7974026-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:19.7974026-05:00"
+    },
+    {
+      "event": {
+        "id": "a9be5c12-fbdc-4067-b63e-bfe8dea384d4",
+        "timestamp": "2025-05-04T14:03:19.7990103-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 303,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:19.7990103-05:00"
+    },
+    {
+      "event": {
+        "id": "a98e7006-4870-4005-8baa-ac1ee2f88541",
+        "timestamp": "2025-05-04T14:03:21.9792714-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:21.9792714-05:00"
+    },
+    {
+      "event": {
+        "id": "68397112-e551-433f-8b2d-4a7a2c5ab924",
+        "timestamp": "2025-05-04T14:03:21.9814063-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:21.9814063-05:00"
+    },
+    {
+      "event": {
+        "id": "9b106bf1-8630-48b8-be9c-38e37e22f94c",
+        "timestamp": "2025-05-04T14:03:26.1617419-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/inventory"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:03:26.1617419-05:00"
+    },
+    {
+      "event": {
+        "id": "cb266f7e-75d0-44eb-a695-eefeb36ba671",
+        "timestamp": "2025-05-04T14:06:40.7520268-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Termination signal received",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 521,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:06:40.7520268-05:00"
+    },
+    {
+      "event": {
+        "id": "97023bb4-9c15-47a1-a29a-83bb41f541dd",
+        "timestamp": "2025-05-04T14:06:40.7525326-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:06:40.7525326-05:00"
+    },
+    {
+      "event": {
+        "id": "6a08fa3f-e533-497c-9d29-eeaaee5bf229",
+        "timestamp": "2025-05-04T14:06:40.7525326-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "56e79f36-4c17-41e1-9e2d-11be25ef707d",
+        "host_info": {
+          "hostname": "HUNTER-PC-01R2",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T14:06:40.7525326-05:00"
     }
   ],
-  "last_sync": "2025-05-04T13:40:50.3959669-05:00"
+  "last_sync": "2025-05-04T14:06:40.7525326-05:00"
 }
