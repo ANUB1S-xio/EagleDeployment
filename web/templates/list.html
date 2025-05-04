@@ -104,7 +104,7 @@
 
         // Create a new YAML playbook file
     document.getElementById("createPlaybookBtn").addEventListener("click", function () {
-        const filename = document.getElementById("newPlaybookName").value.trim();
+        const filename = document.getElementById("newPlaybookInput").value.trim();
 
         if (!filename.endsWith(".yaml") && !filename.endsWith(".yml")) {
             alert("Please enter a valid YAML filename ending in .yaml or .yml");
@@ -127,7 +127,7 @@
             option.value = filename;
             option.textContent = filename;
             select.appendChild(option);
-            document.getElementById("newPlaybookName").value = "";
+            document.getElementById("newPlaybookInput").value = "";
         })
         .catch(err => alert(err.message));
     });
