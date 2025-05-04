@@ -189,6 +189,11 @@ func StartWebServer() {
 		http.ServeFile(w, r, "web/templates/list.html")
 	}))
 
+	// List YAML Playbooks Page
+	http.HandleFunc("/inventory", logRequest(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/inventory.html")
+	}))
+
 	// Login Page
 	http.HandleFunc("/login", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/login.html")
@@ -228,42 +233,54 @@ func StartWebServer() {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(playbooks)
 	}))
-	
-	// API Endpoint to Create a New YAML Playbook
+	// API Endpoint to Create a New Playbook
 	http.HandleFunc("/api/create_playbook", logRequest(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 			return
 		}
-
 		var data struct {
 			Filename string `json:"filename"`
 		}
-		err := json.NewDecoder(r.Body).Decode(&data)
-		if err != nil || data.Filename == "" {
-			http.Error(w, "Invalid input", http.StatusBadRequest)
+		if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-
 		// Sanitize filename
-		cleanName := filepath.Base(data.Filename)
-		if !strings.HasSuffix(cleanName, ".yaml") && !strings.HasSuffix(cleanName, ".yml") {
-			http.Error(w, "Filename must end with .yaml or .yml", http.StatusBadRequest)
+		if data.Filename == "" || strings.Contains(data.Filename, "..") {
+			http.Error(w, "Invalid filename", http.StatusBadRequest)
 			return
 		}
-
-		playbookPath := filepath.Join("playbooks", cleanName)
-		err = os.WriteFile(playbookPath, []byte("# New Playbook\n"), 0644)
+		path := fmt.Sprintf("./playbooks/%s", data.Filename)
+		if _, err := os.Stat(path); err == nil {
+			http.Error(w, "File already exists", http.StatusConflict)
+			return
+		}
+		err := os.WriteFile(path, []byte("# New playbook\n\n"), 0644)
 		if err != nil {
-			http.Error(w, "Failed to create playbook", http.StatusInternalServerError)
+			http.Error(w, "Failed to create file", http.StatusInternalServerError)
 			return
 		}
-
-		fmt.Fprintf(w, "Playbook %s created successfully", cleanName)
+		fmt.Fprintf(w, "Playbook '%s' created successfully!", data.Filename)
 	}))
 
-
-
+	// http.HandleFunc("/api/list-hosts", logRequest(func(w http.ResponseWriter, r *http.Request) {
+	// 	if r.Method != http.MethodGet {
+	// 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+	// 		return
+	// 	}
+	
+	// 	// Load hosts from inventory
+	// 	inventory, err := executor.LoadInventory() // assuming executor.LoadInventory() is implemented
+	// 	if err != nil {
+	// 		http.Error(w, "Failed to load inventory", http.StatusInternalServerError)
+	// 		return
+	// 	}
+	
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(inventory.Hosts)
+	// }))
+	
 	// Serve raw YAML playbooks for viewing/editing in list.html
 	http.Handle("/playbooks/", http.StripPrefix("/playbooks/", http.FileServer(http.Dir("playbooks"))))
 

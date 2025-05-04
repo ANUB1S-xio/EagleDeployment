@@ -1,0 +1,51 @@
+name: "Basic_Add_Users"
+version: "2.3"
+
+hosts:
+  - "192.168.111.135"
+
+vars:
+  user_name: "DemoUser1"
+  user_password: "AdminPass123"
+
+tasks:
+  - name: "Add user on Linux systems"
+    ssh_user: "EagleAdmin"
+    ssh_password: "AdminPass123"
+    port: 22
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
+    loop: "[{192.168.111.135 debian-vm-user Linux EagleAdmin AdminPass123}]"
+    loop_control:
+      loop_var: item
+    command: |
+      if id "DemoUser1" &>/dev/null; then
+        echo "User 'DemoUser1' already exists. Skipping creation."
+      else
+        echo 'AdminPass123' | sudo -S useradd -m -s /bin/bash "DemoUser1"
+      fi
+    register: user_creation_result
+
+  - name: "Set password for user on Linux systems"
+    ssh_user: "EagleAdmin"
+    ssh_password: "AdminPass123"
+    port: 22
+    when:  
+      - item.OS | lower startsWith "linux"
+      - item.OS | lower contains "ubuntu" or item.OS | lower contains "fedora" or item.OS | lower contains "debian"
+      - item.OS | lower not contains "windows"
+    loop: "[{192.168.111.135 debian-vm-user Linux EagleAdmin AdminPass123}]"
+    loop_control:
+      loop_var: item
+    command: |
+      if getent passwd "DemoUser1" > /dev/null 2>&1; then
+        echo 'DemoUser1:AdminPass123' | echo 'AdminPass123' | sudo -S bash -c 'cat | chpasswd'
+      else
+        echo "User 'DemoUser1' not found, skipping password set."
+      fi
+    depends_on:
+      - "Add user on Linux systems"
+settings:
+  port: 22

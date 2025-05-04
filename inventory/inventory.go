@@ -15,6 +15,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"context"
 	"sync"
 	"text/template"
 	"time"
@@ -53,21 +54,25 @@ type User struct {
 	Group    string `yaml:"group"`
 }
 
-// LoadInventory loads inventory.yaml and unmarshals it into the Inventory struct
+// LoadInventory reads the inventory file from disk and parses it into an Inventory struct
+// LoadInventory reads the inventory file from disk and parses it into an Inventory struct
 func LoadInventory() (*Inventory, error) {
 	data, err := ioutil.ReadFile(InventoryFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to load inventory: %v", err)
 	}
 
 	var inv Inventory
 	err = yaml.Unmarshal(data, &inv)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse inventory: %v", err)
 	}
 
 	return &inv, nil
 }
+
+
+
 
 // SaveInventory writes the updated inventory back to inventory.yaml
 func SaveInventory(inv *Inventory) {
@@ -97,8 +102,8 @@ func SaveInventory(inv *Inventory) {
 
 // GetSSHCreds returns SSH credentials from environment variables or inventory.yaml
 func GetSSHCreds() (string, string) {
-	sshUser := os.Getenv("SSH_USER")
-	sshPass := os.Getenv("SSH_PASS")
+	sshUser := os.Getenv("EAGLE_SSH_USER")
+	sshPass := os.Getenv("EAGLE_SSH_PASS")
 
 	if sshUser == "" || sshPass == "" {
 		inv, err := LoadInventory()
@@ -211,6 +216,14 @@ func nextIP(ip net.IP) net.IP {
 	return ip
 }
 
+func MapHostsByIP(inv *Inventory) map[string]Host {
+	hostMap := make(map[string]Host)
+	for _, host := range inv.Hosts {
+		hostMap[host.IP] = host
+	}
+	return hostMap
+}
+
 // AddHost prompts for IP input, detects hostname and OS, and appends to inventory.yaml if the host is alive.
 func AddHost(ipRange string) {
 	t := telemetry.GetInstance()
@@ -253,27 +266,42 @@ func AddHost(ipRange string) {
 		g.Go(func() error {
 			if checkHostAlive(ip) {
 				hostname := detectHostname(ip)
-
-				// Add debug logging for SSH credentials
 				log.Printf("Attempting OS detection for %s with credentials - User: %s", ip, sshUser)
-
-				// Add retry logic for OS detection
+		
 				var osType string
-				for attempts := 1; attempts <= 3; attempts++ {
-					osType, err = osdetect.DetectOS(ip, sshUser, sshPass, 22)
-					if err == nil {
-						break
+				detectCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
+		
+				detectChan := make(chan string, 1)
+				errChan := make(chan error, 1)
+		
+				go func() {
+					// Try up to 3 times
+					var detected string
+					var detErr error
+					for attempts := 1; attempts <= 3; attempts++ {
+						detected, detErr = osdetect.DetectOS(ip, sshUser, sshPass, 22)
+						if detErr == nil {
+							detectChan <- detected
+							return
+						}
+						log.Printf("Attempt %d: Error detecting OS for %s: %v", attempts, ip, detErr)
+						time.Sleep(2 * time.Second)
 					}
-					log.Printf("Attempt %d: Error detecting OS for %s: %v", attempts, ip, err)
-					// Wait briefly before retry
-					time.Sleep(2 * time.Second)
-				}
-
-				if err != nil {
-					log.Printf("All attempts failed to detect OS for %s: %v", ip, err)
+					errChan <- detErr
+				}()
+		
+				select {
+				case <-detectCtx.Done():
+					log.Printf("OS detection for %s timed out", ip)
+					osType = "Unknown"
+				case det := <-detectChan:
+					osType = det
+				case detErr := <-errChan:
+					log.Printf("All attempts failed to detect OS for %s: %v", ip, detErr)
 					osType = "Unknown"
 				}
-
+		
 				newHost := Host{IP: ip, Hostname: hostname, OS: osType}
 				mu.Lock()
 				aliveHosts = append(aliveHosts, newHost)
@@ -283,7 +311,7 @@ func AddHost(ipRange string) {
 				fmt.Printf("Host %s is not alive. Not adding to inventory.\n", ip)
 			}
 			return nil
-		})
+		})		
 	}
 
 	if err := g.Wait(); err != nil {
@@ -518,6 +546,10 @@ func scanAndAddIP() {
 
 // InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
 // and writes the rendered output to outputPath.
+// InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
+// and writes the rendered output to outputPath.
+// InjectInventoryIntoPlaybook loads inventory.yaml, injects the inventory data (hosts including OS) and SSH credentials,
+// and writes the rendered output to outputPath.
 func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 	t := telemetry.GetInstance()
 	t.LogInfo("Playbook", "Injecting inventory into playbook", map[string]interface{}{
@@ -558,20 +590,16 @@ func InjectInventoryIntoPlaybook(templatePath, outputPath string) error {
 		return fmt.Errorf("failed to parse playbook template: %v", err)
 	}
 
-
-	// 
-	var rendered bytes.Buffer
-
-	data := map[string]interface{}{
-		"Hosts": inv.Hosts,
-		"SSHCred": inv.SSHCred,
-		"Vars": map[string]string{
-			"UserName":    "",
-			"UserPassword": "",
+	vars := map[string]interface{}{
+		"Vars": map[string]interface{}{
+			"UserName":     inv.SSHCred.SSHUser,
+			"UserPassword": inv.SSHCred.SSHPass,
 		},
+		"Hosts": inv.Hosts,
 	}
-	
-	if err := tmpl.Execute(&rendered, data); err != nil {
+
+	var rendered bytes.Buffer
+	if err := tmpl.Execute(&rendered, vars); err != nil {
 		t.LogError("Playbook", "Failed to execute template", map[string]interface{}{
 			"error":         err.Error(),
 			"template_path": templatePath,

@@ -15,10 +15,12 @@ import (
 
 	"fmt"
 	"log"
+	"os"
 	"reflect"
 	"strconv"
 	"sync"
 )
+
 
 // Function: ExecuteRemote
 // Purpose: Executes a single task on a remote machine via SSH
@@ -45,8 +47,66 @@ func ExecuteRemote(task tasks.Task, port int) error {
 		"port":      port,
 	})
 
-	// Fetch SSH credentials
-	sshUser, sshPass := inventory.GetSSHCreds()
+	// // Fetch SSH credentials
+	// sshUser, hostMap := inventory.GetHosts()
+	// if hostData, ok := hostMap[task.Host]; ok {
+	// 	sshUser = hostData.SSHUser
+	// 	sshPass = hostData.SSHPass
+	// } else {
+	// 	sshUser, sshPass = inventory.GetSSHCreds()
+	// }
+
+	// os.Setenv("EAGLE_SSH_USER", sshUser)
+	// os.Setenv("EAGLE_SSH_PASS", sshPass)
+
+
+
+// 	// Fetch SSH credentials
+// sshUser, hostMap := inventory.GetHosts()
+
+// // Default to first host if task.Host is not set
+// if task.Host == "" && len(inv.Hosts) > 0 {
+// 	task.Host = inv.Hosts[0].IP
+// }
+
+// if hostData, ok := hostMap[task.Host]; ok {
+// 	sshUser = hostData.SSHUser
+// 	sshPass = hostData.SSHPass
+// } else {
+// 	sshUser, sshPass = inventory.GetSSHCreds()
+// }
+
+
+
+// Load inventory
+inv, err := inventory.LoadInventory()
+if err != nil {
+	t.LogError("Playbook", "Failed to load inventory for playbook", map[string]interface{}{
+		"error": err.Error(),
+	})
+	return fmt.Errorf("failed to load inventory: %v", err)
+}
+
+// Set default host if not specified
+if task.Host == "" && len(inv.Hosts) > 0 {
+	task.Host = inv.Hosts[0].IP
+}
+
+// Use MapHostsByIP to resolve credentials
+hostMap := inventory.MapHostsByIP(inv)
+
+var sshUser, sshPass string
+if hostData, ok := hostMap[task.Host]; ok {
+	sshUser = hostData.SSHUser
+	sshPass = hostData.SSHPass
+} else {
+	sshUser, sshPass = inventory.GetSSHCreds()
+}
+
+// Export to environment for templating use
+os.Setenv("EAGLE_SSH_USER", sshUser)
+os.Setenv("EAGLE_SSH_PASS", sshPass)
+
 
 	// Override credentials if playbook provides them
 	if task.SSHUser != "" {

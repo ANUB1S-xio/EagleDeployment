@@ -1,0 +1,103 @@
+body {
+    font-family: 'Orbitron', sans-serif;
+    background: radial-gradient(circle, rgba(0, 255, 153, 0.2), rgba(0, 0, 0, 1));
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    justify-content: center;
+    grid-auto-flow: dense; /* Fill gaps to create mosaic flow */
+}
+
+/* Example: Making specific items span more space for mosaic effect */
+.grid-container .wide {
+    grid-column: span 2;
+}
+
+.grid-container .tall {
+    grid-row: span 2;
+}
+
+.grid-item {
+    background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: left;
+    box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.4);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+}
+
+.grid-item h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #00ff99;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 5px;
+    border: none;
+    background-color: #2e2e2e;
+    color: #00ffcc;
+}
+
+.grid-item button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #00ffcc;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 255, 153, 0.8);
+    transition: all 0.3s ease-in-out;
+}
+
+.grid-item button:hover {
+    background-color: #00cc99;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 255, 153, 1);
+}
+
+.grid-item ul {
+    padding-left: 20px;
+    list-style: disc;
+}
+
+.grid-item p {
+    margin: 6px 0;
+    color: #00ffcc;
+    font-size: 0.95rem;
+}

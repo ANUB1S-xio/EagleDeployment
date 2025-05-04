@@ -23,10 +23,10 @@ tasks:
     loop_control:
       loop_var: item
     command: |
-      if [ "$(id -u 2>/dev/null)" -ne 0 ]; then
-        echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+      if id "{{ .Vars.UserName }}" &>/dev/null; then
+        echo "User '{{ .Vars.UserName }}' already exists. Skipping creation."
       else
-        useradd -m -s /bin/bash "{{ .Vars.UserName }}"
+        echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S useradd -m -s /bin/bash "{{ .Vars.UserName }}"
       fi
     register: user_creation_result
 
@@ -43,29 +43,11 @@ tasks:
       loop_var: item
     command: |
       if getent passwd "{{ .Vars.UserName }}" > /dev/null 2>&1; then
-        echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | sudo -S chpasswd
+        echo '{{ .Vars.UserName }}:{{ .Vars.UserPassword }}' | echo '{{ env `EAGLE_SSH_PASS` }}' | sudo -S bash -c 'cat | chpasswd'
       else
-        echo "User does not exist, skipping password set"
+        echo "User '{{ .Vars.UserName }}' not found, skipping password set."
       fi
     depends_on:
       - "Add user on Linux systems"
-
-  - name: "Add user on Windows systems"
-    ssh_user: "{{ env `EAGLE_SSH_USER` }}"
-    ssh_password: "{{ env `EAGLE_SSH_PASS` }}"
-    port: 22
-    when:  
-      - item.OS | lower contains "windows"
-      - item.OS | lower not contains "linux"
-      - item.OS | lower not contains "ubuntu"
-      - item.OS | lower not contains "fedora"
-      - item.OS | lower not contains "debian"
-    loop: "{{ .Hosts }}"
-    loop_control:
-      loop_var: item
-    command: |
-      cmd.exe /c "net user \"{{ .Vars.UserName }}\" \"{{ .Vars.UserPassword }}\" /add"
-    register: windows_user_creation_result
-
 settings:
   port: 22
