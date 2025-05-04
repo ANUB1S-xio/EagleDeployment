@@ -96,48 +96,50 @@
     cursor: pointer;
     text-align: center;
 }
-.add-playbook-container {
-    margin-top: 20px;
-    background-color: #121212;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 0 12px #00ffcc;
+
+/* Add Playbook section inside select-panel */
+.add-playbook-group {
+    margin-top: 25px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
 }
 
-.add-playbook-container label {
-    color: #ffffff;
-    font-family: 'Orbitron', sans-serif;
+.add-playbook-group label {
+    color: #00ff99;
     font-size: 14px;
-    margin-bottom: 6px;
+    font-family: 'Orbitron', sans-serif;
     text-align: center;
 }
 
-#newPlaybookInput {
-    background-color: #1a1a1a;
+.add-playbook-group input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #222;
     color: white;
-    border: 2px solid #00ffcc;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 12px;
     font-family: 'Orbitron', sans-serif;
     font-size: 13px;
+    text-align: center;
 }
 
-#addPlaybookBtn {
-    background-color: #00ffcc;
+.add-playbook-group button {
+    background: #00ff99;
     border: none;
-    border-radius: 8px;
     padding: 10px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 13px;
     color: black;
+    font-weight: bold;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0px 0px 10px rgba(0,255,153,0.8);
+    font-size: 14px;
 }
 
-#addPlaybookBtn:hover {
-    background-color: #00ffaa;
+.add-playbook-group button:hover {
+    background: #00cc77;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(0,255,153,1);
 }

@@ -25170,7 +25170,395 @@
         }
       },
       "time_written": "2025-04-18T23:27:36.4193223-05:00"
+    },
+    {
+      "event": {
+        "id": "50de2b3b-086f-42ad-98c1-106d11d5f765",
+        "timestamp": "2025-05-04T12:53:16.517272-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session started",
+        "data": {
+          "version": "1.0.0"
+        },
+        "source": "once.go",
+        "function": "sync.(*Once).doSlow",
+        "line": 76,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:16.517272-05:00"
+    },
+    {
+      "event": {
+        "id": "7fdc17c6-cdc4-43bb-9fdc-5000fc87053a",
+        "timestamp": "2025-05-04T12:53:16.517272-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy starting",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 429,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:16.517272-05:00"
+    },
+    {
+      "event": {
+        "id": "2916188d-d5bd-4b57-81cf-343b0e6a4b72",
+        "timestamp": "2025-05-04T12:53:16.517272-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "source": "main.go",
+        "function": "main.main.func1",
+        "line": 437,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:16.517272-05:00"
+    },
+    {
+      "event": {
+        "id": "f5de5719-84dc-45ba-a2a2-92d835572579",
+        "timestamp": "2025-05-04T12:53:16.5193234-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "Starting web server",
+        "data": {
+          "address": "127.0.0.1:8742"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer",
+        "line": 299,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:16.5193234-05:00"
+    },
+    {
+      "event": {
+        "id": "f577c252-03a4-43f7-a332-8e46b9992871",
+        "timestamp": "2025-05-04T12:53:20.3087556-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:20.3087556-05:00"
+    },
+    {
+      "event": {
+        "id": "80fa01e6-bbc2-42b6-b428-6b4db8b4a27f",
+        "timestamp": "2025-05-04T12:53:20.3186744-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:20.3186744-05:00"
+    },
+    {
+      "event": {
+        "id": "2f04ff05-4bdf-4ed2-982c-55b5ff09e6c4",
+        "timestamp": "2025-05-04T12:53:21.3114039-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:21.3114039-05:00"
+    },
+    {
+      "event": {
+        "id": "e142f1e1-a744-421e-aed1-e599b04f0ace",
+        "timestamp": "2025-05-04T12:53:21.3131469-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:21.3131469-05:00"
+    },
+    {
+      "event": {
+        "id": "93bb4c09-7143-4ec6-81b9-ab9e42e9054f",
+        "timestamp": "2025-05-04T12:53:21.3436604-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func13",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:21.3436604-05:00"
+    },
+    {
+      "event": {
+        "id": "6469af54-128e-4ae9-a2f5-0dda21c2fb93",
+        "timestamp": "2025-05-04T12:53:24.2702639-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/execute"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func16",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:24.2702639-05:00"
+    },
+    {
+      "event": {
+        "id": "66c60fa4-d588-4f7d-8e50-ebc262663bf7",
+        "timestamp": "2025-05-04T12:53:24.3115468-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list_playbooks"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func20",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:24.3115468-05:00"
+    },
+    {
+      "event": {
+        "id": "1c8145ac-e2b3-4b06-b5e4-5ac1e1405eee",
+        "timestamp": "2025-05-04T12:53:26.8756125-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/dashboard"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func15",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:26.8756125-05:00"
+    },
+    {
+      "event": {
+        "id": "c4e0b036-54b2-4a05-81dc-e09594a01ce4",
+        "timestamp": "2025-05-04T12:53:27.6216205-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/list"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func17",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:27.6216205-05:00"
+    },
+    {
+      "event": {
+        "id": "a12eb41a-3412-4aa7-a4f1-89bc178eaa06",
+        "timestamp": "2025-05-04T12:53:27.6499145-05:00",
+        "level": "INFO",
+        "category": "Web",
+        "message": "HTTP request",
+        "data": {
+          "method": "GET",
+          "path": "/api/list_playbooks"
+        },
+        "source": "web.go",
+        "function": "EagleDeployment/web.StartWebServer.StartWebServer.func1.func20",
+        "line": 133,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:53:27.6499145-05:00"
+    },
+    {
+      "event": {
+        "id": "0dcb7351-c0e1-4fc1-825e-43a045b9894a",
+        "timestamp": "2025-05-04T12:59:05.4820697-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "User initiated exit",
+        "source": "main.go",
+        "function": "main.main.func2",
+        "line": 501,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:59:05.4820697-05:00"
+    },
+    {
+      "event": {
+        "id": "d2cdea96-912a-4bfc-9a86-d294a87f359a",
+        "timestamp": "2025-05-04T12:59:05.4830725-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "Server shutdown detected",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 518,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:59:05.4830725-05:00"
+    },
+    {
+      "event": {
+        "id": "0a0ffc9c-d079-4322-937d-4d0b71f3d707",
+        "timestamp": "2025-05-04T12:59:05.4830725-05:00",
+        "level": "INFO",
+        "category": "App",
+        "message": "EagleDeploy shutting down",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 526,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:59:05.4830725-05:00"
+    },
+    {
+      "event": {
+        "id": "f40e266d-29df-4f75-bc1e-9ab2dcdcfdff",
+        "timestamp": "2025-05-04T12:59:05.4830725-05:00",
+        "level": "INFO",
+        "category": "Telemetry",
+        "message": "Session ended",
+        "source": "main.go",
+        "function": "main.main",
+        "line": 527,
+        "session_id": "27ae6ab1-6b99-4f15-a6f4-5108595923b6",
+        "host_info": {
+          "hostname": "Tanners-PC",
+          "os": "windows",
+          "arch": "386"
+        }
+      },
+      "time_written": "2025-05-04T12:59:05.4830725-05:00"
     }
   ],
-  "last_sync": "2025-04-18T23:27:36.4198228-05:00"
+  "last_sync": "2025-05-04T12:59:05.4830725-05:00"
 }
